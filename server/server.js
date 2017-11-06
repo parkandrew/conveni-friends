@@ -1,4 +1,5 @@
 import express from "express";
+import http from "http";
 import mysql from "mysql";
 
 const connection = mysql.createConnection({
@@ -8,10 +9,11 @@ const connection = mysql.createConnection({
     database: 'cs130_project',
 });
 
-const server = express();
+const app = express();
+const server = http.Server(app);
 const PORT = 3000;
 
-server.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send("Test GET request");
 });
 
