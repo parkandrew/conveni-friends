@@ -7,7 +7,7 @@ CREATE TABLE User(
 CREATE TABLE Request(
 	requestId INT AUTO_INCREMENT PRIMARY KEY,
 	requesterId VARCHAR(20) NOT NULL,
-	provderId VARCHAR(20),
+	providerId VARCHAR(20),
 	title VARCHAR(20) NOT NULL,
 	location VARCHAR(20) NOT NULL,
 	description VARCHAR(20) NOT NULL,
