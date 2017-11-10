@@ -24,12 +24,25 @@ app.get('/', (req, res) => {
 app.get('/v1/request/create', (req, res) => {
     // In practice, will use req.params, but easier to modify the URL
     // query params during development
+
+    // We're also currently assuming that the frontend passes strings like
+    // "string" rather than string.
     const { username, title, description } = req.query;
     const { location, timeStart, timeEnd } = req.query;
 
-    db.query(`INSERT INTO TABLE `)
+    // TODO: Gotta figure out a more cleaner way to do our queries ..
+    const query = `INSERT INTO Request(requesterId,title,location,description,`
+                + `timeStart,timeEnd) VALUES(${username},${title},`
+                + `${location},${description},${timeStart},${timeEnd})`;
 
-    res.send(username);
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error.message);
+        } else {
+            console.log("SUCCESS!");
+            console.log(results);
+        }
+    });
 });
 
 server.listen(PORT, () => {
