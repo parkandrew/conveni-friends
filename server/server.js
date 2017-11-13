@@ -13,12 +13,21 @@ const app = express();
 const server = http.Server(app);
 const PORT = 3000;
 
-// TODO: Validation of request params. Although, I'm thinking that Validation
-// should be done client side, aka before the make the request, so we'll discuss
-// that
+// TODO: I think we could create our own function that handles the db queries
+// so that we can define a way to handle errors
 
 app.get('/', (req, res) => {
     res.send("Test GET request");
+});
+
+app.post('/v1/request/:requestId/complete', (req, res) => {
+    const { username, time } = req.query;
+    const { requestId } = req.params;
+
+    const query = `UPDATE Request SET completed=${time} `
+                + `WHERE requestId=${requestId}`;
+
+    db.query(query, (error, results) => console.log(error || "Success"));
 });
 
 app.get('/v1/request/create', (req, res) => {
@@ -35,14 +44,7 @@ app.get('/v1/request/create', (req, res) => {
                 + `timeStart,timeEnd) VALUES(${username},${title},`
                 + `${location},${description},${timeStart},${timeEnd})`;
 
-    db.query(query, (error, results) => {
-        if (error) {
-            console.log(error.message);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-        }
-    });
+    db.query(query, (error, results) => console.log(error || "Success"));
 });
 
 server.listen(PORT, () => {
