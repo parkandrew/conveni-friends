@@ -11,6 +11,9 @@ CREATE TABLE Request(
 	title VARCHAR(20) NOT NULL,
 	location VARCHAR(20) NOT NULL,
 	description VARCHAR(20) NOT NULL,
+	accepted DATETIME,
+	confirmed DATETIME,
+	completed DATETIME,
 	timeStart DATETIME NOT NULL,
 	timeEnd DATETIME NOT NULL,
 	timeCreated DATETIME DEFAULT CURRENT_TIMESTAMP
