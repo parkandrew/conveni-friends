@@ -74,8 +74,8 @@ app.post('/v1/request/:request_id/delete', (req, res) => {
     const requestId = req.params.request_id;
     const { userId } = req.query;
 
-    const query = `DELETE FROM Request `
-                + `WHERE requestId=${requestId} AND requesterId=${userId}`;
+    const query = `DELETE FROM Request ` +
+                  `WHERE requestId=${requestId} AND requesterId=${userId}`;
     console.log(query)
     
     db.query(query, (error, results) => {
