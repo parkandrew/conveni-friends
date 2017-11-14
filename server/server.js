@@ -23,6 +23,8 @@ app.get('/', (req, res) => {
     res.send("Test GET request");
 });
 
+// Example call:
+// http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&location="testlocation"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
 app.post('/v1/request/create', (req, res) => {
     // In practice, will use req.params, but easier to modify the URL
     // query params during development
@@ -50,7 +52,6 @@ app.post('/v1/request/:request_id/delete', (req, res) => {
 
     const query = `DELETE FROM Request ` +
                   `WHERE requestId=${requestId} AND requesterId=${userId}`;
-    console.log(query)
     
     db.query(query, (error, results) => {
         if (error) {
@@ -59,6 +60,58 @@ app.post('/v1/request/:request_id/delete', (req, res) => {
             console.log("SUCCESS!");
             console.log(results);
         }
+    });
+});
+
+// Example call:
+// http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+app.post('/v1/request/:request_id/accept', (req, res) => {
+    const requestId = req.params.request_id;
+    const { userId, time } = req.query;
+
+    const query = `UPDATE Request ` +
+                  `SET accepted=${time}, providerId=${userId} ` +
+                  `WHERE requestId=${requestId};`
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error.message);
+        } else {
+            console.log("SUCCESS!");
+            console.log(results);
+        }
+    });
+});
+
+// Example call:
+// http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+app.post('/v1/request/:request_id/confirm', (req, res) => {
+    const requestId = req.params.request_id;
+    const { userId, time } = req.query;
+
+    const query = `UPDATE Request ` +
+                  `SET confirmed=${time}, providerId=${userId} ` +
+                  `WHERE requestId=${requestId};`
+    
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error.message);
+        } else {
+            console.log("SUCCESS!");
+            console.log(results);
+        }
+    });
+});
+
+app.post('/v1/request/:requestId/complete', (req, res) => {
+    const { userId, time } = req.query;
+    const { requestId } = req.params;
+
+    const query = `UPDATE Request SET completed=${time} `
+                + `WHERE requestId=${requestId}`;
+
+    db.query(query, (error, results) => {
+        console.log(error || "Success")
     });
 });
 
@@ -71,20 +124,6 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     db.query(query, (error, results) => {
         console.log(error || "Success");
         res.send(results || error);
-    });
-});
-
-// Example call:
-// http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&location="testlocation"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
-app.post('/v1/request/:requestId/complete', (req, res) => {
-    const { userId, time } = req.query;
-    const { requestId } = req.params;
-
-    const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId}`;
-
-    db.query(query, (error, results) => {
-        console.log(error || "Success")
     });
 });
 
