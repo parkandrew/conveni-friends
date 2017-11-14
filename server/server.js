@@ -13,9 +13,11 @@ const app = express();
 const server = http.Server(app);
 const PORT = 3000;
 
-// TODO: Validation of request params. Although, I'm thinking that Validation
-// should be done client side, aka before the make the request, so we'll discuss
-// that
+// TODO: We should split up the routes into separate files .. one for
+// user endpoints, request endpoints, etc.
+
+// TODO: I think we could create our own function that handles the db queries
+// so that we can define a way to handle errors
 
 app.get('/', (req, res) => {
     res.send("Test GET request");
@@ -23,7 +25,19 @@ app.get('/', (req, res) => {
 
 // Example call:
 // http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&location="testlocation"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
-app.get('/v1/request/create', (req, res) => {
+app.post('/v1/request/:requestId/complete', (req, res) => {
+    const { userId, time } = req.query;
+    const { requestId } = req.params;
+
+    const query = `UPDATE Request SET completed=${time} `
+                + `WHERE requestId=${requestId}`;
+
+    db.query(query, (error, results) => {
+        console.log(error || "Success")
+    });
+});
+
+app.post('/v1/request/create', (req, res) => {
     // In practice, will use req.params, but easier to modify the URL
     // query params during development
 
@@ -38,12 +52,19 @@ app.get('/v1/request/create', (req, res) => {
                   `${location},${description},${timeStart},${timeEnd})`;
 
     db.query(query, (error, results) => {
-        if (error) {
-            console.log(error.message);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-        }
+        console.log(error || "Success")
+    });
+});
+
+app.get('/v1/user/:userId/requests', (req, res) => {
+    const { userId } = req.params;
+
+    const query = `SELECT * FROM Request `
+                + `WHERE requesterId="${userId}" or providerId="${userId}"`;
+
+    db.query(query, (error, results) => {
+        console.log(error || "Success");
+        res.send(results || error);
     });
 });
 
