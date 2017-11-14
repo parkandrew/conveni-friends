@@ -23,20 +23,6 @@ app.get('/', (req, res) => {
     res.send("Test GET request");
 });
 
-// Example call:
-// http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&location="testlocation"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
-app.post('/v1/request/:requestId/complete', (req, res) => {
-    const { userId, time } = req.query;
-    const { requestId } = req.params;
-
-    const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId}`;
-
-    db.query(query, (error, results) => {
-        console.log(error || "Success")
-    });
-});
-
 app.post('/v1/request/create', (req, res) => {
     // In practice, will use req.params, but easier to modify the URL
     // query params during development
@@ -53,18 +39,6 @@ app.post('/v1/request/create', (req, res) => {
 
     db.query(query, (error, results) => {
         console.log(error || "Success")
-    });
-});
-
-app.get('/v1/user/:userId/requests', (req, res) => {
-    const { userId } = req.params;
-
-    const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" or providerId="${userId}"`;
-
-    db.query(query, (error, results) => {
-        console.log(error || "Success");
-        res.send(results || error);
     });
 });
 
@@ -85,6 +59,32 @@ app.post('/v1/request/:request_id/delete', (req, res) => {
             console.log("SUCCESS!");
             console.log(results);
         }
+    });
+});
+
+app.get('/v1/user/:userId/requests', (req, res) => {
+    const { userId } = req.params;
+
+    const query = `SELECT * FROM Request `
+                + `WHERE requesterId="${userId}" or providerId="${userId}"`;
+
+    db.query(query, (error, results) => {
+        console.log(error || "Success");
+        res.send(results || error);
+    });
+});
+
+// Example call:
+// http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&location="testlocation"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
+app.post('/v1/request/:requestId/complete', (req, res) => {
+    const { userId, time } = req.query;
+    const { requestId } = req.params;
+
+    const query = `UPDATE Request SET completed=${time} `
+                + `WHERE requestId=${requestId}`;
+
+    db.query(query, (error, results) => {
+        console.log(error || "Success")
     });
 });
 
