@@ -30,12 +30,13 @@ app.post('/v1/request/create', (req, res) => {
     // We're also currently assuming that the frontend passes strings like
     // "string" rather than string.
     const { userId, title, description } = req.query;
-    const { location, timeStart, timeEnd } = req.query;
+    const { latitude, longitude, address, timeStart, timeEnd } = req.query;
 
     // TODO: Gotta figure out a more cleaner way to do our queries ..
-    const query = `INSERT INTO Request(requesterId,title,location,description,` +
-                  `timeStart,timeEnd) VALUES(${userId},${title},` +
-                  `${location},${description},${timeStart},${timeEnd})`;
+    const query = `INSERT INTO Request(requesterId,title,latitude, ` +
+                  `longitude,address,description,timeStart,timeEnd) ` +
+                  `VALUES(${userId},${title},${latitude},${longitude},` +
+                  `${address},${description},${timeStart},${timeEnd})`;
 
     db.query(query, (error, results) => {
         console.log(error || "Success")
@@ -75,7 +76,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
 });
 
 // Example call:
-// http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&location="testlocation"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
+// http://localhost:3000/v1/request/create?userId="test"&title="testtitle"&description="testdescription"&latitude=1.1&longitude=2.2&address="testAddress"&timeStart="%2017-03-03%2011:11:11"&timeEnd="2017-04-04%2011:11:011"
 app.post('/v1/request/:requestId/complete', (req, res) => {
     const { userId, time } = req.query;
     const { requestId } = req.params;
