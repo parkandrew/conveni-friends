@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
+import {
 	StyleSheet,
-	Text, 
-	TextInput, 
-	Button, 
-	View 
+	Text,
+	TextInput,
+	Button,
+	View
 } from 'react-native';
 // import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -28,7 +28,7 @@ export default class MakeRequest extends React.Component {
 	}
 
 
-  	render() {
+	render() {
 		function onPressHandle() {
 			console.log("Pressed!");
 		}
@@ -41,11 +41,11 @@ export default class MakeRequest extends React.Component {
 						<DateTimePicker style={styles.singleLine} type='Start'/>
 						<DateTimePicker style={styles.singleLine} type='End'/>
 					</View>
-					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiline={true} /> 
+					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiline={true} />
 				</View>
 				<Button title="Make Request" onPress={onPressHandle} />
 			</View>
-    	);
+		);
 	}
 }
 // port this to styles file

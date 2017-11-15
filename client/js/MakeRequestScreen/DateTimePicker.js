@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
+import {
 	StyleSheet,
-	Text, 
-	TextInput, 
-	View 
-} from 'react-native';	
+	Text,
+	TextInput,
+	View
+} from 'react-native';
 import moment from 'moment';
 import Moment from 'react-moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -19,7 +19,7 @@ export default class DateTimePicker extends React.Component {
 	_showDateTimePicker = (selected) => {
 		this.setState({ isDateTimePickerVisible: true });
 	}
-	
+
 	_hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
 	_handleDatePicked = (date) => {
@@ -36,7 +36,7 @@ export default class DateTimePicker extends React.Component {
 		console.log("DONEEEEE")
 	}
 
-  	render() {
+	render() {
 		/*
 			on some after confirm, we should pass in a function that is called that sets some state in the parent for form submission.
 		*/
@@ -55,8 +55,7 @@ export default class DateTimePicker extends React.Component {
 					mode={'datetime'}
 				/>
 			</View>
-			
-    	);
+		);
 	}
 }
 // port this to styles file
