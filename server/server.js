@@ -213,6 +213,20 @@ app.get('/v1/requests/all', (req, res) => {
     });
 });
 
+// Example call:
+// http://localhost:3000/v1/requests/all?userId="test"&location="testLocation"
+app.get('/v1/requests/all', (req, res) => {
+    const { userId, location } = req.query;
+
+    const query = `SELECT * FROM Request `
+                + `WHERE accepted is NULL`;
+
+    db.query(query, (error, results) => {
+        console.log(error || "Success")
+        res.send(results || error);
+    });
+});
+
 server.listen(PORT, () => {
     db.connect();
     console.log(`Listening on ${PORT}`);
