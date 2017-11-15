@@ -84,7 +84,7 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 });
 
 // Example call:
-// http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+// http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:11:011"
 app.post('/v1/request/:request_id/confirm', (req, res) => {
     const requestId = req.params.request_id;
     const { userId, time } = req.query;
