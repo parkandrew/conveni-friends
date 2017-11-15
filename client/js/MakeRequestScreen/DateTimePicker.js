@@ -32,8 +32,9 @@ export default class DateTimePicker extends React.Component {
 		return moment(date).format("MM/DD, hh:mm A");
 	}
 
-	_changeText() {
-		console.log("DONEEEEE")
+	_alertParent() {
+		// Instead of this function, we should pass in a function from MakeRequest.js as a prop so we can set the state of start date/time properly (that way we have all our data in one central location)
+		//The same needs to be done for all input...		
 	}
 
 	render() {
@@ -51,14 +52,14 @@ export default class DateTimePicker extends React.Component {
 					onConfirm={this._handleDatePicked}
 					onCancel={this._hideDateTimePicker}
 					isVisible={this.state.isDateTimePickerVisible}
-					onHideAfterConfirm={this._changeText}
+					onHideAfterConfirm={this._alertParent}
 					mode={'datetime'}
 				/>
 			</View>
 		);
 	}
 }
-// port this to styles file
+// TODO: port this to styles file
 let screenWidth = 350;
 let fontSize = 20;
 const styles = StyleSheet.create({

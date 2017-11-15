@@ -48,7 +48,7 @@ export default class MakeRequest extends React.Component {
 		);
 	}
 }
-// port this to styles file
+// TODO: port this to styles file
 let screenWidth = 350;
 let fontSize = 20;
 const styles = StyleSheet.create({
