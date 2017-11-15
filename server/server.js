@@ -13,13 +13,6 @@ const app = express();
 const server = http.Server(app);
 const PORT = 3000;
 
-// HTTP body parser
-var bodyParser = require('body-parser');
-var multer = require('multer'); // v1.0.5
-var upload = multer(); // for parsing multipart/form-data
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
 // TODO: We should split up the routes into separate files .. one for
 // user endpoints, request endpoints, etc.
 
@@ -29,72 +22,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.get('/', (req, res) => {
     res.send("Test GET request");
 });
-
-// Example call:
-// http://localhost:3000/v1/user/testUserId/signup
-app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
-    const userId = req.params.userId;
-    const password = req.body['password'];
-
-    const query = `INSERT INTO User(userId,password) ` +
-                  `VALUES("${userId}","${password}")`;
-
-    db.query(query, (error, results) => {
-        if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
-        }
-    });
-});
-
-// Example call:
-// http://localhost:3000/v1/user/testUserId/login
-app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
-    const userId = req.params.userId;
-    const password = req.body['password'];
-
-    const query = `SELECT * FROM User ` +
-                  `WHERE password="${password}" and userId="${userId}"`;
-
-    db.query(query, (error, results) => {
-        if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
-        }
-    });
-});
-
-// Example call:
-// http://localhost:3000/v1/user/testUserId/update
-app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
-    const userId = req.params.userId;
-    const password = req.body['password'];
-    const newPassword = req.body['newPassword'];
-
-    const query = `UPDATE User SET password="${newPassword}" ` +
-                  `WHERE userId="${userId}"`;
-
-    db.query(query, (error, results) => {
-        if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
-        }
-    });
-});
-
-/********************************** REQUESTS **********************************/
 
 app.post('/v1/request/create', (req, res) => {
     // In practice, will use req.params, but easier to modify the URL
@@ -117,8 +44,8 @@ app.post('/v1/request/create', (req, res) => {
 
 // Example call:
 // http://localhost:3000/v1/request/1/delete?userId="test"
-app.post('/v1/request/:requestId/delete', (req, res) => {
-    const requestId = req.params.requestId;
+app.post('/v1/request/:request_id/delete', (req, res) => {
+    const requestId = req.params.request_id;
     const { userId } = req.query;
 
     const query = `DELETE FROM Request ` +
