@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 import Moment from 'react-moment';
 
-import SingleLineInput from './SingleLineInput';
+import FormInput from './FormInput';
 import DateTimePicker from './DateTimePicker';
 
 
@@ -34,17 +34,16 @@ export default class MakeRequest extends React.Component {
 		}
 		return (
 			<View style={styles.container}>
-				<SingleLineInput title={'Title'} placeholder={'Your short title'} />
-				<SingleLineInput title={'Location'} placeholder={'123 Bruin Ave'} />
-				<View style={[styles.dateContainer, styles.oneLine]}>
-					<DateTimePicker type='Start'/>
-					<DateTimePicker type='End'/>
+				<View style={styles.inputView}>
+					<FormInput style={styles.singleLine} title={'Title'} placeholder={'Your short title'} />
+					<FormInput style={styles.singleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
+					<View style={[styles.dateContainer, styles.singleLine]}>
+						<DateTimePicker style={styles.singleLine} type='Start'/>
+						<DateTimePicker style={styles.singleLine} type='End'/>
+					</View>
+					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiline={true} /> 
 				</View>
-				<View style={styles.multiLine}>
-					<Text style={styles.inputHeader}>Description</Text>
-					<TextInput style={[styles.input, styles.description]}placeholder="Some other details would include..." multiline={true} />
-				</View>
-				<Button style={styles.reqButton} title="Make Request" onPress={onPressHandle} />
+				<Button title="Make Request" onPress={onPressHandle} />
 			</View>
     	);
 	}
@@ -57,35 +56,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#ADD8E6',
 		alignItems: 'center',
-		justifyContent: 'space-between',
 		paddingTop: 20,
 	},
-	input: {
-		backgroundColor:'#FFF',
-		width: screenWidth,
-		height: fontSize + 4,
-		fontSize: fontSize
+	inputView: {
+		flex: .9
+	},
+	singleLine: {
+		flex: 0.14,
+		marginBottom: 24
 	},
 	dateContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		width: screenWidth,
+		marginBottom: 10
 	},
-	oneLine: {
-		flex: 0.12
-	},
-	multiLine: {
-		flex: 0.7,
-	},
-	description: {
-		height: 80
-	},
-	inputHeader: {
-		fontSize: fontSize
-	},
-	reqButton: {
-		height: 30,
-		width: screenWidth-100,
-		backgroundColor: '#FFFFFF'
-	}
 });

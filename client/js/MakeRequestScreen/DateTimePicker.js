@@ -70,10 +70,17 @@ const styles = StyleSheet.create({
 	datePicker: {
 		width: screenWidth/2.1,
 		backgroundColor: '#FFF',
-		height: fontSize + 4,
-		fontSize: fontSize
+		height: fontSize + 16,
+		fontSize: fontSize,
+		padding: 5,
+		paddingLeft: 10,
+		borderColor: '#3D95DA',
+		borderWidth: 2,
+		borderRadius: 6,
+		overflow: 'hidden'
 	},
 	inputHeader: {
-		fontSize: fontSize
+		fontSize: fontSize,
+		marginBottom: 1
 	},
 });
