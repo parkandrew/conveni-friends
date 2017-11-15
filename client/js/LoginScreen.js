@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
-        headerLeft: null, //add this
-    };
+        headerLeft: null,
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -16,12 +16,12 @@ export default class LoginScreen extends React.Component {
         this._signup = this._signup.bind(this)
     }
     _login() {
-        //validate login info with backend server
-        //const {_session_key} = 'ayy'
+        //TODO: validate login info with backend server and navigate to
+        //Select screen if credentials are correct
         this.props.navigation.navigate('HomeScreen', {session_key: 'ayy'})
     }
     _signup() {
-    //Show signup screen
+        //TODO: Show signup screen
     }
     render() {
         const { navigate } = this.props.navigation;

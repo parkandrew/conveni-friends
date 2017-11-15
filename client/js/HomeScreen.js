@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import LoginScreen from './LoginScreen';
 import Drawer from 'react-native-drawer';
 import HamburgerMenu from './Common/HamburgerMenu';
+import Hamburger from './Common/Hamburger';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -16,24 +17,24 @@ export default class HomeScreen extends React.Component {
         this.state = {
             user_id: '',
             password: '',
-            session_key: ''
+            session_key: '',
+            active: false
         };
-
-        this.closeDrawer = this.closeDrawer.bind(this);
-        this.openDrawer = this.openDrawer.bind(this);
-        this._clearSessionKey = this._clearSessionKey.bind(this);
+        this.toggleDrawer = this.toggleDrawer.bind(this);
+        this.logout = this.logout.bind(this);
         this._getSessionKey = this._getSessionKey.bind(this);
         this._doNothing = this._doNothing.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
     }
-    _clearSessionKey() {
+    logout() {
         this.setState({session_key: ''});
+        this.props.navigation.navigate('Login');
     }
     _getSessionKey() {
         console.log("test");
-        //get key from storage somehow
+        //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
             this.setState({session_key: this.props.navigation.state.params.session_key});
         }
@@ -41,28 +42,33 @@ export default class HomeScreen extends React.Component {
             console.log("empty")
         }
     }
-    closeDrawer = () => {
-        this._drawer.close()
-    };
-    openDrawer = () => {
-        this._drawer.open()
+    toggleDrawer = () => {
+        if (!this._drawer._open) {
+            this._drawer.open();
+        }
+        else {
+            this._drawer.close();
+        }
+        //this.props.navigation.state.params.headerLeft.type._animate();
     };
     _doNothing() {
         //put here so react can stop bitching
     }
     provider() {
-        //load nearby requests screen
+        //TODO: load nearby requests screen
     }
     requester() {
         this.props.navigation.navigate('MakeRequest')
     }
 
     _setNavigationParams() {
-        let headerLeft  = <Button
-        //style={styles.button}
-        title='Menu'
-        onPress={()=>{this.openDrawer()}}
-        />;          
+        let headerLeft = 
+        <Hamburger
+            type='arrow'
+            
+            //style={styles.button}
+            onPress={()=>{this.toggleDrawer()}}
+        />;
         this.props.navigation.setParams({ 
           headerLeft,
         });
@@ -79,32 +85,34 @@ export default class HomeScreen extends React.Component {
             main: {paddingLeft: 3},
         }
         const { navigate } = this.props.navigation;
+        //TODO: either create a splash screen to navigate
+        //to the loginscreen/homescreen or navigate from homescreen
+        //to loginscreen (prefer splash screen)
+
         // !this.state.session_key && this._getSessionKey();
         // if (!this.state.session_key) {
         //     navigate('LoginScreen');
         // }
         return (
-                <Drawer
-                    type='overlay'
-                    content={<HamburgerMenu closeDrawer={() => {
-                        this.closeDrawer();
-                      }}/>}
+                <Drawer type='overlay'
+                    content={<HamburgerMenu 
+                        logout={() => {
+                            this.logout();
+                        }}
+                        />}
                     ref={(ref) => this._drawer = ref}
                     openDrawerOffset={0.6}
                     style={drawerStyles}
                     tapToClose={true}
                     acceptPan={true}
-                    panCloseMask={0.9}
-                    panOpenMask={0}
-                >   
-                    <View
-                    style={styles.container}
-                    >
+                    panCloseMask={0.6}
+                    panOpenMask={0}>
+                    <View style={styles.container}>
                         <Text>I am a...</Text>
                         <Button onPress={this.provider}
-                        title='Provider' />
+                            title='Provider' />
                         <Button onPress={this.requester}
-                        title='Requester' />
+                            title='Requester' />
                     </View>
                 </Drawer>
         );
