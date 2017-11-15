@@ -8,6 +8,7 @@ import {
 	View 
 } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 // import Moment from 'react-moment';
 	
 
