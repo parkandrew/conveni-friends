@@ -13,7 +13,7 @@ export default class FormInput extends React.Component {
 		return (
 			<View style={[styles.container, this.props.style]}>
 				<Text style={styles.inputHeader}>{this.props.title}</Text>
-				<TextInput style={this.props.multiline ? [styles.input, styles.multiline] : styles.input } placeholder={this.props.placeholder} multiline={this.props.multiline}/>
+				<TextInput style={this.props.multiLine ? [styles.input, styles.multiLine] : styles.input } placeholder={this.props.placeholder} multiline={this.props.multiLine}/>
 			</View>
 		);
 	}	
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 		fontSize: fontSize,
 		marginBottom: 1
 	},
-	multiline: {
+	multiLine: {
 		height: fontSize * 6,
 	}
 });

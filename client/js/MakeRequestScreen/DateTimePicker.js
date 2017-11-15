@@ -25,7 +25,6 @@ export default class DateTimePicker extends React.Component {
 	_handleDatePicked = (date) => {
 		this.setState({time: date});
 		this._hideDateTimePicker();
-		// console.log(this.state.active + ' has been set to: ' + date);
 	};
 
 	formatDate(date) {
@@ -43,7 +42,7 @@ export default class DateTimePicker extends React.Component {
 		*/
 		return (
 			<View>
-				{<Text style={styles.inputHeader}>{this.props.type} Date</Text>}
+				<Text style={styles.inputHeader}>{this.props.type} Date</Text>
 				<Text style={styles.datePicker}onPress={() => {
 					this._showDateTimePicker(this.props.type)
 				}

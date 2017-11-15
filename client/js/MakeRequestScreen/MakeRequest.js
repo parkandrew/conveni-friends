@@ -41,7 +41,7 @@ export default class MakeRequest extends React.Component {
 						<DateTimePicker style={styles.singleLine} type='Start'/>
 						<DateTimePicker style={styles.singleLine} type='End'/>
 					</View>
-					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiline={true} />
+					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiLine={true} />
 				</View>
 				<Button title="Make Request" onPress={onPressHandle} />
 			</View>
