@@ -1,3 +1,6 @@
+//Edited version of https://github.com/GeekyAnts/react-native-hamburger
+//Set to put a static hamburger, never animates
+
 import React, { Component } from 'react';
 import {
     Animated,
