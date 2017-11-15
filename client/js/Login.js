@@ -10,7 +10,7 @@ export default class Login extends React.Component {
 		const { navigate } = this.props.navigation;
 		function onPressHandle() {
 			console.log("Pressed!");
-			navigate('Select');
+			navigate('MakeRequest');
 		}
 		return (
 			<View style={styles.container}>
