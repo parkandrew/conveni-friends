@@ -168,12 +168,12 @@ app.post('/v1/request/create', (req, res) => {
     db.query(query, (error, results) => {
         if (error) {
             console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: error.message });
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -194,17 +194,25 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const { userId } = req.query;
 
     const query = `DELETE FROM Request ` +
-                  `WHERE requestId=${requestId} AND ${time} < timeEnd`;
+                  `WHERE requestId=${requestId} AND requesterId=${userId}`;
 
     db.query(query, (error, results) => {
         if (error) {
             console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
-        }
-        else {
-            console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: error.message });
+        } else {
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Delete succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
@@ -231,13 +239,20 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
-        }
-        else {
-            console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: "Internal server error." });
+        } else {
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Accept succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
@@ -264,13 +279,20 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
-        }
-        else {
-            console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: "Internal server error." });
+        } else {
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Confirm succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
@@ -296,13 +318,20 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
-        }
-        else {
-            console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: "Internal server error." });
+        } else {
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Complete succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
