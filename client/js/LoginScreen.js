@@ -8,7 +8,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: '',
+            userId: '',
             password: '',
             sessionKey: ''
         };
@@ -18,7 +18,8 @@ export default class LoginScreen extends React.Component {
     _login() {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
-        if (this.state.userID && this.state.password) {
+        const alphanum = /[0-9a-zA-Z]+/g;
+        if (this.state.userId && this.state.password) {
             this.props.navigation.navigate('Home', {sessionKey: 'ayy'})
         }
         else {

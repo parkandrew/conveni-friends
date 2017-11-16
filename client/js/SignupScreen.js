@@ -8,7 +8,7 @@ export default class SignupScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: '',
+            userId: '',
             password: '',
             password2: '',
             sessionKey: ''
@@ -17,9 +17,9 @@ export default class SignupScreen extends React.Component {
     }
     _makeAccount() {
         //alphanumeric characters
-        const re = /[0-9a-zA-Z]+/g;
+        const alphanum = /[0-9a-zA-Z]+/g;
         //TODO: check w/backend that the user id does not already exist
-        if (this.state.userID && re.test(this.state.userID)) {
+        if (this.state.userId && alphanum.test(this.state.userId)) {
             if (this.state.password && this.state.password) {
                 if (this.state.password === this.state.password2) {
                     //TODO: make account w/backend
@@ -47,7 +47,7 @@ export default class SignupScreen extends React.Component {
             <Text style={styles.title}>Sign-up</Text>
             <TextInput 
                 placeholder="User ID"
-                onChangeText={(text) => this.setState({userID: text})}
+                onChangeText={(text) => this.setState({userId: text})}
             />
             <TextInput 
                 secureTextEntry={true}
