@@ -204,11 +204,11 @@ app.get('/v1/user/:userId/requests', (req, res) => {
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
 
-    // Check within a set box with a magic number (long/lat of 5 in this case) for now
+    // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
     const query = `SELECT * FROM Request ` +
                   `WHERE accepted is NULL ` +
-                  `AND latitude <= (${latitude} + 5) AND latitude >= (${latitude} - 5) ` + 
-                  `AND longitude <= (${longitude} + 5) AND longitude >= (${longitude} - 5)`;
+                  `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` + 
+                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
     db.query(query, (error, results) => {
         console.log(error || "Success")
