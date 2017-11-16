@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -8,9 +8,9 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_id: '',
+            userId: '',
             password: '',
-            session_key: ''
+            sessionKey: ''
         };
         this._login = this._login.bind(this)
         this._signup = this._signup.bind(this)
@@ -18,10 +18,17 @@ export default class LoginScreen extends React.Component {
     _login() {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
-        this.props.navigation.navigate('HomeScreen', {session_key: 'ayy'})
+        const alphanum = /[0-9a-zA-Z]+/g;
+        if (this.state.userId && this.state.password) {
+            this.props.navigation.navigate('Home', {sessionKey: 'ayy'})
+        }
+        else {
+            Alert.alert("User ID or password is blank.")
+        }
     }
     _signup() {
         //TODO: Show signup screen
+        this.props.navigation.navigate('Signup')
     }
     render() {
         const { navigate } = this.props.navigation;
@@ -30,9 +37,10 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.title}>Conveni-friends</Text>
             <TextInput 
                 placeholder="User ID"
-                onChangeText={(text) => this.setState({user_id: text})}
+                onChangeText={(text) => this.setState({userId: text})}
             />
             <TextInput 
+                secureTextEntry={true}
                 placeholder="Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
