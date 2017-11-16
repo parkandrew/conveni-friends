@@ -200,18 +200,23 @@ app.get('/v1/user/:userId/requests', (req, res) => {
 });
 
 // Example call:
-// http://localhost:3000/v1/requests/all?userId="test"&location="testLocation"
+// http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
 app.get('/v1/requests/all', (req, res) => {
-    const { userId, location } = req.query;
+    const { userId, latitude, longitude } = req.query;
 
+    // Check within a set box with a magic number (long/lat of 5 in this case) for now
     const query = `SELECT * FROM Request ` +
-                  `WHERE accepted is NULL`;
+                  `WHERE accepted is NULL ` +
+                  `AND latitude <= (${latitude} + 5) AND latitude >= (${latitude} - 5) ` + 
+                  `AND longitude <= (${longitude} + 5) AND longitude >= (${longitude} - 5)`;
 
     db.query(query, (error, results) => {
         console.log(error || "Success")
         res.send(results || error);
     });
 });
+
+///create?userId="2"&title="hi"&description="hello"&latitude="1"&longitude="2"&address="test"&timeStart="2017-01-09 00:00:00"&timeEnd="2017-01-09 00:00:00"
 
 server.listen(PORT, () => {
     db.connect();
