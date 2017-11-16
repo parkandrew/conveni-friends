@@ -120,7 +120,7 @@ app.post('/v1/request/create', (req, res) => {
         }
         else {
             console.log("Success");
-            res.status(200).send('Success');
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
