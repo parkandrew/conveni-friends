@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -18,10 +18,16 @@ export default class LoginScreen extends React.Component {
     _login() {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
-        this.props.navigation.navigate('Home', {session_key: 'ayy'})
+        if (this.state.user_id && this.state.password) {
+            this.props.navigation.navigate('Home', {session_key: 'ayy'})
+        }
+        else {
+            Alert.alert("User ID or password is blank.")
+        }
     }
     _signup() {
         //TODO: Show signup screen
+        this.props.navigation.navigate('Signup')
     }
     render() {
         const { navigate } = this.props.navigation;

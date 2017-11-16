@@ -33,13 +33,11 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.navigate('Login');
     }
     _getSessionKey() {
-        console.log("test");
         //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
             this.setState({session_key: this.props.navigation.state.params.session_key});
         }
         else {
-            console.log("empty")
         }
     }
     toggleDrawer = () => {
@@ -49,7 +47,6 @@ export default class HomeScreen extends React.Component {
         else {
             this._drawer.close();
         }
-        //this.props.navigation.state.params.headerLeft.type._animate();
     };
     _doNothing() {
         //put here so react can stop bitching
@@ -91,7 +88,7 @@ export default class HomeScreen extends React.Component {
         //to loginscreen (prefer splash screen)
 
         if (!this.state.session_key) {
-            navigate('LoginScreen');
+            navigate('Login');
         }
         return (
                 <Drawer type='overlay'

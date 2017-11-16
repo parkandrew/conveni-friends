@@ -4,11 +4,13 @@ import LoginScreen from './js/LoginScreen'
 import HomeScreen from './js/HomeScreen'
 import MakeRequest from './js/MakeRequestScreen/MakeRequest';
 import { StackNavigator } from 'react-navigation';
+import SignupScreen from './js/SignupScreen';
 
 const ReactNavigation = StackNavigator({
 	Home: { screen: HomeScreen },
 	Login: { screen: LoginScreen },
 	MakeRequest: {screen: MakeRequest},
+	Signup: {screen: SignupScreen}
 })
 
 export default class App extends React.Component {
