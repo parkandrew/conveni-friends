@@ -226,7 +226,7 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId};`
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -266,7 +266,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET confirmed=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId};`
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -305,7 +305,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId}`;
+                + `WHERE requestId=${requestId} AND ${time} < timeEnd`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -338,7 +338,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const { userId } = req.params;
 
     const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" or providerId="${userId}"`;
+                + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
 
     db.query(query, (error, results) => {
         console.log(error || "Success");
