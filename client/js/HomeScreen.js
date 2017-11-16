@@ -15,15 +15,14 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_id: '',
+            userID: '',
             password: '',
-            session_key: '',
+            sessionKey: '',
             active: false
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.logout = this.logout.bind(this);
         this._getSessionKey = this._getSessionKey.bind(this);
-        this._doNothing = this._doNothing.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
@@ -35,7 +34,7 @@ export default class HomeScreen extends React.Component {
     _getSessionKey() {
         //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
-            this.setState({session_key: this.props.navigation.state.params.session_key});
+            this.setState({sessionKey: this.props.navigation.state.params.sessionKey});
         }
         else {
         }
@@ -48,11 +47,9 @@ export default class HomeScreen extends React.Component {
             this._drawer.close();
         }
     };
-    _doNothing() {
-        //put here so react can stop bitching
-    }
     provider() {
         //TODO: load nearby requests screen
+        this.props.navigation.navigate('NearbyRequests')
     }
     requester() {
         this.props.navigation.navigate('MakeRequest')
@@ -87,7 +84,7 @@ export default class HomeScreen extends React.Component {
         //to the loginscreen/homescreen or navigate from homescreen
         //to loginscreen (prefer splash screen)
 
-        if (!this.state.session_key) {
+        if (!this.state.sessionKey) {
             navigate('Login');
         }
         return (

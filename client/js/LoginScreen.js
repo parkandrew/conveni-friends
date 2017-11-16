@@ -8,9 +8,9 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_id: '',
+            userID: '',
             password: '',
-            session_key: ''
+            sessionKey: ''
         };
         this._login = this._login.bind(this)
         this._signup = this._signup.bind(this)
@@ -18,8 +18,8 @@ export default class LoginScreen extends React.Component {
     _login() {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
-        if (this.state.user_id && this.state.password) {
-            this.props.navigation.navigate('Home', {session_key: 'ayy'})
+        if (this.state.userID && this.state.password) {
+            this.props.navigation.navigate('Home', {sessionKey: 'ayy'})
         }
         else {
             Alert.alert("User ID or password is blank.")
@@ -36,7 +36,7 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.title}>Conveni-friends</Text>
             <TextInput 
                 placeholder="User ID"
-                onChangeText={(text) => this.setState({user_id: text})}
+                onChangeText={(text) => this.setState({userID: text})}
             />
             <TextInput 
                 secureTextEntry={true}
