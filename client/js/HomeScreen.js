@@ -76,6 +76,7 @@ export default class HomeScreen extends React.Component {
 
     componentWillMount() {
         this._setNavigationParams();
+        this._getSessionKey();
       }
 
     render() {
@@ -89,10 +90,9 @@ export default class HomeScreen extends React.Component {
         //to the loginscreen/homescreen or navigate from homescreen
         //to loginscreen (prefer splash screen)
 
-        // !this.state.session_key && this._getSessionKey();
-        // if (!this.state.session_key) {
-        //     navigate('LoginScreen');
-        // }
+        if (!this.state.session_key) {
+            navigate('LoginScreen');
+        }
         return (
                 <Drawer type='overlay'
                     content={<HamburgerMenu 

@@ -18,7 +18,7 @@ export default class LoginScreen extends React.Component {
     _login() {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
-        this.props.navigation.navigate('HomeScreen', {session_key: 'ayy'})
+        this.props.navigation.navigate('Home', {session_key: 'ayy'})
     }
     _signup() {
         //TODO: Show signup screen
@@ -33,6 +33,7 @@ export default class LoginScreen extends React.Component {
                 onChangeText={(text) => this.setState({user_id: text})}
             />
             <TextInput 
+                secureTextEntry={true}
                 placeholder="Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
