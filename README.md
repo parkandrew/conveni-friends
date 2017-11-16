@@ -11,7 +11,11 @@ The project is split into two main directories:
 ####  client
 The "client" directory contains the front-end code, written primarily in JavaScript and leveraging Reactive Native.
 #### server
-The "server" directory is where the back-end code lives, also written in JavaScript and using Express.js. 
+The "server" directory is where the back-end code lives, also written in JavaScript and using Express.js.
+
+Test files (needs updating)
+-------------
+Tests will be contained in their respective directories. For example, server-side tests will be within the server directory.
 
 Contributors
 -------------
@@ -21,3 +25,5 @@ Contributors
 - Andrew Park
 - Michael Xiong
 - Kevin Kou
+
+CS 130, Discussion 1B
