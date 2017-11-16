@@ -27,8 +27,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // TODO: I think we could create our own function that handles the db queries
 // so that we can define a way to handle errors
 
-
-
 app.get('/', (req, res) => {
     res.send("Test GET request");
 });
@@ -117,7 +115,8 @@ app.post('/v1/request/create', (req, res) => {
     db.query(query, (error, results) => {
         if (error) {
             console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
         }
         else
             console.log("Success");
