@@ -118,8 +118,10 @@ app.post('/v1/request/create', (req, res) => {
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
         }
-        else
+        else {
             console.log("Success");
+            res.status(200).send('Success');
+        }
     });
 });
 
