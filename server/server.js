@@ -327,8 +327,18 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+/**
+ * Called when looking up all requests within a close geographical area.
+ *
+ * Example call:
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude=1.1&longitude=1.1
+ *
+ * @version 1
+ * @param {string} userId - The requester's username.
+ * @param {float} latitude - The latitude of the request's location.
+ * @param {float} longitude - The longitude of the request's location.
+ * @returns {res} The response, including an HTTP status indicating success or failure. Also returns a list of requests within a close area if no error, otherwise returns error info.
+ */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
 
