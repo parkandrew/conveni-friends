@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // so that we can define a way to handle errors
 
 app.get('/', (req, res) => {
-    res.send("Test GET request");
+    res.status(HttpStatus.OK).send("Test GET request");
 });
 
 // Example call:
@@ -42,12 +42,13 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
@@ -63,12 +64,13 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
@@ -85,12 +87,13 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
@@ -136,10 +139,13 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
@@ -156,10 +162,13 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
     
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
@@ -176,10 +185,13 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
     
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
         }
     });
 });
@@ -192,7 +204,15 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
                 + `WHERE requestId=${requestId}`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
+        }
     });
 });
 
@@ -203,8 +223,15 @@ app.get('/v1/user/:userId/requests', (req, res) => {
                 + `WHERE requesterId="${userId}" or providerId="${userId}"`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success");
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
 
@@ -220,11 +247,17 @@ app.get('/v1/requests/all', (req, res) => {
                   `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
-
 
 server.listen(PORT, () => {
     db.connect();
