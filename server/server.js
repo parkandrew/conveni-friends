@@ -185,8 +185,8 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const { userId } = req.query;
 
     const query = `DELETE FROM Request ` +
-                  `WHERE requestId=${requestId} AND requesterId=${userId}`;
-    
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd`;
+
     db.query(query, (error, results) => {
         if (error) {
             console.log(error.message);
@@ -215,8 +215,8 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId};`
-    
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+
     db.query(query, (error, results) => {
         if (error) {
             console.log(error.message);
@@ -245,8 +245,8 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET confirmed=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId};`
-    
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+
     db.query(query, (error, results) => {
         if (error) {
             console.log(error.message);
@@ -274,10 +274,11 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId}`;
+                + `WHERE requestId=${requestId} AND ${time} < timeEnd`;
 
     db.query(query, (error, results) => {
         console.log(error || "Success")
+        console.log(results.affectedRows)
     });
 });
 
@@ -292,7 +293,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const { userId } = req.params;
 
     const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" or providerId="${userId}"`;
+                + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
 
     db.query(query, (error, results) => {
         console.log(error || "Success");
@@ -308,7 +309,7 @@ app.get('/v1/requests/all', (req, res) => {
     // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
     const query = `SELECT * FROM Request ` +
                   `WHERE accepted is NULL ` +
-                  `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` + 
+                  `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
                   `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
     db.query(query, (error, results) => {
