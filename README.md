@@ -1,1 +1,23 @@
-# conveni-friends
+Conveni-Friends
+===================
+
+
+A platform to conveniently harness the untapped market of consumers by allowing users to make simple requests, while having other users fulfill them.
+
+
+Directory layout
+-------------
+The project is split into two main directories:
+####  client
+The "client" directory contains the front-end code, written primarily in JavaScript and leveraging Reactive Native.
+#### server
+The "server" directory is where the back-end code lives, also written in JavaScript and using Express.js. 
+
+Contributors
+-------------
+- Jonathan Estacio
+- Michelle Dai
+- Brandon Liu
+- Andrew Park
+- Michael Xiong
+- Kevin Kou
