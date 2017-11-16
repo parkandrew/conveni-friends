@@ -5,9 +5,11 @@ import {
 	TextInput,
 	View
 } from 'react-native';
-import moment from 'moment';
-import Moment from 'react-moment';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment'; // 2.19.2
+import Moment from 'react-moment'; // 0.6.8
+import DateTimePickerModal from 'react-native-modal-datetime-picker'; // 4.13.0
+
+import "prop-types"; // 15.6.0
 
 export default class DateTimePicker extends React.Component {
 
@@ -33,7 +35,7 @@ export default class DateTimePicker extends React.Component {
 
 	_alertParent() {
 		// Instead of this function, we should pass in a function from MakeRequest.js as a prop so we can set the state of start date/time properly (that way we have all our data in one central location)
-		//The same needs to be done for all input...		
+		//The same needs to be done for all input...
 	}
 
 	render() {
@@ -60,14 +62,14 @@ export default class DateTimePicker extends React.Component {
 }
 // TODO: port this to styles file
 let screenWidth = 350;
-let fontSize = 20;
+let fontSize = 16;
 const styles = StyleSheet.create({
 	container: {
 		flex: .12,
 		alignItems: 'flex-start',
 	},
 	datePicker: {
-		width: screenWidth/2.1,
+		width: screenWidth/2.4,
 		backgroundColor: '#FFF',
 		height: fontSize + 16,
 		fontSize: fontSize,

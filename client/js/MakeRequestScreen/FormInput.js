@@ -16,11 +16,11 @@ export default class FormInput extends React.Component {
 				<TextInput style={this.props.multiLine ? [styles.input, styles.multiLine] : styles.input } placeholder={this.props.placeholder} multiline={this.props.multiLine}/>
 			</View>
 		);
-	}	
+	}
 }
 // TODO: port this to styles file
 let screenWidth = 350;
-let fontSize = 20;
+let fontSize = 16;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'flex-start',
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		backgroundColor:'#FFF',
 		padding: 10,
 		width: screenWidth,
-		height: fontSize + 16,
+		height: fontSize + 26,
 		fontSize: fontSize,
 		borderColor: '#3D95DA',
 		borderWidth: 2,

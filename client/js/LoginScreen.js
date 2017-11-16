@@ -35,20 +35,20 @@ export default class LoginScreen extends React.Component {
         return (
             <View style={styles.container}>
             <Text style={styles.title}>Conveni-friends</Text>
-            <TextInput 
+            <TextInput
                 placeholder="User ID"
                 onChangeText={(text) => this.setState({userId: text})}
             />
-            <TextInput 
+            <TextInput
                 secureTextEntry={true}
                 placeholder="Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
-            <Button 
+            <Button
                 onPress={this._login}
                 title="Login"
             />
-            <Button 
+            <Button
                 onPress={this._signup}
                 title="Sign up"
             />
