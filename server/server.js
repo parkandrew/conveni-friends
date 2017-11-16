@@ -12,6 +12,7 @@ const db = mysql.createConnection({
 const app = express();
 const server = http.Server(app);
 const PORT = 3000;
+const HttpStatus = require('http-status-codes');
 
 // HTTP body parser
 var bodyParser = require('body-parser');
@@ -112,7 +113,15 @@ app.post('/v1/request/create', (req, res) => {
                   `${address},${description},${timeStart},${timeEnd})`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send('Success');
+        }
     });
 });
 
