@@ -37,7 +37,7 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.title}>Conveni-friends</Text>
             <TextInput 
                 placeholder="User ID"
-                onChangeText={(text) => this.setState({userID: text})}
+                onChangeText={(text) => this.setState({userId: text})}
             />
             <TextInput 
                 secureTextEntry={true}

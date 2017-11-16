@@ -15,7 +15,7 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userID: '',
+            userId: '',
             password: '',
             sessionKey: '',
             active: false
