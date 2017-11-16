@@ -59,7 +59,7 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({message: error.message});
+                .send({ message: "Internal server error." });
         }
         else {
             console.log("Success");
@@ -92,7 +92,7 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({error.message});
+                .send({ message: "Internal server error." });
         }
         else {
             console.log("Success");
@@ -125,7 +125,7 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({message: error.message});
+                .send({ message: "Internal server error." });
         }
         else {
             console.log("Success");
@@ -169,7 +169,7 @@ app.post('/v1/request/create', (req, res) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .send({ message: error.message });
+               .send({  message: "Internal server error."  });
         }
         else {
             console.log("Success");
@@ -353,7 +353,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({message: error.message});
+                .send({ message: "Internal server error." });
         }
         else {
             console.log("Success");
@@ -387,7 +387,7 @@ app.get('/v1/requests/all', (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({message: error.message});
+                .send({ message: "Internal server error." });
         }
         else {
             console.log("Success");
