@@ -1,3 +1,9 @@
+/**
+ * @FileOverview Backend endpoints
+ * @author Michael, Andrew, JJ, Kevin, Michelle, Brandon
+ * @version: 1.0
+ */
+
 import express from "express";
 import http from "http";
 import mysql from "mysql";
