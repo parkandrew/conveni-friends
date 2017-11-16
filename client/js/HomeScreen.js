@@ -58,9 +58,6 @@ export default class HomeScreen extends React.Component {
     _setNavigationParams() {
         let headerLeft = 
         <Hamburger
-            type='arrow'
-            
-            //style={styles.button}
             onPress={()=>{this.toggleDrawer()}}
         />;
         this.props.navigation.setParams({ 

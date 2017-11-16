@@ -19,7 +19,7 @@ export default class SignupScreen extends React.Component {
         //alphanumeric characters
         const re = /[0-9a-zA-Z]+/g;
         //TODO: check w/backend that the user id does not already exist
-        if (this.state.userId && re.test(this.state.userId)) {
+        if (this.state.userID && re.test(this.state.userID)) {
             if (this.state.password && this.state.password) {
                 if (this.state.password === this.state.password2) {
                     //TODO: make account w/backend
