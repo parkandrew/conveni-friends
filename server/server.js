@@ -31,8 +31,17 @@ app.get('/', (req, res) => {
     res.send("Test GET request");
 });
 
-// Example call:
-// http://localhost:3000/v1/user/testUserId/signup
+/**
+ * Called when a user first signs up for Convenifriends.
+ *
+ * Example call:
+ * http://localhost:3000/v1/user/testUserId/signup
+ *
+ * @version 1
+ * @param {string} userId - The user's desired username.
+ * @param {string} password - The user's password.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
     const userId = req.params.userId;
     const password = req.body['password'];
@@ -52,8 +61,19 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/user/testUserId/login
+/********************************** USERS **********************************/
+
+/**
+ * Called when a user logs into Convenifriends.
+ *
+ * Example call:
+ * http://localhost:3000/v1/user/testUserId/login
+ *
+ * @version 1
+ * @param {string} userId - The user's username.
+ * @param {string} password - The user's password.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     const userId = req.params.userId;
     const password = req.body['password'];
@@ -73,8 +93,18 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/user/testUserId/update
+/**
+ * Called when a user updates their password in Convenifriends.
+ *
+ * Example call:
+ * http://localhost:3000/v1/user/testUserId/update
+ *
+ * @version 1
+ * @param {string} userId - The user's username.
+ * @param {string} password - The user's old password.
+ * @param {string} newPassword - The user's new password.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
     const userId = req.params.userId;
     const password = req.body['password'];
@@ -97,6 +127,20 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
 /********************************** REQUESTS **********************************/
 
+/**
+ * Called when a user creates a new request.
+ *
+ * @version 1
+ * @param {string} userId - The user's username.
+ * @param {string} title - The title of the request.
+ * @param {string} description - A description of the user's request.
+ * @param {float} latitude - The latitude of the request's location.
+ * @param {float} longitude - The longitude of the request's location.
+ * @param {string} address - The address of the request's location.
+ * @param {string} timeStart - The time the request was made.
+ * @param {string} timeEnd - The time the request expires.
+ * @returns {res} The response, including an HTTP status indicating success or failure. In the case of success, a requestId is also returned, and error info is returned in case of a failure.
+ */
 app.post('/v1/request/create', (req, res) => {
     // In practice, will use req.params, but easier to modify the URL
     // query params during development
@@ -125,8 +169,17 @@ app.post('/v1/request/create', (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/request/1/delete?userId="test"
+/**
+ * Called when a user deletes one of their existing requests.
+ *
+ * Example call:
+ * http://localhost:3000/v1/request/1/delete?userId="test"
+ *
+ * @version 1
+ * @param {int} requestId - The id of the request to be deleted.
+ * @param {string} userId - The user's username.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/request/:requestId/delete', (req, res) => {
     const requestId = req.params.requestId;
     const { userId } = req.query;
@@ -144,8 +197,18 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+/**
+ * Called when a provider accepts a nearby unaccepted request.
+ *
+ * Example call:
+ * http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @version 1
+ * @param {int} requestId - The id of the request to be accepted.
+ * @param {string} userId - The provider's username.
+ * @param {string} time - The time of acceptance.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/request/:request_id/accept', (req, res) => {
     const requestId = req.params.request_id;
     const { userId, time } = req.query;
@@ -164,8 +227,18 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:11:011"
+/**
+ * Called when a requester confirms the acceptance of one of their requests.
+ *
+ * Example call:
+ * http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @version 1
+ * @param {int} requestId - The id of the request to be confirmed.
+ * @param {string} userId - The requester's username.
+ * @param {string} time - The time of confirmation.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/request/:request_id/confirm', (req, res) => {
     const requestId = req.params.request_id;
     const { userId, time } = req.query;
@@ -184,6 +257,18 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
     });
 });
 
+/**
+ * Called when a provider completes one of their confirmed requests.
+ *
+ * Example call:
+ * http://localhost:3000/v1/request/1/complete?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @version 1
+ * @param {int} requestId - The id of the request to be completed.
+ * @param {string} userId - The provider's username.
+ * @param {string} time - The time of completion.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/request/:requestId/complete', (req, res) => {
     const { userId, time } = req.query;
     const { requestId } = req.params;
@@ -196,6 +281,13 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     });
 });
 
+/**
+ * Called when a user looks up their existing requests.
+ *
+ * @version 1
+ * @param {int} userId - The username of the user.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ */
 app.get('/v1/user/:userId/requests', (req, res) => {
     const { userId } = req.params;
 
