@@ -59,11 +59,11 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+                .send({message: error.message});
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -92,11 +92,11 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+                .send({error.message});
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -125,11 +125,11 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+                .send({message: error.message});
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -353,7 +353,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+                .send({message: error.message});
         }
         else {
             console.log("Success");
@@ -387,7 +387,7 @@ app.get('/v1/requests/all', (req, res) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+                .send({message: error.message});
         }
         else {
             console.log("Success");
