@@ -216,7 +216,6 @@ app.get('/v1/requests/all', (req, res) => {
     });
 });
 
-///create?userId="2"&title="hi"&description="hello"&latitude="1"&longitude="2"&address="test"&timeStart="2017-01-09 00:00:00"&timeEnd="2017-01-09 00:00:00"
 
 server.listen(PORT, () => {
     db.connect();
