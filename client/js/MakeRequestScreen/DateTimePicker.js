@@ -5,11 +5,11 @@ import {
 	TextInput,
 	View
 } from 'react-native';
-import moment from 'moment'; // 2.19.2
-import Moment from 'react-moment'; // 0.6.8
+import moment from 'moment';
+import Moment from 'react-moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; // 4.13.0
 
-import "prop-types"; // 15.6.0
+import "prop-types";
 
 export default class DateTimePicker extends React.Component {
 

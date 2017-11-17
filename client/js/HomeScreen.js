@@ -27,7 +27,7 @@ export default class HomeScreen extends React.Component {
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
-        this.account = this.account.bind(this); // remove later
+        this.account = this.account.bind(this); // TODO: remove later
     }
     logout() {
         this.setState({session_key: ''});
@@ -57,7 +57,7 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.navigate('MakeRequest');
     }
 
-    // remove later
+    // TODO: remove later
     account() {
         this.props.navigation.navigate('Account');
     }
@@ -112,7 +112,7 @@ export default class HomeScreen extends React.Component {
                             title='Provider' />
                         <Button onPress={this.requester}
                             title='Requester' />
-                        <Button onPress={this.account}  // remove later
+                        <Button onPress={this.account}  // TODO:remove later
                             title='Account Settings' />
                     </View>
                 </Drawer>
