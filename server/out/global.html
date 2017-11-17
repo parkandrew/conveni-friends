@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Global</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Global</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="/v1/request/create"><span class="type-signature"></span>/v1/request/create<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user creates a new request.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/request/%7BrequestId%7D/accept"><span class="type-signature"></span>/v1/request/{requestId}/accept<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a provider accepts a nearby unaccepted request.
+
+Example call:
+http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line221">line 221</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/request/%7BrequestId%7D/complete"><span class="type-signature"></span>/v1/request/{requestId}/complete<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a provider completes one of their confirmed requests.
+
+Example call:
+http://localhost:3000/v1/request/1/complete?userId="test"&time="2017-04-04%2011:11:011"
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line305">line 305</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/request/%7BrequestId%7D/confirm"><span class="type-signature"></span>/v1/request/{requestId}/confirm<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a requester confirms the acceptance of one of their requests.
+
+Example call:
+http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:11:011"
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line263">line 263</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/request/%7BrequestId%7D/delete"><span class="type-signature"></span>/v1/request/{requestId}/delete<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user deletes one of their existing requests.
+
+Example call:
+http://localhost:3000/v1/request/1/delete?userId="test"
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line180">line 180</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/requests/all"><span class="type-signature"></span>/v1/requests/all<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user looks up nearby requests.
+
+Example call:
+http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line367">line 367</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/user/%7BuserId%7D/login"><span class="type-signature"></span>/v1/user/{userId}/login<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user logs into Convenifriends.
+
+Example call:
+http://localhost:3000/v1/user/testUserId/login
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/user/%7BuserId%7D/requests"><span class="type-signature"></span>/v1/user/{userId}/requests<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user looks up their existing requests.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line346">line 346</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/user/%7BuserId%7D/signup"><span class="type-signature"></span>/v1/user/{userId}/signup<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user first signs up for Convenifriends.
+
+Example call:
+http://localhost:3000/v1/user/testUserId/signup
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/user/%7BuserId%7D/update"><span class="type-signature"></span>/v1/user/{userId}/update<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user updates their password in Convenifriends.
+
+Example call:
+http://localhost:3000/v1/user/testUserId/update
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#/v1/request/create">/v1/request/create</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/accept">/v1/request/{requestId}/accept</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/complete">/v1/request/{requestId}/complete</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/confirm">/v1/request/{requestId}/confirm</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/delete">/v1/request/{requestId}/delete</a></li><li><a href="global.html#/v1/requests/all">/v1/requests/all</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/login">/v1/user/{userId}/login</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/requests">/v1/user/{userId}/requests</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/signup">/v1/user/{userId}/signup</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/update">/v1/user/{userId}/update</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 16:02:16 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
