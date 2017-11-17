@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './App';
 
+import Login from './js/LoginScreen'
 import renderer from 'react-test-renderer';
 
 it('renders without crashing', () => {
@@ -15,10 +16,10 @@ it('renders login screen', () => {
 
 it('does not accept username input with special characters', () => {
 	const username = 'brandon/';
-	expect(validateUsername(username).to.equal(false));
+	expect(Login.validateUsername(username).to.equal(false));
 })
 
 it('does accept username input without special characters', () => {
 	const username = 'brandon23';
-	expect(validateUsername(username).to.equal(false));
+	expect(Login.validateUsername(username).to.equal(false));
 })
