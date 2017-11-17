@@ -9,3 +9,6 @@ require('babel-register')({
 })
 
 var server = require('./server');
+var app = require('./server').app;
+
+module.exports = app;
