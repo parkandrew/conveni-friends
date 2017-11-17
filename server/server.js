@@ -1,3 +1,9 @@
+/**
+ * @FileOverview Backend endpoints
+ * @author Michael, Andrew, JJ, Kevin, Michelle, Brandon
+ * @version: 1.0
+ */
+
 import express from "express";
 import http from "http";
 import mysql from "mysql";
@@ -28,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // so that we can define a way to handle errors
 
 app.get('/', (req, res) => {
-    res.send("Test GET request");
+    res.status(HttpStatus.OK).send("Test GET request");
 });
 
 /**
@@ -51,12 +57,13 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -83,12 +90,13 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -115,12 +123,13 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -160,7 +169,7 @@ app.post('/v1/request/create', (req, res) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .send({ message: error.message });
+               .send({  message: "Internal server error."  });
         }
         else {
             console.log("Success");
@@ -341,13 +350,30 @@ app.get('/v1/user/:userId/requests', (req, res) => {
                 + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success");
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+/**
+ * Called when looking up all requests within a close geographical area.
+ *
+ * Example call:
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude=1.1&longitude=1.1
+ *
+ * @version 1
+ * @param {string} userId - The requester's username.
+ * @param {float} latitude - The latitude of the request's location.
+ * @param {float} longitude - The longitude of the request's location.
+ * @returns {res} The response, including an HTTP status indicating success or failure. Also returns a list of requests within a close area if no error, otherwise returns error info.
+ */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
 
@@ -358,11 +384,17 @@ app.get('/v1/requests/all', (req, res) => {
                   `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
-
 
 server.listen(PORT, () => {
     db.connect();
