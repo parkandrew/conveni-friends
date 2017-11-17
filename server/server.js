@@ -15,7 +15,7 @@ const db = mysql.createConnection({
     database: 'cs130_project',
 });
 
-const app = express();
+export const app = express();
 const server = http.Server(app);
 const PORT = 3000;
 const HttpStatus = require('http-status-codes');
@@ -34,6 +34,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // so that we can define a way to handle errors
 
 app.get('/', (req, res) => {
+    // TODO1: This breaks the test for some reason
+    // res.setHeader('Content-Type', 'application/json');
     res.status(HttpStatus.OK).send("Test GET request");
 });
 
@@ -392,7 +394,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
  * @param {int} userId - The username of the user.
  * @param {float} latitude - The current latitude of the user.
  * @param {float} longitude - The current longitude of the user.
- * 
+ *
  * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
  */
 app.get('/v1/requests/all', (req, res) => {
