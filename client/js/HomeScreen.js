@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Text, View, TextInput, Button } from 'react-native';
 import LoginScreen from './LoginScreen';
-import Drawer from 'react-native-drawer';
+import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from './Common/HamburgerMenu';
 import Hamburger from './Common/Hamburger';
+import styles from './style'
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -26,6 +27,7 @@ export default class HomeScreen extends React.Component {
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
+        this.account = this.account.bind(this); // TODO: remove later
     }
     logout() {
         this.setState({session_key: ''});
@@ -49,18 +51,24 @@ export default class HomeScreen extends React.Component {
     };
     provider() {
         //TODO: load nearby requests screen
-        this.props.navigation.navigate('NearbyRequests')
+        this.props.navigation.navigate('NearbyRequests');
     }
     requester() {
-        this.props.navigation.navigate('MakeRequest')
+        this.props.navigation.navigate('MakeRequest');
     }
 
+    // TODO: remove later
+    account() {
+        this.props.navigation.navigate('Account');
+    }
+
+
     _setNavigationParams() {
-        let headerLeft = 
+        let headerLeft =
         <Hamburger
             onPress={()=>{this.toggleDrawer()}}
         />;
-        this.props.navigation.setParams({ 
+        this.props.navigation.setParams({
           headerLeft,
         });
     }
@@ -86,7 +94,7 @@ export default class HomeScreen extends React.Component {
         }
         return (
                 <Drawer type='overlay'
-                    content={<HamburgerMenu 
+                    content={<HamburgerMenu
                         logout={() => {
                             this.logout();
                         }}
@@ -98,31 +106,17 @@ export default class HomeScreen extends React.Component {
                     acceptPan={true}
                     panCloseMask={0.6}
                     panOpenMask={0}>
-                    <View style={styles.container}>
+                    <View style={styles.homeContainer}>
                         <Text>I am a...</Text>
                         <Button onPress={this.provider}
                             title='Provider' />
                         <Button onPress={this.requester}
                             title='Requester' />
+                        <Button onPress={this.account}  // TODO:remove later
+                            title='Account Settings' />
                     </View>
                 </Drawer>
         );
-    
+
     }
 }
-
-const styles = StyleSheet.create({
-    title: {
-      fontSize: 40,
-      color: 'red'
-    },
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    button: {
-        alignItems: 'flex-start',
-    }
-  });

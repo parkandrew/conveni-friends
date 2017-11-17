@@ -1,5 +1,6 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Alert, Text, View, TextInput, Button } from 'react-native';
+import styles from './style'
 
 export default class SignupScreen extends React.Component {
     static navigationOptions = {
@@ -43,23 +44,23 @@ export default class SignupScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.container}>
-            <Text style={styles.title}>Sign-up</Text>
-            <TextInput 
+            <View style={styles.signupContainer}>
+            <Text style={styles.signupTitle}>Sign-up</Text>
+            <TextInput
                 placeholder="User ID"
                 onChangeText={(text) => this.setState({userId: text})}
             />
-            <TextInput 
+            <TextInput
                 secureTextEntry={true}
                 placeholder="Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
-            <TextInput 
+            <TextInput
                 secureTextEntry={true}
                 placeholder="Confirm Password"
                 onChangeText={(text) => this.setState({password2: text})}
             />
-            <Button 
+            <Button
                 onPress={this._makeAccount}
                 title="Sign up"
             />
@@ -67,16 +68,3 @@ export default class SignupScreen extends React.Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    title: {
-      fontSize: 20,
-      color: 'red'
-    },
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
