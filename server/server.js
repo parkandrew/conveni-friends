@@ -1,3 +1,9 @@
+/**
+ * @FileOverview Backend endpoints
+ * @author Michael, Andrew, JJ, Kevin, Michelle, Brandon
+ * @version: 1.0
+ */
+
 import express from "express";
 import http from "http";
 import mysql from "mysql";
@@ -28,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // so that we can define a way to handle errors
 
 app.get('/', (req, res) => {
-    res.send("Test GET request");
+    res.status(HttpStatus.OK).send("Test GET request");
 });
 
 /**
@@ -36,6 +42,8 @@ app.get('/', (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/user/testUserId/signup
+ *
+ * @name /v1/user/{userId}/signup
  *
  * @version 1
  * @param {string} userId - The user's desired username.
@@ -51,12 +59,13 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -68,6 +77,8 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/user/testUserId/login
+ *
+ * @name /v1/user/{userId}/login
  *
  * @version 1
  * @param {string} userId - The user's username.
@@ -83,12 +94,13 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -98,6 +110,8 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/user/testUserId/update
+ *
+ * @name /v1/user/{userId}/update
  *
  * @version 1
  * @param {string} userId - The user's username.
@@ -115,12 +129,13 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -129,6 +144,8 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
 /**
  * Called when a user creates a new request.
+ *
+ * @name /v1/request/create
  *
  * @version 1
  * @param {string} userId - The user's username.
@@ -159,12 +176,12 @@ app.post('/v1/request/create', (req, res) => {
     db.query(query, (error, results) => {
         if (error) {
             console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({sqlMessage: error.sqlMessage, sqlCommand: error.sql, message: error.message});
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({  message: "Internal server error."  });
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send('Success');
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -174,6 +191,8 @@ app.post('/v1/request/create', (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/request/1/delete?userId="test"
+ *
+ * @name /v1/request/{requestId}/delete
  *
  * @version 1
  * @param {int} requestId - The id of the request to be deleted.
@@ -186,13 +205,24 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
 
     const query = `DELETE FROM Request ` +
                   `WHERE requestId=${requestId} AND requesterId=${userId}`;
-    
+
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
+            console.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: error.message });
         } else {
-            console.log("SUCCESS!");
-            console.log(results);
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Delete succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
@@ -202,6 +232,8 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @name /v1/request/{requestId}/accept
  *
  * @version 1
  * @param {int} requestId - The id of the request to be accepted.
@@ -215,14 +247,24 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId};`
-    
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: "Internal server error." });
         } else {
-            console.log("SUCCESS!");
-            console.log(results);
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Accept succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
@@ -232,6 +274,8 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @name /v1/request/{requestId}/confirm
  *
  * @version 1
  * @param {int} requestId - The id of the request to be confirmed.
@@ -245,14 +289,24 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET confirmed=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId};`
-    
+                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: "Internal server error." });
         } else {
-            console.log("SUCCESS!");
-            console.log(results);
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Confirm succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
         }
     });
 });
@@ -262,6 +316,8 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/request/1/complete?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @name /v1/request/{requestId}/complete
  *
  * @version 1
  * @param {int} requestId - The id of the request to be completed.
@@ -274,15 +330,32 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId}`;
+                + `WHERE requestId=${requestId} AND ${time} < timeEnd`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
+        if (error) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+               .send({ message: "Internal server error." });
+        } else {
+            // Request doesn't exist or is expired
+            if (results.affectedRows <= 0) {
+                const err = "Request doesn't exist or is expired.";
+                console.log(err);
+                res.status(HttpStatus.NOT_FOUND).send({ message: err });
+
+            // Complete succesful
+            } else {
+                console.log("Success");
+                res.status(HttpStatus.OK).send({});
+            }
+        }
     });
 });
 
 /**
  * Called when a user looks up their existing requests.
+ *
+ * @name /v1/user/{userId}/requests
  *
  * @version 1
  * @param {int} userId - The username of the user.
@@ -292,31 +365,57 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const { userId } = req.params;
 
     const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" or providerId="${userId}"`;
+                + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success");
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+/**
+ * Called when a user looks up nearby requests.
+ *
+ * Example call:
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+ *
+ * @name /v1/requests/all
+ *
+ * @version 1
+ * @param {int} userId - The username of the user.
+ * @param {float} latitude - The current latitude of the user.
+ * @param {float} longitude - The current longitude of the user.
+ * 
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
 
     // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
     const query = `SELECT * FROM Request ` +
                   `WHERE accepted is NULL ` +
-                  `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` + 
+                  `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
                   `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
-
 
 server.listen(PORT, () => {
     db.connect();
