@@ -19,7 +19,7 @@ export default class NearbyRequests extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <ListView style={styles.nearby_container}
+            <ListView style={styles.nearbyContainer}
                 dataSource={this.state.dataSource}
                 renderRow={(rowData) => <Text>{rowData}</Text>}>
             </ListView>

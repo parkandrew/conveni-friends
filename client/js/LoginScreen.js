@@ -34,8 +34,8 @@ export default class LoginScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.login_container}>
-            <Text style={styles.login_title}>Conveni-friends</Text>
+            <View style={styles.loginContainer}>
+            <Text style={styles.loginTitle}>Conveni-friends</Text>
             <TextInput
                 placeholder="User ID"
                 onChangeText={(text) => this.setState({userId: text})}

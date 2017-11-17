@@ -1,17 +1,20 @@
 import React from 'react';
 import {
-	StyleSheet,
 	Text,
 	TextInput,
 	Button,
 	View
 } from 'react-native';
-// import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
-import Moment from 'react-moment';
+import styles from '../style'
+
+import moment from 'moment'; // 2.19.2
+import Moment from 'react-moment'; // 0.6.8
 
 import FormInput from './FormInput';
 import DateTimePicker from './DateTimePicker';
+
+
+import "prop-types"; // 15.6.0
 
 
 export default class MakeRequest extends React.Component {
@@ -33,13 +36,13 @@ export default class MakeRequest extends React.Component {
 			console.log("Pressed!");
 		}
 		return (
-			<View style={styles.container}>
-				<View style={styles.inputView}>
-					<FormInput style={styles.singleLine} title={'Title'} placeholder={'Your short title'} />
-					<FormInput style={styles.singleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
-					<View style={[styles.dateContainer, styles.singleLine]}>
-						<DateTimePicker style={styles.singleLine} type='Start'/>
-						<DateTimePicker style={styles.singleLine} type='End'/>
+			<View style={styles.makeContainer}>
+				<View style={styles.makeInputView}>
+					<FormInput style={styles.makeSingleLine} title={'Title'} placeholder={'Your short title'} />
+					<FormInput style={styles.makeSingleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
+					<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
+						<DateTimePicker style={styles.makeSingleLine} type='Start'/>
+						<DateTimePicker style={styles.makeSingleLine} type='End'/>
 					</View>
 					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiLine={true} />
 				</View>
@@ -48,27 +51,3 @@ export default class MakeRequest extends React.Component {
 		);
 	}
 }
-// TODO: port this to styles file
-let screenWidth = 350;
-let fontSize = 20;
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#ADD8E6',
-		alignItems: 'center',
-		paddingTop: 20,
-	},
-	inputView: {
-		flex: .9
-	},
-	singleLine: {
-		flex: 0.14,
-		marginBottom: 24
-	},
-	dateContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		width: screenWidth,
-		marginBottom: 10
-	},
-});

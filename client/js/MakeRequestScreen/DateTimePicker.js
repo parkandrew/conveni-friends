@@ -1,6 +1,6 @@
 import React from 'react';
+import styles from '../style'
 import {
-	StyleSheet,
 	Text,
 	TextInput,
 	View
@@ -44,8 +44,8 @@ export default class DateTimePicker extends React.Component {
 		*/
 		return (
 			<View>
-				<Text style={styles.inputHeader}>{this.props.type} Date</Text>
-				<Text style={styles.datePicker}onPress={() => {
+				<Text style={styles.dtpInputHeader}>{this.props.type} Date</Text>
+				<Text style={styles.dtpDatePicker}onPress={() => {
 					this._showDateTimePicker(this.props.type)
 				}
 				}>{this.formatDate(this.state.time)}</Text>
@@ -60,28 +60,3 @@ export default class DateTimePicker extends React.Component {
 		);
 	}
 }
-// TODO: port this to styles file
-let screenWidth = 350;
-let fontSize = 16;
-const styles = StyleSheet.create({
-	container: {
-		flex: .12,
-		alignItems: 'flex-start',
-	},
-	datePicker: {
-		width: screenWidth/2.4,
-		backgroundColor: '#FFF',
-		height: fontSize + 16,
-		fontSize: fontSize,
-		padding: 5,
-		paddingLeft: 10,
-		borderColor: '#3D95DA',
-		borderWidth: 2,
-		borderRadius: 6,
-		overflow: 'hidden'
-	},
-	inputHeader: {
-		fontSize: fontSize,
-		marginBottom: 1
-	},
-});
