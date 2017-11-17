@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Text, View, TextInput, Button } from 'react-native';
 import LoginScreen from './LoginScreen';
 import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from './Common/HamburgerMenu';
 import Hamburger from './Common/Hamburger';
-
+import styles from './style'
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -106,7 +106,7 @@ export default class HomeScreen extends React.Component {
                     acceptPan={true}
                     panCloseMask={0.6}
                     panOpenMask={0}>
-                    <View style={styles.container}>
+                    <View style={styles.home_container}>
                         <Text>I am a...</Text>
                         <Button onPress={this.provider}
                             title='Provider' />
@@ -120,19 +120,3 @@ export default class HomeScreen extends React.Component {
 
     }
 }
-
-const styles = StyleSheet.create({
-    title: {
-      fontSize: 40,
-      color: 'red'
-    },
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    button: {
-        alignItems: 'flex-start',
-    }
-  });
