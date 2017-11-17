@@ -37,6 +37,8 @@ app.get('/', (req, res) => {
  * Example call:
  * http://localhost:3000/v1/user/testUserId/signup
  *
+ * @name /v1/user/{userId}/signup
+ *
  * @version 1
  * @param {string} userId - The user's desired username.
  * @param {string} password - The user's password.
@@ -69,6 +71,8 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
  * Example call:
  * http://localhost:3000/v1/user/testUserId/login
  *
+ * @name /v1/user/{userId}/login
+ *
  * @version 1
  * @param {string} userId - The user's username.
  * @param {string} password - The user's password.
@@ -98,6 +102,8 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/user/testUserId/update
+ *
+ * @name /v1/user/{userId}/update
  *
  * @version 1
  * @param {string} userId - The user's username.
@@ -129,6 +135,8 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
 /**
  * Called when a user creates a new request.
+ *
+ * @name /v1/request/create
  *
  * @version 1
  * @param {string} userId - The user's username.
@@ -175,6 +183,8 @@ app.post('/v1/request/create', (req, res) => {
  * Example call:
  * http://localhost:3000/v1/request/1/delete?userId="test"
  *
+ * @name /v1/request/{requestId}/delete
+ *
  * @version 1
  * @param {int} requestId - The id of the request to be deleted.
  * @param {string} userId - The user's username.
@@ -213,6 +223,8 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
  *
  * Example call:
  * http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11:011"
+ *
+ * @name /v1/request/{requestId}/accept
  *
  * @version 1
  * @param {int} requestId - The id of the request to be accepted.
@@ -254,6 +266,8 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
  * Example call:
  * http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:11:011"
  *
+ * @name /v1/request/{requestId}/confirm
+ *
  * @version 1
  * @param {int} requestId - The id of the request to be confirmed.
  * @param {string} userId - The requester's username.
@@ -294,6 +308,8 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
  * Example call:
  * http://localhost:3000/v1/request/1/complete?userId="test"&time="2017-04-04%2011:11:011"
  *
+ * @name /v1/request/{requestId}/complete
+ *
  * @version 1
  * @param {int} requestId - The id of the request to be completed.
  * @param {string} userId - The provider's username.
@@ -330,6 +346,8 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
 /**
  * Called when a user looks up their existing requests.
  *
+ * @name /v1/user/{userId}/requests
+ *
  * @version 1
  * @param {int} userId - The username of the user.
  * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
@@ -346,8 +364,21 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     });
 });
 
-// Example call:
-// http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+/**
+ * Called when a user looks up nearby requests.
+ *
+ * Example call:
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+ *
+ * @name /v1/requests/all
+ *
+ * @version 1
+ * @param {int} userId - The username of the user.
+ * @param {float} latitude - The current latitude of the user.
+ * @param {float} longitude - The current longitude of the user.
+ * 
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
 
