@@ -9,7 +9,7 @@ import { StackNavigator } from 'react-navigation';
 
 
 const ReactNavigation = StackNavigator({
-	HomeScren: { screen: HomeScreen },
+	HomeScreen: { screen: HomeScreen },
 	LoginScreen: { screen: LoginScreen },
 	MakeRequestScreen: {screen: MakeRequestScreen},
 	SignupScreen: {screen: SignupScreen},

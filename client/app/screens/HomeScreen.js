@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
     }
     logout() {
         this.setState({session_key: ''});
-        this.props.navigation.navigate('LoginScren');
+        this.props.navigation.navigate('LoginScreen');
     }
     _getSessionKey() {
         //TODO: get key from storage somehow
