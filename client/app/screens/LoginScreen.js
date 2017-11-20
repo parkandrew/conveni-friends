@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
-import styles from './style'
+import styles from 'client/styles/style';
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -21,7 +21,7 @@ export default class LoginScreen extends React.Component {
         //Select screen if credentials are correct
         const alphanum = /[0-9a-zA-Z]+/g;
         if (this.state.userId && this.state.password) {
-            this.props.navigation.navigate('Home', {sessionKey: 'ayy'})
+            this.props.navigation.navigate('HomeScreen', {sessionKey: 'ayy'})
         }
         else {
             Alert.alert("User ID or password is blank.")
@@ -29,7 +29,7 @@ export default class LoginScreen extends React.Component {
     }
     _signup() {
         //TODO: Show signup screen
-        this.props.navigation.navigate('Signup')
+        this.props.navigation.navigate('SignupScreen')
     }
     render() {
         const { navigate } = this.props.navigation;

@@ -4,7 +4,7 @@ import {
 	TextInput,
 	View
 } from 'react-native';
-import styles from '../style'
+import styles from 'client/styles/style';
 
 export default class FormInput extends React.Component {
 
