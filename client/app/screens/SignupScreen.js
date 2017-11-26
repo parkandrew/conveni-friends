@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
-import styles from './style'
+import styles from 'client/styles/style';
 
 export default class SignupScreen extends React.Component {
     static navigationOptions = {
@@ -27,7 +27,7 @@ export default class SignupScreen extends React.Component {
                     //We can either navigate them back to the login screen
                     //or get the session key right here and navigate them to the
                     //"home" screen
-                    this.props.navigation.navigate('Login')
+                    this.props.navigation.navigate('LoginScreen')
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");

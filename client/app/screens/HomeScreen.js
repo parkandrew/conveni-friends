@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View, TextInput, Button } from 'react-native';
-import LoginScreen from './LoginScreen';
+import LoginScreen from 'client/app/screens/LoginScreen';
 import Drawer from 'react-native-drawer'; // 2.5.0
-import HamburgerMenu from './Common/HamburgerMenu';
-import Hamburger from './Common/Hamburger';
-import styles from './style'
+import HamburgerMenu from 'client/app/Common/HamburgerMenu';
+import Hamburger from 'client/app/Common/Hamburger';
+import styles from 'client/styles/style';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
     }
     logout() {
         this.setState({session_key: ''});
-        this.props.navigation.navigate('Login');
+        this.props.navigation.navigate('LoginScreen');
     }
     _getSessionKey() {
         //TODO: get key from storage somehow
@@ -51,15 +51,15 @@ export default class HomeScreen extends React.Component {
     };
     provider() {
         //TODO: load nearby requests screen
-        this.props.navigation.navigate('NearbyRequests');
+        this.props.navigation.navigate('NearbyRequestsScreen');
     }
     requester() {
-        this.props.navigation.navigate('MakeRequest');
+        this.props.navigation.navigate('MakeRequestScreen');
     }
 
     // TODO: remove later
     account() {
-        this.props.navigation.navigate('Account');
+        this.props.navigation.navigate('AccountScreen');
     }
 
 

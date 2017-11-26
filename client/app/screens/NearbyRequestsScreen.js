@@ -1,6 +1,6 @@
 import React from 'react';
 import { ListView, Alert, Text, View, TextInput, Button } from 'react-native';
-import styles from './style'
+import styles from 'client/styles/style';
 
 export default class NearbyRequests extends React.Component {
     static navigationOptions = {

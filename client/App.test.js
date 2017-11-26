@@ -1,7 +1,7 @@
 import React from 'react';
 import App from './App';
 
-import Login from './js/LoginScreen'
+import Login from 'client/app/screens/LoginScreen'
 import renderer from 'react-test-renderer';
 
 it('renders without crashing', () => {

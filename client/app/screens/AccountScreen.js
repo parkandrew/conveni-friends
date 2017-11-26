@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, ListItem } from 'react-native-elements'; // 0.18.2
-import styles from '../style'
+import styles from 'client/styles/style';
 
 
 export default class Account extends React.Component {

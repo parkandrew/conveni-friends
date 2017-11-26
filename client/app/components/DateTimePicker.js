@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../style'
+import styles from 'client/styles/style';
 import {
 	Text,
 	TextInput,
