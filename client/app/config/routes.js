@@ -15,7 +15,7 @@ const ReactNavigation = StackNavigator({
 	LoginScreen: { screen: LoginScreen },
 	MakeRequestScreen: {screen: MakeRequestScreen},
 	SignupScreen: {screen: SignupScreen},
-	NearbyRequestsScreen: {screen: PersonalRequestsScreen},
+	NearbyRequestsScreen: {screen: NearbyRequestsScreen},
 	AccountScreen: {screen: AccountScreen},
 	PersonalRequestsScreen: {screen: PersonalRequestsScreen},
 })
