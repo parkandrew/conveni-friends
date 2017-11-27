@@ -13,6 +13,17 @@ let $blue__secondary = '#3D95DA';
 
 const styles = StyleSheet.create({
 
+	labelStyle: {
+		fontSize: 20,
+		paddingBottom: 10,
+		color: '#3D95DA',
+	},
+
+	tabStyle: {
+		borderColor: '#3D95DA',
+		borderWidth: 2
+	},
+
 	listSeparatorContainer: {
 		height: 1,
 		backgroundColor: '#000',
