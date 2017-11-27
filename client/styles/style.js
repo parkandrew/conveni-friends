@@ -6,6 +6,40 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 
+	listSeparatorContainer: {
+		height: 1,
+		backgroundColor: '#000',
+	},
+
+	cardContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		height: 65,
+		paddingRight: 6,
+		paddingLeft: 6,
+		backgroundColor: '#ADD8E6',
+	},
+	cardLeft: {
+		flex: 0.8,
+		paddingRight: 16,
+		justifyContent: 'center',
+	},
+	cardTitle: {
+		fontSize: 20,
+	},
+	cardSubTitle: {
+		fontSize: 16,
+		marginTop: 4
+	},
+	cardRight: {
+		flex: 0.2,
+		justifyContent: 'center',
+		paddingLeft: 6,
+	},
+	cardDistance: {
+		fontSize: 16
+	},
+
 // HomeScreen
     homeTitle: {
       fontSize: 40,
@@ -59,7 +93,6 @@ const styles = StyleSheet.create({
     },
 
 // MakeRequestScreen/DateTimePicker
-
 
     dtpContainer: {
       flex: .12,
