@@ -9,7 +9,6 @@ import styles from 'client/styles/style';
 export default class FormInput extends React.Component {
 
 	render() {
-		console.log(this.props.style);
 		return (
 			<View style={[styles.formContainer, this.props.style]}>
 				<Text style={styles.formInputHeader}>{this.props.title}</Text>
