@@ -11,14 +11,13 @@ export default class NearbyRequests extends React.Component {
 		super(props);
 	}
 	render() {
-		const { navigate } = this.props.navigation;
+		// const { navigate } = this.props.navigation;
 		const data = [
 			{ key: 'In-n-out', distance: '0.6 mi', startTime: '9:00am', endTime: '10:00pm' },
 			{ key: 'Ride to Ralph\'s', distance: '1.4 mi', startTime: '1:00am', endTime: '2:00am'},
 			{ key: 'Need to use a printer for essayasdfasdf asdfasdf sad', distance: '1000 mi', startTime: '9:00am', endTime: '10:00pm'}
 		];
 
-		const ITEM_HEIGHT = 400;
 		return (
 			<RequestListComponent data={data}/>
 		);

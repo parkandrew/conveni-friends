@@ -24,6 +24,7 @@ export default class RequestListComponent extends React.Component {
 		const ITEM_HEIGHT = 400;
 		return (
 			<FlatList
+			// TODO: getItemLayout may have to be implemented to render large lists
 				// getItemLayout={(data, index) => ({
 				// 	length: 500, offset: 500 * index, index})
 				// }
