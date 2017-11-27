@@ -5,6 +5,7 @@ import RequestListComponent from 'client/app/components/RequestListComponent';
 export default class PersonalAcceptScreen extends React.Component {
 	static navigationOptions = {
 		//headerLeft: null,
+		tabBarLabel: 'Accepted Requests'
 	}
 	constructor(props) {
 		super(props);

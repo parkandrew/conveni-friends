@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		height: 65,
 		paddingRight: 6,
 		paddingLeft: 6,
-		backgroundColor: $blue__primary,
+		backgroundColor: $white,
 	},
 	cardLeft: {
 		flex: 0.8,

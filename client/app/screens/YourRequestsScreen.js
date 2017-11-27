@@ -2,9 +2,10 @@ import React from 'react';
 import { StyleSheet, FlatList, ListView, Alert, Text, View, TextInput, Button } from 'react-native';
 import RequestListComponent from 'client/app/components/RequestListComponent';
 
-export default class PersonalRequestScreen extends React.Component {
+export default class YourRequestsScreen extends React.Component {
 	static navigationOptions = {
 		//headerLeft: null,
+		tabBarLabel: 'Your Requests'
 	}
 	constructor(props) {
 		super(props);
