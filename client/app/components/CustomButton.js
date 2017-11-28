@@ -20,6 +20,7 @@ export default class CustomButton extends React.Component {
 	}
 }
 
+// TODO: move to styles file
 const styles = {
 	button: {
 		justifyContent: 'flex-end',

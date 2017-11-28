@@ -9,9 +9,6 @@ import PersonalRequestsScreen from 'client/app/screens/PersonalRequestsScreen';
 import RequestDetailsScreen from 'client/app/screens/RequestDetailsScreen';
 import { StackNavigator } from 'react-navigation'; 
 
-
-
-
 const ReactNavigation = StackNavigator({
 	HomeScreen: { screen: HomeScreen },
 	LoginScreen: { screen: LoginScreen },

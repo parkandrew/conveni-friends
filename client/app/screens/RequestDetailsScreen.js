@@ -8,9 +8,6 @@ export default class RequestDetailsScreen extends React.Component {
 		title: 'Request Details',
 	}
 
-	constructor(props) {
-		super(props);
-	}
 	render() {
 		const requestDetails = {
 			title: 'Groceries from Ralph\'s',
