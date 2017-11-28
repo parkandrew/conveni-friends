@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import RequestInfoLine from 'client/app/components/RequestInfoDetails';
+import CustomButton from 'client/app/components/CustomButton';
 import styles from 'client/styles/style';
 export default class RequestDetailsScreen extends React.Component {
 	static navigationOptions = {
@@ -16,38 +18,43 @@ export default class RequestDetailsScreen extends React.Component {
 			distance: '0.5 mi',
 			startTime: '9:00 am',
 			endTime: '10:00 pm',
-			details: 'I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. '
+			details: 'like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplantsome rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like '
 		}
 		return (
-			<View style={styles.makeContainer}>
-				<View style={styles.makeInputView}>
-					<Text style={[styles.makeSingleLine, reqStyles.key]}>Request: <Text style={styles.value}>{requestDetails.title}</Text></Text>
-					<Text style={[styles.makeSingleLine, reqStyles.key]}>Location: <Text>{requestDetails.location}</Text><Text> ({requestDetails.distance})</Text></Text>
-					<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
-						<Text style={reqStyles.key}>Start Time: {requestDetails.startTime}</Text>
-						<Text style={reqStyles.key}>End Time: {requestDetails.endTime}</Text>
+			<View style={{ flex: 1 }}>
+				<ScrollView style={reqStyles.makeContainer}>
+					<View style={reqStyles.makeInputView}>
+						<RequestInfoLine primary={'Request'} secondary={requestDetails.title} />
+						<RequestInfoLine primary={'Location'} secondary={requestDetails.location} />
+						<RequestInfoLine primary={'Start Time'} secondary={requestDetails.startTime} />
+						<RequestInfoLine primary={'End Time'} secondary={requestDetails.endTime} />
+						<Text style={reqStyles.key}>Details: <Text style={reqStyles.value}>{requestDetails.details}</Text></Text>
 					</View>
-					<Text style={reqStyles.key}>Details: <Text>{requestDetails.details}</Text></Text>
-				</View>
+					<CustomButton style={reqStyles.buttonContainer} text={'Message Requester'}/>
+				</ScrollView>
 			</View>
 		);
 	}
 }
 
+// move to styles when it gets cleaned up
 const reqStyles = {
-	outerContainer: {
-		flex: 1,
-		justifyContent: 'center'
-	},
-	innerContainer: {
-		flex: .8,
-		justifyContent: 'space-between'
+	makeContainer: {
+		backgroundColor: 'white',
+		paddingRight: 10,
+		paddingLeft: 10,
+		paddingTop: 25,
 
 	},
+	buttonContainer: {
+		alignItems: 'center',
+	},
 	key: {
-		fontSize: 20
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: '#3D95DA',
 	},
 	value: {
-		fontSize: 16
-	}
-}
+		fontWeight: 'normal'
+	},
+};
