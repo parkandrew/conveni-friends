@@ -5,6 +5,7 @@ import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import Hamburger from 'client/app/Common/Hamburger';
 import styles from 'client/styles/style';
+import User from 'client/app/Common/User';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -16,29 +17,23 @@ export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: '',
-            password: '',
-            sessionKey: '',
-            active: false
+            user: new User()
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.logout = this.logout.bind(this);
-        this._getSessionKey = this._getSessionKey.bind(this);
+        this._getUser = this._getUser.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
-        this.account = this.account.bind(this); // TODO: remove later
+        this.account = this.account.bind(this);
     }
     logout() {
-        this.setState({session_key: ''});
         this.props.navigation.navigate('LoginScreen');
     }
-    _getSessionKey() {
+    _getUser() {
         //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
-            this.setState({sessionKey: this.props.navigation.state.params.sessionKey});
-        }
-        else {
+            this.setState({user: this.props.navigation.state.params.user});
         }
     }
     toggleDrawer = () => {
@@ -75,7 +70,7 @@ export default class HomeScreen extends React.Component {
 
     componentWillMount() {
         this._setNavigationParams();
-        this._getSessionKey();
+        this._getUser();
       }
 
     render() {
@@ -88,9 +83,9 @@ export default class HomeScreen extends React.Component {
         //TODO: either create a splash screen to navigate
         //to the loginscreen/homescreen or navigate from homescreen
         //to loginscreen (prefer splash screen)
-
-        if (!this.state.sessionKey) {
-            navigate('Login');
+        console.log(this.state.user.sessionKey)
+        if (!this.state.user.sessionKey || this.state.user.sessionKey === '') {
+            navigate('LoginScreen');
         }
         return (
                 <Drawer type='overlay'
@@ -112,8 +107,6 @@ export default class HomeScreen extends React.Component {
                             title='Provider' />
                         <Button onPress={this.requester}
                             title='Requester' />
-                        <Button onPress={this.account}  // TODO:remove later
-                            title='Account Settings' />
                     </View>
                 </Drawer>
         );

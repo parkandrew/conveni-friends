@@ -12,6 +12,7 @@ import Moment from 'react-moment'; // 0.6.8
 
 import FormInput from 'client/app/components/FormInput';
 import DateTimePicker from 'client/app/components/DateTimePicker';
+import User from 'client/app/Common/User';
 
 
 import "prop-types"; // 15.6.0
@@ -25,6 +26,7 @@ export default class MakeRequest extends React.Component {
 	};
 
 	state = {
+		user: null,
 		isDateTimePickerVisible: false,
 		startTime: new Date(),
 		endTime: new Date(),
@@ -33,7 +35,8 @@ export default class MakeRequest extends React.Component {
 
 	render() {
 		function onPressHandle() {
-			console.log("Pressed!");
+			let request = new Request()
+			user.createRequest(request)
 		}
 		return (
 			<View style={styles.makeContainer}>
