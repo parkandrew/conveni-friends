@@ -5,9 +5,11 @@ import MakeRequestScreen from 'client/app/screens/MakeRequestScreen';
 import AccountScreen from 'client/app/screens/AccountScreen';
 import NearbyRequestsScreen from 'client/app/screens/NearbyRequestsScreen';
 import SignupScreen from 'client/app/screens/SignupScreen';
+import PersonalRequestsScreen from 'client/app/screens/PersonalRequestsScreen';
+import RequestDetailsScreen from 'client/app/screens/RequestDetailsScreen';
 import { StackNavigator } from 'react-navigation'; 
 
-import PersonalRequestsScreen from 'client/app/screens/PersonalRequestsScreen';
+
 
 
 const ReactNavigation = StackNavigator({
@@ -18,6 +20,7 @@ const ReactNavigation = StackNavigator({
 	NearbyRequestsScreen: {screen: NearbyRequestsScreen},
 	AccountScreen: {screen: AccountScreen},
 	PersonalRequestsScreen: {screen: PersonalRequestsScreen},
+	RequestDetailsScreen: {screen: RequestDetailsScreen},
 })
 
 export default ReactNavigation;

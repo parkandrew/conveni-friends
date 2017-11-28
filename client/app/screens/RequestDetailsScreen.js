@@ -44,7 +44,6 @@ const reqStyles = {
 		paddingRight: 10,
 		paddingLeft: 10,
 		paddingTop: 25,
-
 	},
 	buttonContainer: {
 		alignItems: 'center',

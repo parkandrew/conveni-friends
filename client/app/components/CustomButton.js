@@ -31,6 +31,8 @@ const styles = {
 		paddingBottom: 5,
 		width: 300,
 		borderWidth: 2,
+		backgroundColor: 'white',
+		borderRadius: 6
 	},
 	font: {
 		fontSize: 20,
