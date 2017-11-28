@@ -400,7 +400,7 @@ function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   var d = R * c; // Distance in km
   var miles = d * 0.621371
-  
+
   return miles;
 }
 
@@ -412,7 +412,7 @@ function deg2rad(deg) {
  * Called when a user looks up nearby requests.
  *
  * Example call:
- * http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude=30&longitude=30
  *
  * @name /v1/requests/all
  *
@@ -421,7 +421,7 @@ function deg2rad(deg) {
  * @param {float} latitude - The current latitude of the user.
  * @param {float} longitude - The current longitude of the user.
  *
- * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. Also associate distance in miles. In the case of error, the response contains error info.
  */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
@@ -441,18 +441,22 @@ app.get('/v1/requests/all', (req, res) => {
         else {
             console.log("Success");
 
+            // List of request, along with the distance from user in miles
             var retValue = [];
 
             for (var i = 0; i < results.length; i++) {
                 console.log(results[i]);
-                console.log("HIHIHIEFHIHGROIJGROIWGEWOIGHWEOGHOIEWG");
-                console.log(getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude));
                 var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
                 retValue.push({
                     request : results[i],
                     distance: dist
                 });
             }
+
+            // Sort ascending, based on distance from user
+            retValue.sort(function(a, b) {
+                return b.distance - a.distance
+            });
 
             res.status(HttpStatus.OK).send(retValue);
         }
