@@ -1,17 +1,28 @@
 import { StyleSheet } from 'react-native';
 
 // consts
-let screenWidth = 350;
-let $font__large = 40;
-let $font__medium = 20;
-let $font__small = 16;
-let $fontSize = 16;
+const screenWidth = 350;
+const $font__large = 40;
+const $font__medium = 20;
+const $font__small = 16;
+const $fontSize = 16;
 
-let $white = '#FFFFFF';
-let $blue__primary = '#ADD8E6';
-let $blue__secondary = '#3D95DA';
+const $white = '#FFFFFF';
+const $blue__primary = '#ADD8E6';
+const $blue__secondary = '#3D95DA';
 
 const styles = StyleSheet.create({
+
+	labelStyle: {
+		fontSize: 20,
+		paddingBottom: 10,
+		color: $blue__secondary,
+	},
+
+	tabStyle: {
+		borderColor: $blue__secondary,
+		borderWidth: 2
+	},
 
 	listSeparatorContainer: {
 		height: 1,
@@ -24,7 +35,7 @@ const styles = StyleSheet.create({
 		height: 65,
 		paddingRight: 6,
 		paddingLeft: 6,
-		backgroundColor: $blue__primary,
+		backgroundColor: $white,
 	},
 	cardLeft: {
 		flex: 0.8,

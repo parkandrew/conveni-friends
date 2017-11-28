@@ -4,7 +4,6 @@ import styles from 'client/styles/style';
 
 export default class SignupScreen extends React.Component {
     static navigationOptions = {
-        //headerLeft: null,
     }
     constructor(props) {
         super(props);

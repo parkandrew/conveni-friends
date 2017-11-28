@@ -6,7 +6,6 @@ import RenderSeparator from 'client/app/components/ListSeparator';
 
 export default class RequestListComponent extends React.Component {
 	static navigationOptions = {
-		//headerLeft: null,
 	}
 	constructor(props) {
 		super(props);

@@ -21,7 +21,6 @@ export default class MakeRequest extends React.Component {
 
 	static navigationOptions = {
 		title: 'What would you like to request?',
-		//headerLeft: null,
 	};
 
 	state = {
