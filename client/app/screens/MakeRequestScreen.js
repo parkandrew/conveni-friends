@@ -47,7 +47,6 @@ export default class MakeRequest extends React.Component {
 					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiLine={true} />
 				</View>
 				<CustomButton text={'Make Request'}/>
-				{/* <Button title="Make Request" onPress={onPressHandle} /> */}
 			</View>
 		);
 	}
