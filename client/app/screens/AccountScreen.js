@@ -7,7 +7,6 @@ export default class AccountScreen extends React.Component {
 
   static navigationOptions = {
 	  title: 'Account Settings',
-	//headerLeft: null,
   };
 
   render () {
