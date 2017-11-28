@@ -20,7 +20,7 @@ import "prop-types"; // 15.6.0
 export default class MakeRequest extends React.Component {
 
 	static navigationOptions = {
-		title: 'What would you like to request?',
+		title: 'Make a Request',
 	};
 
 	state = {
