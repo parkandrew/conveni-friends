@@ -3,6 +3,7 @@ import RequestListComponent from 'client/app/components/RequestListComponent';
 
 export default class NearbyRequests extends React.Component {
 	static navigationOptions = {
+		title: 'Nearby Requests'
 	}
 	constructor(props) {
 		super(props);
