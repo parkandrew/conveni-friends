@@ -23,7 +23,9 @@ export default class LoginScreen extends React.Component {
         const alphanum = /[0-9a-zA-Z]+/g;
         if (this.state.userId && this.state.password) {
             user = new User();
-            response = user.login(this.state.userId, this.state.password);
+            user.login(this.state.userId, this.state.password).then(function(responseJSON) {
+                //do stuff with the response
+            });
             user.userId = 'sample'
             user.sessionKey = 'blank'
             this.props.navigation.navigate('HomeScreen', {user: user})

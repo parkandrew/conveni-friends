@@ -14,24 +14,24 @@ export default class User {
     }
 
     login(userId, password) {
-        let url = '/v1/user/' + userId + '/login'
-        let response = axios.post(url, {
+        let url = '/v1/user/' + userId + '/login';
+        return axios.post(url, {
             params: {
                 password: password
             }
         }).then(function (response) {
             console.log(response);
+            return response.JSON;
             //if successful, set userId and sessionKey to the member variables
           })
           .catch(function (error) {
             console.log(error);
             //return error JSON?
           });
-          return response;
     }
 
     createRequest(request) {
-        let response = axios.post('/v1/request/create', {
+        return axios.post('/v1/request/create', {
             params: {
                 userId: request.userId,
                 title: request.title,
@@ -44,6 +44,7 @@ export default class User {
             }
         }).then(function (response) {
             console.log(response);
+            return response.JSON;
           })
           .catch(function (error) {
             console.log(error);
@@ -53,20 +54,20 @@ export default class User {
 
    getMyRequests() {
        let url = 'v1/user/' + this.userId + '/requests'
-       let response = axios.get(url)
+       return axios.get(url)
        .then(function (response) {
         console.log(response);
+        return response.JSON;
         //format into request list and return list
       })
       .catch(function (error) {
         console.log(error);
         //return error JSON?
       });
-      return response;
    }
 
    getNearbyRequests(latitude, longitude) {
-       let response = axios.get('/v1/requests/all', {
+       return axios.get('/v1/requests/all', {
            params: {
                userId: this.userId,
                latitude: latitude,
@@ -74,11 +75,11 @@ export default class User {
            }
        }).then(function (response) {
         console.log(response);
+        return response.JSON;
         //format into request list and return list
       }).catch(function (error) {
         console.log(error);
         //return error JSON?
       });
-      return response;
    }
 }

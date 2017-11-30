@@ -34,8 +34,10 @@ export default class MakeRequest extends React.Component {
 
 	render() {
 		function onPressHandle() {
-			let request = new Request()
-			user.createRequest(request)
+			let request = new Request();
+			user.createRequest(request).then(function(responseJSON) {
+				//do stuff with the response
+			});
 		}
 		return (
 			<View style={styles.makeContainer}>

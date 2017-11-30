@@ -84,7 +84,7 @@ export default class HomeScreen extends React.Component {
         //to the loginscreen/homescreen or navigate from homescreen
         //to loginscreen (prefer splash screen)
         console.log(this.state.user.sessionKey)
-        if (!this.state.user.sessionKey || this.state.user.sessionKey === '') {
+        if (!this.state.user.sessionKey) {
             navigate('LoginScreen');
         }
         return (
