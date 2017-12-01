@@ -26,7 +26,7 @@ CREATE TABLE MessageSession(
 	userId1 VARCHAR(20) NOT NULL,
 	userId2 VARCHAR(20) NOT NULL,
 	FOREIGN KEY(userId1) REFERENCES User(userId),
-	FOREIGN KEY(userId2) REFERENCES User(userId),
+	FOREIGN KEY(userId2) REFERENCES User(userId)
 );
 
 CREATE TABLE Message(
@@ -38,5 +38,5 @@ CREATE TABLE Message(
 	timeCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY(messageSessionId) REFERENCES MessageSession(messageSessionId),
 	FOREIGN KEY(senderId) REFERENCES User(userId),
-	FOREIGN KEY(receiverId) REFERENCES User(userId),
+	FOREIGN KEY(receiverId) REFERENCES User(userId)
 );
