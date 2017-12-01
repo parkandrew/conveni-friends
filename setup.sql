@@ -21,11 +21,22 @@ CREATE TABLE Request(
 	timeCreated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE MessageSession(
+	messageSessionId INT AUTO_INCREMENT PRIMARY KEY,
+	userId1 VARCHAR(20) NOT NULL,
+	userId2 VARCHAR(20) NOT NULL,
+	FOREIGN KEY(userId1) REFERENCES User(userId),
+	FOREIGN KEY(userId2) REFERENCES User(userId),
+);
+
 CREATE TABLE Message(
 	messageId INT AUTO_INCREMENT PRIMARY KEY,
+	messageSessionId INT NOT NULL,
 	senderId VARCHAR(20) NOT NULL,
 	receiverId VARCHAR(20) NOT NULL,
+	content VARCHAR(500) NOT NULL,
 	timeCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(messageSessionId) REFERENCES MessageSession(messageSessionId),
 	FOREIGN KEY(senderId) REFERENCES User(userId),
-	FOREIGN KEY(receiverId) REFERENCES User(userId)
+	FOREIGN KEY(receiverId) REFERENCES User(userId),
 );

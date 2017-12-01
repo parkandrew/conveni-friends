@@ -142,6 +142,15 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
     });
 });
 
+// Returns messageSessions
+app.get('/v1/user/:userId/messageSessions', (req, res) => {
+    const { userId } = req.params;
+
+    // TODO: return MessageSessions where userId == userId1 or userId == userId2
+
+    res.send('ok')
+});
+
 /********************************** REQUESTS **********************************/
 
 /**
@@ -417,6 +426,64 @@ app.get('/v1/requests/all', (req, res) => {
             res.status(HttpStatus.OK).send(results);
         }
     });
+});
+
+/********************************** MESSAGES **********************************/
+app.get('/v1/message/session/:messageSessionId', (req, res) => {
+    const { messageSessionId } = req.params;
+
+    // TODO: Remove messageStubs and instead grab messages from mysql.
+    // We have to reconstruct the messages to send to
+    // the frontend. Our Message schema is not the same as the message object
+    // required by GiftedChat.
+    //
+    // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
+    // knows who sent what).
+    //
+    // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
+    // for the messaging interface, for a message object has the form:
+    //
+    // { _id, text, createdAt, user: {_id, name}, optionalParams }
+    const messageExamples = [
+      {
+          _id: 1,
+          text: 'My message',
+          createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
+          user: {
+            _id: 'userId',
+            name: 'userId',
+          },
+      },
+      {
+        _id: 2,
+        text: `Someone else's message`,
+        createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
+        user: {
+          _id: 'someOtherUserId',
+          name: 'someOtherUserId',
+        },
+      }
+    ];
+
+    res.send(messageExamples);
+});
+
+app.post('/v1/message/send', (req, res) => {
+    const { message, senderId, receiverId } = req.query;
+    console.log(JSON.stringify(message));
+
+    // TODO for JJ: Need to do websockets (i.e. senderId's websocket to receiverId's
+    // websocket).
+
+    // TODO: Need to store message into db. It will come in our custom GiftedChat
+    // message format and needs to be converted to our mysql Message schema.
+    // Don't forget that senderId == user._id
+
+    // NOTE: The GiftedChat._id is different than our Message schema id (which
+    // currently is an autoincremented int). This needs to be addressed somehow.
+
+    // TODO: Need to send success/error responses
+    res.send('ok')
 });
 
 server.listen(PORT, () => {
