@@ -16,7 +16,7 @@ export default class MessageScreen extends Component {
     }
 
     componentWillMount() {
-        const { messageSessionId } = this.props;
+        const { messageSessionId } = this.props.navigation.state.params;
 
         // Get messages with otherUserId
         fetch(config.API_URL + `/v1/message/session/${messageSessionId}`)
@@ -34,7 +34,7 @@ export default class MessageScreen extends Component {
     }
 
     onSend(messages) {
-        const { userId, otherUserId } = this.props;
+        const { userId, otherUserId } = this.props.navigation.state.params;
 
         // Update locally
         this.setState({
@@ -58,7 +58,7 @@ export default class MessageScreen extends Component {
     }
 
     render() {
-        const { userId } = this.props;
+        const { userId } = this.props.navigation.state.params;
         const { messages } = this.state;
 
         return (

@@ -148,7 +148,20 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
 
     // TODO: return MessageSessions where userId == userId1 or userId == userId2
 
-    res.send('ok')
+    const messageSessionsExample = [
+        {
+            messageSessionId: 1,
+            userId1: 'userId',
+            userId2: 'someOtherUserId',
+        },
+        {
+            messageSessionId: 2,
+            userId1: 'anotherOtherUserId',
+            userId2: 'userId',
+        },
+    ];
+
+    res.send(messageSessionsExample);
 });
 
 /********************************** REQUESTS **********************************/
@@ -444,10 +457,10 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
     // for the messaging interface, for a message object has the form:
     //
     // { _id, text, createdAt, user: {_id, name}, optionalParams }
-    const messageExamples = [
+    const messageExamples1 = [
       {
           _id: 1,
-          text: 'My message',
+          text: 'My message to someOtherUserId',
           createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
           user: {
             _id: 'userId',
@@ -456,7 +469,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
       },
       {
         _id: 2,
-        text: `Someone else's message`,
+        text: `someOtherUserId's message to me`,
         createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
         user: {
           _id: 'someOtherUserId',
@@ -465,7 +478,28 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
       }
     ];
 
-    res.send(messageExamples);
+    const messageExamples2 = [
+      {
+          _id: 1,
+          text: 'My message to anotherOtherUserId',
+          createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
+          user: {
+            _id: 'userId',
+            name: 'userId',
+          },
+      },
+      {
+        _id: 2,
+        text: `anotherOtherUserId's message to me`,
+        createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
+        user: {
+          _id: 'anotherOtherUserId',
+          name: 'anotherOtherUserId',
+        },
+      }
+    ];
+
+    res.send(messageSessionId == 1 ? messageExamples1 : messageExamples2);
 });
 
 app.post('/v1/message/send', (req, res) => {

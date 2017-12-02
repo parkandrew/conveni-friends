@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { List, ListItem } from 'react-native-elements';
 
 import config from 'client/config';
 
@@ -13,9 +13,13 @@ export default class MessagesScreen extends Component {
             // messageSession = { messageSessionId, userId1, userId2 }
             messageSessions: [],
         };
+
+        this.getMessageSession = this.getMessageSession.bind(this);
     }
 
     componentWillMount() {
+        const { userId } = this.props.navigation.state.params;
+
         // Grab active messageSessions
         fetch(config.API_URL + `/v1/user/${userId}/messageSessions`)
             .then(response => {
@@ -31,16 +35,38 @@ export default class MessagesScreen extends Component {
             });
     }
 
+    getMessageSession(messageSessionId, otherUserId) {
+        const { navigation } = this.props;
+        const { userId } = this.props.navigation.state.params;
+
+        navigation.navigate('MessageScreen', {
+            messageSessionId,
+            userId,
+            otherUserId
+        });
+    }
+
     render() {
+        const { userId } = this.props.navigation.state.params;
         const { messageSessions } = this.state;
 
-        // TODO: List messageSessions, route to MessageScreen with
-        // messageSessionId, userId, and otherUserId
+        // TODO: Sort by most recent messages
+        // TODO: Display most recent message
         return (
-            <MessageScreen
-                userId="userId"
-                otherUserId="someOtherUserId"
-            />
+            <List>
+                { messageSessions.map( messageSession => {
+                    const { messageSessionId, userId1, userId2 } = messageSession;
+                    const otherUserId = userId == userId1 ? userId2 : userId1;
+
+                    return (
+                        <ListItem
+                            key={ messageSessionId }
+                            title={ otherUserId }
+                            onPress={ () => this.getMessageSession(messageSessionId, otherUserId) }
+                        />
+                    );
+                })}
+            </List>
         );
     }
 }
