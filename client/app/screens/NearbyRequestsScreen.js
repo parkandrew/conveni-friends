@@ -5,9 +5,9 @@ import User from 'client/app/Common/User';
 import Request from 'client/app/Common/Request';
 
 export default class NearbyRequests extends React.Component {
-<<<<<<< HEAD
     static navigationOptions = {
         //headerLeft: null,
+        title: 'Nearby Requests'
     }
     constructor(props) {
         super(props);
@@ -28,17 +28,8 @@ export default class NearbyRequests extends React.Component {
     }
     componentWillMount() {
         this.fetchNearbyRequests();
-      }
-      render() {
-=======
-	static navigationOptions = {
-		title: 'Nearby Requests'
-	}
-	constructor(props) {
-		super(props);
-	}
+    }
 	render() {
->>>>>>> upstream/master
 		const data = [
 			{ key: 'In-n-out', distance: '0.6 mi', startTime: '9:00am', endTime: '10:00pm' },
 			{ key: 'Ride to Ralph\'s', distance: '1.4 mi', startTime: '1:00am', endTime: '2:00am'},

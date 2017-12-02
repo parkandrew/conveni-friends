@@ -12,11 +12,8 @@ import Moment from 'react-moment'; // 0.6.8
 
 import FormInput from 'client/app/components/FormInput';
 import DateTimePicker from 'client/app/components/DateTimePicker';
-<<<<<<< HEAD
 import User from 'client/app/Common/User';
-=======
 import CustomButton from 'client/app/components/CustomButton';
->>>>>>> upstream/master
 
 
 import "prop-types"; // 15.6.0
