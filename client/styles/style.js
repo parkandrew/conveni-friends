@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 		flex: .9
 	},
 	makeSingleLine: {
-		flex: 0.14,
+		flex: 0.17,
 		marginBottom: 24
 	},
 	makeDateContainer: {
@@ -181,4 +181,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default  styles;
+export default styles;

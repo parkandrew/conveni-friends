@@ -12,7 +12,11 @@ import Moment from 'react-moment'; // 0.6.8
 
 import FormInput from 'client/app/components/FormInput';
 import DateTimePicker from 'client/app/components/DateTimePicker';
+<<<<<<< HEAD
 import User from 'client/app/Common/User';
+=======
+import CustomButton from 'client/app/components/CustomButton';
+>>>>>>> upstream/master
 
 
 import "prop-types"; // 15.6.0
@@ -21,7 +25,7 @@ import "prop-types"; // 15.6.0
 export default class MakeRequest extends React.Component {
 
 	static navigationOptions = {
-		title: 'What would you like to request?',
+		title: 'Make a Request',
 	};
 
 	state = {
@@ -50,7 +54,7 @@ export default class MakeRequest extends React.Component {
 					</View>
 					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiLine={true} />
 				</View>
-				<Button title="Make Request" onPress={onPressHandle} />
+				<CustomButton text={'Make Request'}/>
 			</View>
 		);
 	}
