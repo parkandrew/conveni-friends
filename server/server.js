@@ -464,6 +464,26 @@ app.get('/v1/requests/all', (req, res) => {
 });
 
 /********************************** MESSAGES **********************************/
+// Create a MessageSession
+app.post('/v1/message/session/create', (req, res) => {
+    const { userId1, userId2 } = req.query;
+
+    // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
+    const query = `INSERT INTO MessageSession(userId1, userId2) ` +
+                  `VALUES(${userId1},${userId2})`;
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
+    });
+});
 app.get('/v1/message/session/:messageSessionId', (req, res) => {
     const { messageSessionId } = req.params;
 
@@ -524,6 +544,22 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
     res.send(messageSessionId == 1 ? messageExamples1 : messageExamples2);
 });
 
+/**
+ * Called when a user wants to send a message
+ *
+ * Example call:
+ * http://localhost:3000/v1/message/send?messageSessionId=1&senderId="sender"&receiverId="receiver"&content="this is the message"
+ *
+ * @name /v1/message/send
+ *
+ * @version 1
+ * @param {int} messageSessionId - The session ID for the message.
+ * @param {string} senderId - The ID for the sender.
+ * @param {string} receiverId - The ID for the receiver.
+ * @param {string} content - The message body.
+ *
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
 app.post('/v1/message/send', (req, res) => {
     const { messageSessionId, senderId, receiverId, content } = req.query;
 
@@ -535,7 +571,23 @@ app.post('/v1/message/send', (req, res) => {
     // currently is an autoincremented int). This needs to be addressed somehow.
 
     // TODO: Need to send success/error responses
-    res.send('ok')
+
+    const query = `INSERT INTO Message(messageSessionId,senderId, ` +
+                  `receiverId,content) ` +
+                  `VALUES(${messageSessionId},${senderId},` +
+                  `${receiverId},${content})`;
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
+        }
+    });
 });
 
 server.listen(PORT, () => {
