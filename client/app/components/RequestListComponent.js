@@ -9,7 +9,9 @@ export default class RequestListComponent extends React.Component {
 	}
 	constructor(props) {
 		super(props);
+		this._renderItem = this._renderItem.bind(this);
 	}
+
 
 	_renderItem = ({ item }) => (
 		<Card data={item} />

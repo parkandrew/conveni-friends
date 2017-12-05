@@ -13,18 +13,18 @@ export default class LoginScreen extends React.Component {
             password: '',
             sessionKey: ''
         };
-        this._login = this._login.bind(this)
-        this._signup = this._signup.bind(this)
+        this._login = this._login.bind(this);
+        this._signup = this._signup.bind(this);
     }
     _login() {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
         const alphanum = /[0-9a-zA-Z]+/g;
         if (this.state.userId && this.state.password) {
-            this.props.navigation.navigate('HomeScreen', {sessionKey: 'ayy'})
+            this.props.navigation.navigate('HomeScreen', {sessionKey: 'ayy'});
         }
         else {
-            Alert.alert("User ID or password is blank.")
+            Alert.alert("User ID or password is blank.");
         }
     }
     _signup() {
