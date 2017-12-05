@@ -32,25 +32,22 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 const wss = new WebSocket.Server({ port: 8080 });
 const connections = {}; // { userId: ws }
 
+// When userId opens his message session with otherUserId, userId creates a
+// websocket connection with the server. otherUserId may not have a websocket
+// connection with the server.
 wss.on('connection', (ws, req) => {
     const { userId, otherUserId } = url.parse(req.url, true).query;
 
     connections[userId] = ws;
 
     // TODO: JJ need to test
-    // ws.on('message', message => {
-    //     otherUserId in connections && connections[otherUserId].send({ userId, message })
-    // });
     ws.on('message', message => {
-        // TODO: Currently the message is sent to the user multiple times
-
-        // connections[userId].send(message);
-        // ws.send(JSON.stringify({ ...message, user: { "._id": otherUserId} }));
+        connections[otherUserId] && connections[userId].send(message);
     });
 
     // TODO: JJ need to test
     ws.on('close', () => {
-        connections[userId] = undefined
+        connections[userId] = undefined;
     });
 });
 
@@ -481,7 +478,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
     // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
     // for the messaging interface, for a message object has the form:
     //
-    // { _id, text, createdAt, user: {_id, name}, optionalParams }
+    // { _id, text, createdAt, user: { _id } }
     const messageExamples1 = [
       {
           _id: 1,
@@ -529,7 +526,6 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
 
 app.post('/v1/message/send', (req, res) => {
     const { messageSessionId, senderId, receiverId, content } = req.query;
-    console.log(JSON.stringify(content));
 
     // TODO: Need to store message into db. It will come in our custom GiftedChat
     // message format and needs to be converted to our mysql Message schema.

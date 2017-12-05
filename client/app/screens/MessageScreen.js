@@ -38,7 +38,7 @@ export default class MessageScreen extends Component {
     }
 
     componentWillUnmount() {
-
+        this.ws.close();
     }
 
     initWs() {
