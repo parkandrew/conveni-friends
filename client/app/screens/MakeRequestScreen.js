@@ -9,7 +9,7 @@ import styles from 'client/styles/style';
 
 import moment from 'moment'; // 2.19.2
 import Moment from 'react-moment'; // 0.6.8
-
+import Request from 'client/app/Common/Request';
 import FormInput from 'client/app/components/FormInput';
 import DateTimePicker from 'client/app/components/DateTimePicker';
 import User from 'client/app/Common/User';
@@ -26,20 +26,23 @@ export default class MakeRequest extends React.Component {
 	};
 
 	state = {
-		user: null,
+		user: new User(),
 		isDateTimePickerVisible: false,
 		startTime: new Date(),
 		endTime: new Date(),
 	}
 
+	onPressHandle() {
+		let request = new Request('userId', 'title', 'descrip', '5.5', '5.5', 'address', '2019-01-01T01:01:01', '2019-01-01T01:01:01');
+		user.createRequest(request).then(function(responseJSON) {
+			console.log(responseJSON);
+		});
+		this.props.navigation.navigate('HomeScreen');
+	}
 
 	render() {
-		function onPressHandle() {
-			let request = new Request();
-			user.createRequest(request).then(function(responseJSON) {
-				//do stuff with the response
-			});
-		}
+		const { navigate } = this.props.navigation;
+
 		return (
 			<View style={styles.makeContainer}>
 				<View style={styles.makeInputView}>
@@ -51,7 +54,7 @@ export default class MakeRequest extends React.Component {
 					</View>
 					<FormInput title={'Description'} placeholder={'Some other details would include...'} multiLine={true} />
 				</View>
-				<CustomButton text={'Make Request'}/>
+				<CustomButton text={'Make Request'} onPressHandle={() => {this.onPressHandle();}} />
 			</View>
 		);
 	}

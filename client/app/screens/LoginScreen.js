@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
         if (this.state.userId && this.state.password) {
             user = new User();
             user.login(this.state.userId, this.state.password).then(function(responseJSON) {
-                //do stuff with the response
+                console.log(responseJSON)
             });
             user.userId = 'sample'
             user.sessionKey = 'blank'

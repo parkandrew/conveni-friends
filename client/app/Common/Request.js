@@ -2,7 +2,7 @@
 export default class Request {
     constructor(userId, title, description, latitude, 
     longitude, address, timeStart, timeEnd) {
-        this.userId = userId,
+        this.userId = userId;
         this.title = title,
         this.description = description,
         this.latitude = latitude,

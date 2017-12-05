@@ -107,6 +107,11 @@ export default class HomeScreen extends React.Component {
                             title='Provider' />
                         <Button onPress={this.requester}
                             title='Requester' />
+
+                        <Button onPress={this.account}  // TODO:remove later
+                            title='Account Settings' />
+                        <Button onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
+                            title='Messages' />
                     </View>
                 </Drawer>
         );

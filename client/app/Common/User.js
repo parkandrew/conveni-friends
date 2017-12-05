@@ -2,9 +2,7 @@
 import Request from 'client/app/Common/Request';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://conveni-friends.com';
-axios.defaults.headers.common['Authorization'] = 'abcde';
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+import config from 'client/config';
 
 export default class User {
     constructor(userId='', sessionKey='') {
@@ -14,14 +12,12 @@ export default class User {
     }
 
     login(userId, password) {
-        let url = '/v1/user/' + userId + '/login';
+        let url = `${config.API_URL}/v1/user/` + userId + '/login';
         return axios.post(url, {
-            params: {
                 password: password
-            }
         }).then(function (response) {
             console.log(response);
-            return response.JSON;
+            return response.data;
             //if successful, set userId and sessionKey to the member variables
           })
           .catch(function (error) {
@@ -30,34 +26,59 @@ export default class User {
           });
     }
 
+
+    signup(userId, password) {
+        let url = `${config.API_URL}/v1/user/` + userId + '/signup';
+        return axios.post(url, {
+            password: password
+        }).then(function(response) {
+            console.log(response);
+            return response;
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    changePassword(userId, oldPassword, newPassword) {
+        let url = `${config.API_URL}/v1/user/` + userId + '/update';
+        return axios.post(url, {
+            password: oldPassword,
+            newPassword: newPassword
+        }).then(function(response) {
+            console.log(response);
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+
     createRequest(request) {
-        return axios.post('/v1/request/create', {
-            params: {
+        console.log(request);
+        return axios.post(`${config.API_URL}/v1/request/create`, {
                 userId: request.userId,
                 title: request.title,
-                description: request.description,
                 latitude: request.latitude,
                 longitude: request.longitude,
                 address: request.address,
+                description: request.description,
                 timeStart: request.timeStart,
                 timeEnd: request.timeEnd
-            }
         }).then(function (response) {
             console.log(response);
-            return response.JSON;
+            return response.data;
           })
           .catch(function (error) {
             console.log(error);
+            return error;
           });
-          return response;
     }
 
    getMyRequests() {
-       let url = 'v1/user/' + this.userId + '/requests'
+       let url = `${config.API_URL}v1/user/` + this.userId + '/requests'
        return axios.get(url)
        .then(function (response) {
-        console.log(response);
-        return response.JSON;
+           console.log(response)
+        return response.data;
         //format into request list and return list
       })
       .catch(function (error) {
@@ -67,15 +88,14 @@ export default class User {
    }
 
    getNearbyRequests(latitude, longitude) {
-       return axios.get('/v1/requests/all', {
+       return axios.get(`${config.API_URL}/v1/requests/all`, {
            params: {
                userId: this.userId,
                latitude: latitude,
                longitude: longitude
            }
        }).then(function (response) {
-        console.log(response);
-        return response.JSON;
+        return response.data;
         //format into request list and return list
       }).catch(function (error) {
         console.log(error);
