@@ -11,9 +11,9 @@ export default class MapScreen extends React.Component {
 	}
 
 	render() {
-		// const address = this.props.address;		
-		const address = 'westwood village 90024';
-		const buttonText = 'Confirm Location'
+		// const address = this.props.address;
+		const address = 'westwood village 90024'; // TODO: replace this w/ props.address
+		const buttonText = 'Confirm Location' // TODO: replace this based on requester/provider
 		return (
 			<MapComponent address={address} buttonText={buttonText}/>
 		);
