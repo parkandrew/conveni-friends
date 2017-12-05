@@ -7,6 +7,8 @@
 import express from "express";
 import http from "http";
 import mysql from "mysql";
+import url from "url"
+import WebSocket from "ws";
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -27,11 +29,27 @@ var upload = multer(); // for parsing multipart/form-data
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// TODO: We should split up the routes into separate files .. one for
-// user endpoints, request endpoints, etc.
+const wss = new WebSocket.Server({ port: 8080 });
+const connections = {}; // { userId: ws }
 
-// TODO: I think we could create our own function that handles the db queries
-// so that we can define a way to handle errors
+// When userId opens his message session with otherUserId, userId creates a
+// websocket connection with the server. otherUserId may not have a websocket
+// connection with the server.
+wss.on('connection', (ws, req) => {
+    const { userId, otherUserId } = url.parse(req.url, true).query;
+
+    connections[userId] = ws;
+
+    // TODO: JJ need to test
+    ws.on('message', message => {
+        connections[otherUserId] && connections[userId].send(message);
+    });
+
+    // TODO: JJ need to test
+    ws.on('close', () => {
+        connections[userId] = undefined;
+    });
+});
 
 app.get('/', (req, res) => {
     // TODO1: This breaks the test for some reason
@@ -146,7 +164,11 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 app.get('/v1/user/:userId/messageSessions', (req, res) => {
     const { userId } = req.params;
 
-    // TODO: return MessageSessions where userId == userId1 or userId == userId2
+    // TODO: We need a POST route for creating a new messageSession between
+    // two users when a request is accepted.
+
+    // TODO: return MessageSessions where userId == userId1 or userId == userId2.
+    // Need to think about the case when user1 accepts 2+ of user2's requests.
 
     const messageSessionsExample = [
         {
@@ -456,7 +478,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
     // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
     // for the messaging interface, for a message object has the form:
     //
-    // { _id, text, createdAt, user: {_id, name}, optionalParams }
+    // { _id, text, createdAt, user: { _id } }
     const messageExamples1 = [
       {
           _id: 1,
@@ -503,11 +525,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
 });
 
 app.post('/v1/message/send', (req, res) => {
-    const { message, senderId, receiverId } = req.query;
-    console.log(JSON.stringify(message));
-
-    // TODO for JJ: Need to do websockets (i.e. senderId's websocket to receiverId's
-    // websocket).
+    const { messageSessionId, senderId, receiverId, content } = req.query;
 
     // TODO: Need to store message into db. It will come in our custom GiftedChat
     // message format and needs to be converted to our mysql Message schema.
