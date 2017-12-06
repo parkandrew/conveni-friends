@@ -539,12 +539,6 @@ app.post('/v1/message/session/create', (req, res) => {
  */
 app.get('/v1/message/session/:messageSessionId', (req, res) => {
     const { messageSessionId } = req.params;
-
-    // TODO: Remove messageStubs and instead grab messages from mysql.
-    // We have to reconstruct the messages to send to
-    // the frontend. Our Message schema is not the same as the message object
-    // required by GiftedChat.
-    //
     // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
     // knows who sent what).
     //
@@ -602,12 +596,6 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
  */
 app.post('/v1/message/send', (req, res) => {
     const { messageSessionId, senderId, receiverId, content } = req.query;
-
-    // TODO: Make sure message format is compatible w/ this endpoint
-    // Need to store message into db. It will come in our custom GiftedChat
-    // message format and needs to be converted to our mysql Message schema.
-    // Don't forget that senderId == user._id
-
     // NOTE: The GiftedChat._id is different than our Message schema id (which
     // currently is an autoincremented int). This needs to be addressed somehow.
 
