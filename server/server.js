@@ -486,19 +486,40 @@ app.get('/v1/requests/all', (req, res) => {
 app.post('/v1/message/session/create', (req, res) => {
     const { userId1, userId2 } = req.query;
 
-    // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
-    const query = `INSERT INTO MessageSession(userId1, userId2) ` +
-                  `VALUES(${userId1},${userId2})`;
+    const query1 = `SELECT * FROM MessageSession ` +
+                  `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
+                  `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
-    db.query(query, (error, results) => {
+    db.query(query1, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
+        else if (results.length == 1) {
+            console.log("MessageSession already in database.");
+            return res.status(HttpStatus.OK).send(results);
+        }
+        else if (results.length != 0) {
+            console.log("Duplicate MessageSessions found.")
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
         else {
-            console.log("Success");
-            res.status(HttpStatus.OK).send(results);
+            const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
+                          `VALUES(${userId1},${userId2})`;
+
+            db.query(query2, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .send({ message: "Internal server error." });
+                }
+                else {
+                    console.log("Success");
+                    res.status(HttpStatus.OK).send(results);
+                }
+            });
         }
     });
 });
