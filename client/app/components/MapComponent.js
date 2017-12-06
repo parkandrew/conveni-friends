@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
-import MapComponent from 'client/app/components/MapComponent';
 import CustomButton from 'client/app/components/CustomButton';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
@@ -20,6 +19,7 @@ export default class MapComponent extends React.Component {
 	static navigationOptions = {
 
 	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
