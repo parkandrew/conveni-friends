@@ -10,7 +10,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: '',
+            userIdInput: '',
             password: '',
             user: null
         };
@@ -21,14 +21,18 @@ export default class LoginScreen extends React.Component {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
         const alphanum = /[0-9a-zA-Z]+/g;
-        if (this.state.userId && this.state.password) {
-            user = new User();
-            user.login(this.state.userId, this.state.password).then(function(responseJSON) {
-                console.log(responseJSON)
+        if (this.state.userIdInput && this.state.password) {
+            this.state.user = new User();
+            console.log(this);
+            this.state.user.login(this.state.userIdInput, this.state.password).then((responseCode) => {
+                if (responseCode == 200) {
+                    this.state.user.userId = this.state.userIdInput;
+                    this.props.navigation.navigate('HomeScreen', {user: this.state.user});
+                }
+                else if (responseCode == 417){
+                    Alert.alert("Incorrect username or password");
+                }
             });
-            user.userId = 'sample'
-            user.sessionKey = 'blank'
-            this.props.navigation.navigate('HomeScreen', {user: user})
         }
         else {
             Alert.alert("User ID or password is blank.")
@@ -45,7 +49,7 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.loginTitle}>Conveni-friends</Text>
             <TextInput
                 placeholder="User ID"
-                onChangeText={(text) => this.setState({userId: text})}
+                onChangeText={(text) => this.setState({userIdInput: text})}
             />
             <TextInput
                 secureTextEntry={true}

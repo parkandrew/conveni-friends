@@ -46,15 +46,15 @@ export default class HomeScreen extends React.Component {
     };
     provider() {
         //TODO: load nearby requests screen
-        this.props.navigation.navigate('NearbyRequestsScreen');
+        this.props.navigation.navigate('NearbyRequestsScreen', {user: this.state.user});
     }
     requester() {
-        this.props.navigation.navigate('MakeRequestScreen');
+        this.props.navigation.navigate('MakeRequestScreen', {user: this.state.user});
     }
 
     // TODO: remove later
     account() {
-        this.props.navigation.navigate('AccountScreen');
+        this.props.navigation.navigate('AccountScreen', {user: this.state.user});
     }
 
 
@@ -83,8 +83,7 @@ export default class HomeScreen extends React.Component {
         //TODO: either create a splash screen to navigate
         //to the loginscreen/homescreen or navigate from homescreen
         //to loginscreen (prefer splash screen)
-        console.log(this.state.user.sessionKey)
-        if (!this.state.user.sessionKey) {
+        if (!this.state.user.userId) {
             navigate('LoginScreen');
         }
         return (

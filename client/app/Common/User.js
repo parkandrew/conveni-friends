@@ -5,22 +5,20 @@ import axios from 'axios';
 import config from 'client/config';
 
 export default class User {
-    constructor(userId='', sessionKey='') {
+    constructor(userId='') {
         //the only variables actually needed for the user class
         this.userId = userId;
-        this.sessionKey = sessionKey;
     }
 
     login(userId, password) {
         let url = `${config.API_URL}/v1/user/` + userId + '/login';
         return axios.post(url, {
                 password: password
-        }).then(function (response) {
+        }).then((response) => {
             console.log(response);
-            return response.data;
-            //if successful, set userId and sessionKey to the member variables
+            return response.status;
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
             //return error JSON?
           });
@@ -31,10 +29,10 @@ export default class User {
         let url = `${config.API_URL}/v1/user/` + userId + '/signup';
         return axios.post(url, {
             password: password
-        }).then(function(response) {
+        }).then((response) => {
             console.log(response);
             return response;
-        }).catch(function(error) {
+        }).catch((error) => {
             console.log(error);
         });
     }
@@ -44,9 +42,9 @@ export default class User {
         return axios.post(url, {
             password: oldPassword,
             newPassword: newPassword
-        }).then(function(response) {
+        }).then((response) => {
             console.log(response);
-        }).catch(function(error) {
+        }).catch((error) => {
             console.log(error);
         });
     }
@@ -63,11 +61,11 @@ export default class User {
                 description: request.description,
                 timeStart: request.timeStart,
                 timeEnd: request.timeEnd
-        }).then(function (response) {
+        }).then((response) => {
             console.log(response);
             return response.data;
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
             return error;
           });
@@ -76,12 +74,12 @@ export default class User {
    getMyRequests() {
        let url = `${config.API_URL}v1/user/` + this.userId + '/requests'
        return axios.get(url)
-       .then(function (response) {
+       .then((response) => {
            console.log(response)
         return response.data;
         //format into request list and return list
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         //return error JSON?
       });

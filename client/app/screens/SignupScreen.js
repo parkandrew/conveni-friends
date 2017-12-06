@@ -12,7 +12,6 @@ export default class SignupScreen extends React.Component {
             userId: '',
             password: '',
             password2: '',
-            sessionKey: ''
         };
         this._makeAccount = this._makeAccount.bind(this)
     }
@@ -29,13 +28,13 @@ export default class SignupScreen extends React.Component {
                     //"home" screen
                     let user = new User();
                     user.signup(this.state.userId, this.state.password).then(
-                        function(responseData) {
+                        (responseData) => {
                             console.log(responseData);
+                            this.props.navigation.navigate('LoginScreen');
                         }
-                    ).catch(function(error) {
+                    ).catch((error) => {
                         console.log(error)
                     });
-                    this.props.navigation.navigate('LoginScreen');
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");

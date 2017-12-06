@@ -6,27 +6,32 @@ import Request from 'client/app/Common/Request';
 
 export default class NearbyRequests extends React.Component {
     static navigationOptions = {
-        //headerLeft: null,
         title: 'Nearby Requests'
     }
     constructor(props) {
         super(props);
-        const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            sessionKey: '',
             user: new User(),
-            dataSource: dataSource.cloneWithRows(['row 1', 'row 2']),
         };
         //this._getNearbyRequests = this._getNearbyRequests.bind(this)
     }
     fetchNearbyRequests() {
+        if (this.state.user.userId) {
+            data = []
+            this.state.user.getNearbyRequests().then(function(response) {
+                //put data in array
+            });
+        }
+    }
+    _getUser() {
+        //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
-            this.setState({sessionKey: this.props.navigation.state.params.sessionKey});
             this.setState({user: this.props.navigation.state.params.user});
         }
-        //this.setState({dataSource: this.state.user.getNearbyRequests()})
-    }
+	}
+	
     componentWillMount() {
+        this._getUser();
         this.fetchNearbyRequests();
     }
 	render() {

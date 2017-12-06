@@ -34,11 +34,21 @@ export default class MakeRequest extends React.Component {
 
 	onPressHandle() {
 		let request = new Request('userId', 'title', 'descrip', '5.5', '5.5', 'address', '2019-01-01T01:01:01', '2019-01-01T01:01:01');
-		user.createRequest(request).then(function(responseJSON) {
-			console.log(responseJSON);
+		user.createRequest(request).then((responseStatus) => {
+			this.props.navigation.navigate('HomeScreen', {user: this.state.user});
 		});
-		this.props.navigation.navigate('HomeScreen');
 	}
+
+	_getUser() {
+        //TODO: get key from storage somehow
+        if (this.props.navigation.state.params) {
+            this.setState({user: this.props.navigation.state.params.user});
+        }
+	}
+	
+	componentWillMount() {
+        this._getUser();
+      }
 
 	render() {
 		const { navigate } = this.props.navigation;

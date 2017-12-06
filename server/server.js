@@ -95,14 +95,19 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
                   `WHERE password="${password}" and userId="${userId}"`;
 
     db.query(query, (error, results) => {
+        console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
-        else {
+        else if (results.length > 0) {
             console.log("Success");
             res.status(HttpStatus.OK).send({});
+        }
+        else {
+            console.log("No user found");
+            res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
 });
@@ -387,7 +392,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
  */
 app.get('/v1/user/:userId/requests', (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.body;
 
     const query = `SELECT * FROM Request `
                 + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
