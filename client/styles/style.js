@@ -58,56 +58,35 @@ const styles = StyleSheet.create({
 		fontSize: $font__small
 	},
 
-// HomeScreen
-    homeTitle: {
-      fontSize: $font__large,
-      color: 'red'
-    },
-    homeContainer: {
-      flex: 1,
-      backgroundColor: $white,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    homeButton: {
-      alignItems: 'flex-start',
-    },
+
+// Generic styling
+	titleLarge: {
+		fontSize: $font__large,
+	  color: 'red'
+	},
+
+	titleMedium: {
+		fontSize: $font__medium,
+	  color: 'red'
+	},
+
+	genericContainer: {
+		flex: 1,
+	  backgroundColor: $white,
+	  alignItems: 'center',
+	  justifyContent: 'center',
+	},
 
 
-// LoginScreen
-    loginTitle: {
-      fontSize: $font__large,
-      color: 'red'
-      },
-    loginContainer: {
-      flex: 1,
-      backgroundColor: $white,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
+	homeButton: {
+	  alignItems: 'flex-start',
+	},
 
 
 // NearbyRequests
-    nearbyTitle: {
-      fontSize: $font__medium,
-      color: 'red'
-    },
     nearbyContainer: {
       flex: 1,
       backgroundColor: $white,
-    },
-
-// SignupScreen
-
-    signupTitle: {
-      fontSize: $font__medium,
-      color: 'red'
-    },
-    signupContainer: {
-      flex: 1,
-      backgroundColor: $white,
-      alignItems: 'center',
-      justifyContent: 'center',
     },
 
 // MakeRequestScreen/DateTimePicker

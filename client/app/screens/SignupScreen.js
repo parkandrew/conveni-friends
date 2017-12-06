@@ -42,8 +42,8 @@ export default class SignupScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.signupContainer}>
-            <Text style={styles.signupTitle}>Sign-up</Text>
+            <View style={styles.genericContainer}>
+            <Text style={styles.titleMedium}>Sign-up</Text>
             <TextInput
                 placeholder="User ID"
                 onChangeText={(text) => this.setState({userId: text})}

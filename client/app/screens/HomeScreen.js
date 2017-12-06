@@ -100,7 +100,7 @@ export default class HomeScreen extends React.Component {
                     acceptPan={true}
                     panCloseMask={0.6}
                     panOpenMask={0}>
-                    <View style={styles.homeContainer}>
+                    <View style={styles.genericContainer}>
                         <Text>I am a...</Text>
                         <Button onPress={this.provider}
                             title='Provider' />
