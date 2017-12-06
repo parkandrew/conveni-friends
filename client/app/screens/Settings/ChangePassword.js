@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
 
-export default class SignupScreen extends React.Component {
+export default class ChangePassword extends React.Component {
     static navigationOptions = {
     }
     constructor(props) {
@@ -12,9 +12,9 @@ export default class SignupScreen extends React.Component {
             password: '',
             password2: '',
         };
-        this._makeAccount = this._makeAccount.bind(this)
+        this._changePass = this._changePass.bind(this)
     }
-    _makeAccount() {
+    _changePass() {
         //alphanumeric characters
         const alphanum = /[0-9a-zA-Z]+/g;
         //TODO: check w/backend that the user id does not already exist
@@ -25,7 +25,7 @@ export default class SignupScreen extends React.Component {
                     //We can either navigate them back to the login screen
                     //or get the session key right here and navigate them to the
                     //"home" screen
-                    this.props.navigation.navigate('LoginScreen')
+                    this.props.navigation.navigate('AccountScreen')
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");
@@ -43,14 +43,14 @@ export default class SignupScreen extends React.Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.signupContainer}>
-            <Text style={styles.signupTitle}>Sign-up</Text>
+            <Text style={styles.signupTitle}>Change Password</Text>
             <TextInput
                 placeholder="User ID"
                 onChangeText={(text) => this.setState({userId: text})}
             />
             <TextInput
                 secureTextEntry={true}
-                placeholder="Password"
+                placeholder="New Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
             <TextInput
@@ -59,8 +59,8 @@ export default class SignupScreen extends React.Component {
                 onChangeText={(text) => this.setState({password2: text})}
             />
             <Button
-                onPress={this._makeAccount}
-                title="Sign up"
+                onPress={this._changePass}
+                title="Confirm"
             />
         </View>
         );

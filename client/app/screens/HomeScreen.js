@@ -10,7 +10,7 @@ export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
         const params = navigation.state.params || {};
         return {
-            headerLeft:  params.headerLeft,
+            headerLeft: params.headerLeft,
         }
     };
     constructor(props) {
@@ -18,29 +18,22 @@ export default class HomeScreen extends React.Component {
         this.state = {
             userId: '',
             password: '',
-            sessionKey: '',
             active: false
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.logout = this.logout.bind(this);
-        this._getSessionKey = this._getSessionKey.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
-        this.account = this.account.bind(this); // TODO: remove later
+        this.account = this.account.bind(this);
+
     }
+
+
     logout() {
-        this.setState({session_key: ''});
         this.props.navigation.navigate('LoginScreen');
     }
-    _getSessionKey() {
-        //TODO: get key from storage somehow
-        if (this.props.navigation.state.params) {
-            this.setState({sessionKey: this.props.navigation.state.params.sessionKey});
-        }
-        else {
-        }
-    }
+
     toggleDrawer = () => {
         if (!this._drawer._open) {
             this._drawer.open();
@@ -48,7 +41,8 @@ export default class HomeScreen extends React.Component {
         else {
             this._drawer.close();
         }
-    };
+    }
+
     provider() {
         //TODO: load nearby requests screen
         this.props.navigation.navigate('NearbyRequestsScreen');
@@ -57,10 +51,11 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.navigate('MakeRequestScreen');
     }
 
-    // TODO: remove later
     account() {
         this.props.navigation.navigate('AccountScreen');
     }
+
+
 
 
     _setNavigationParams() {
@@ -75,7 +70,6 @@ export default class HomeScreen extends React.Component {
 
     componentWillMount() {
         this._setNavigationParams();
-        this._getSessionKey();
       }
 
     render() {
@@ -89,14 +83,14 @@ export default class HomeScreen extends React.Component {
         //to the loginscreen/homescreen or navigate from homescreen
         //to loginscreen (prefer splash screen)
 
-        if (!this.state.sessionKey) {
-            navigate('Login');
-        }
         return (
                 <Drawer type='overlay'
                     content={<HamburgerMenu
                         logout={() => {
                             this.logout();
+                        }}
+                        account={() => {
+                            this.account();
                         }}
                         />}
                     ref={(ref) => this._drawer = ref}
@@ -112,8 +106,6 @@ export default class HomeScreen extends React.Component {
                             title='Provider' />
                         <Button onPress={this.requester}
                             title='Requester' />
-                        <Button onPress={this.account}  // TODO:remove later
-                            title='Account Settings' />
                         <Button onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
                             title='Messages' />
                     </View>
