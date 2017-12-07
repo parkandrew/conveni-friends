@@ -12,7 +12,6 @@ export default class HamburgerMenu extends Component {
             </View>
         );
     }
-
 }
 const styles = StyleSheet.create({
     container: {

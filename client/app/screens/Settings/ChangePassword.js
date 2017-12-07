@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
+import CustomButton from 'client/app/components/CustomButton';
 
 export default class ChangePassword extends React.Component {
     static navigationOptions = {
@@ -58,8 +59,8 @@ export default class ChangePassword extends React.Component {
                 placeholder="Confirm Password"
                 onChangeText={(text) => this.setState({password2: text})}
             />
-            <Button
-                onPress={this._changePass}
+            <CustomButton
+                onPressHandle={this._changePass}
                 title="Confirm"
             />
         </View>

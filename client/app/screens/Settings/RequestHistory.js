@@ -1,27 +1,84 @@
 import React from 'react';
-import { TabNavigator } from 'react-navigation';
+import { ListView, Alert, Text, View, TextInput, Button } from 'react-native';
+import styles from 'client/styles/style';
+import User from 'client/app/Common/User';
+import Request from 'client/app/Common/Request';
+import RequestListComponent from 'client/app/components/RequestListComponent';
+import CustomButton from 'client/app/components/CustomButton';
 
-import AcceptedRequestsScreen from 'client/app/screens/AcceptedRequestsScreen';
-import YourRequestsScreen from 'client/app/screens/YourRequestsScreen';
-import styles from 'client/styles/style'
+export default class RequestHistory extends React.Component {
+    static navigationOptions = {
+        title: 'Request History'
+    }
+    constructor(props) {
+        super(props);
+        state = {
+            data: [],
+            user: null
+        };
+        this.fetchMyRequests = this.fetchMyRequests.bind(this);
+        this.createDataCell = this.createDataCell.bind(this);
+        this.getDistance = this.getDistance.bind(this);
+    }
 
-import { StyleSheet } from 'react-native';
+    parseSQLData(data) {
+        let request = new Request(
+            data.requesterId,
+            data.providerId,
+            data.title,
+            data.description,
+            data.latitude,
+            data.longitude,
+            data.address,
+            data.timeStart,
+            data.timeEnd
+        )
+        return request;
+    }
 
-// TODO: Style for android too (tint color) and maybe move styles away?
-const Tabs = TabNavigator({
-	AcceptedRequests: {
-		screen: AcceptedRequestsScreen,
-	},
-	YourRequests: {
-		screen: YourRequestsScreen,
-	},
-}, {
-	tabBarPosition: 'top',
-	tabBarOptions: {
-		activeBackgroundColor: '#ADD8E6',
-		inactiveBackgroundColor: '#D3D3D3',
-		labelStyle: styles.labelStyle,
-		tabStyle: styles.tabStyle,
-	},
-});
-export default Tabs;
+    createDataCell(request) {
+        distance = this.getDistance(request.latitude, request.longitude);
+        timeStart = new Date(request.timeStart).toLocaleTimeString();
+        timeEnd = new Date(request.timeEnd).toLocaleTimeString();
+        return { title: request.title, distance: '0.01 mi', startTime: timeStart, endTime: timeEnd };
+    }
+
+    getDistance(latitude, longitude) {
+        //get current location: currentLocation = blah()
+
+    }
+
+    fetchMyRequests() {
+        if (this.props.navigation.state.params) {
+            this.setState({user: this.props.navigation.state.params.user}, () => {
+                this.state.user.getMyRequests().then((response) => {
+                    //put data in array
+                    dataSource = [];
+                    response.forEach(element => {
+                        let request = this.parseSQLData(element);
+                        dataSource.push(this.createDataCell(request));
+                    });
+                    this.setState({data: dataSource});
+                });
+            });
+        }
+    }
+
+    componentWillMount() {
+        this.fetchMyRequests();
+    }
+	render() {
+        if (this.state.data) {
+            return (
+                <RequestListComponent data={this.state.data}/>
+            );
+        }
+        else {
+            return (
+            <View>
+                <Text>No requests found.</Text>
+            </View>
+            );
+        }
+    }
+}
