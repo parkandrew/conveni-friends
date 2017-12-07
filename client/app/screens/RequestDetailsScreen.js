@@ -9,23 +9,24 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	render() {
-		const requestDetails = {
-			title: 'Groceries from Ralph\'s',
-			location: '1000 Tiverton Ave',
-			distance: '0.5 mi',
-			startTime: '9:00 am',
-			endTime: '10:00 pm',
-			details: 'like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplantsome rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like '
-		}
+					console.log(this);
+		// const requestDetails = {
+		// 	title: 'Groceries from Ralph\'s',
+		// 	location: '1000 Tiverton Ave',
+		// 	distance: '0.5 mi',
+		// 	startTime: '9:00 am',
+		// 	endTime: '10:00 pm',
+		// 	details: 'like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplantsome rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like '
+		// }
 		return (
 			<View style={{ flex: 1 }}>
 				<ScrollView style={reqStyles.makeContainer}>
 					<View style={reqStyles.makeInputView}>
-						<RequestInfoLine primary={'Request'} secondary={requestDetails.title} />
-						<RequestInfoLine primary={'Location'} secondary={requestDetails.location} />
-						<RequestInfoLine primary={'Start Time'} secondary={requestDetails.startTime} />
-						<RequestInfoLine primary={'End Time'} secondary={requestDetails.endTime} />
-						<Text style={reqStyles.key}>Details: <Text style={reqStyles.value}>{requestDetails.details}</Text></Text>
+						<RequestInfoLine primary={'Request'} secondary={this.props.navigation.state.params.data.title} />
+						<RequestInfoLine primary={'Location'} secondary={this.props.navigation.state.params.data.location} />
+						<RequestInfoLine primary={'Start Time'} secondary={this.props.navigation.state.params.data.startTime} />
+						<RequestInfoLine primary={'End Time'} secondary={this.props.navigation.state.params.data.endTime} />
+						<Text style={reqStyles.key}>Details: <Text style={reqStyles.value}>{this.props.navigation.state.params.data.details}</Text></Text>
 					</View>
 					<CustomButton style={reqStyles.buttonContainer} text={'Message Requester'}/>
 				</ScrollView>

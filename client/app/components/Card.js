@@ -20,7 +20,7 @@ export default class Card extends React.Component {
 
 	_onClickHandle(e) {
 		console.log('Data to display in next screen: ', this.props.data);
-		// navigate here with these props
+		this.props.navigation.navigate('RequestDetailsScreen', {data: this.props.data});
 	}
 
 	render() {
@@ -39,4 +39,3 @@ export default class Card extends React.Component {
 		);
 	}
 }
-

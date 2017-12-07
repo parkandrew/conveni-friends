@@ -14,7 +14,8 @@ export default class RequestListComponent extends React.Component {
 
 
 	_renderItem = ({ item }) => (
-		<Card data={item} />
+		<Card data={item}
+		navigation={this.props.navigation}/>
 	);
 
 	_renderSeparator = () => (
@@ -32,6 +33,7 @@ export default class RequestListComponent extends React.Component {
 				ItemSeparatorComponent={this._renderSeparator}
 				data={this.props.data}
 				renderItem={this._renderItem}
+				// navigation={this.props.navigation}
 			/>
 		);
 	}

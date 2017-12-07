@@ -12,6 +12,7 @@ import MessageScreen from 'client/app/screens/MessageScreen';
 import MessagesScreen from 'client/app/screens/MessagesScreen';
 import MapScreen from 'client/app/screens/MapScreen';
 import RequestHistory from 'client/app/screens/Settings/RequestHistory';
+import RequestInfoDetails from 'client/app/components/RequestInfoDetails';
 import { StackNavigator } from 'react-navigation';
 
 const ReactNavigation = StackNavigator({
@@ -28,6 +29,7 @@ const ReactNavigation = StackNavigator({
 	MessagesScreen: {screen: MessagesScreen},
 	MapScreen: {screen: MapScreen}, // maybe a requester map and a provider map screen? or just use props to pass in properly.
 	RequestHistory: {screen: RequestHistory},
+	RequestInfoDetails: {screen: RequestInfoDetails},
 })
 
 export default ReactNavigation;

@@ -15,14 +15,24 @@ export default class Account extends React.Component {
           password: ''
       };
       this.changepass = this.changepass.bind(this)
+      this._getUser = this._getUser.bind(this)
   }
 
   changepass(){
-      this.props.navigation.navigate('ChangePassword');
+      this.props.navigation.navigate('ChangePassword', {user: this.state.user});
   }
 
   requesthist(){
       this.props.navigation.navigate('RequestHistory');
+  }
+
+  componentWillMount() {
+      this._getUser();
+  }
+  _getUser() {
+          if (this.props.navigation.state.params) {
+              this.setState({user: this.props.navigation.state.params.user});
+          }
   }
 
   render () {

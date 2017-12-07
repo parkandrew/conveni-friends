@@ -72,7 +72,7 @@ export default class RequestHistory extends React.Component {
 	render() {
         if (this.state.data) {
             return (
-                <RequestListComponent data={this.state.data}/>
+                <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
             );
         }
         else {

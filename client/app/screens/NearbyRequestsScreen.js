@@ -17,10 +17,9 @@ export default class NearbyRequestsScreen extends React.Component {
         };
         this.fetchNearbyRequests = this.fetchNearbyRequests.bind(this);
         this.createDataCell = this.createDataCell.bind(this);
-        this.getDistance = this.getDistance.bind(this);
     }
 
-    parseSQLData(data) {
+    parseSQLData(data, distance) {
         let request = new Request(
             data.requesterId,
             data.providerId,
@@ -35,16 +34,11 @@ export default class NearbyRequestsScreen extends React.Component {
         return request;
     }
 
-    createDataCell(request) {
-        distance = this.getDistance(request.latitude, request.longitude);
+    createDataCell(request, distance) {
+      let str = distance + ' mi';
         timeStart = new Date(request.timeStart).toLocaleTimeString();
         timeEnd = new Date(request.timeEnd).toLocaleTimeString();
-        return { title: request.title, distance: '0.01 mi', startTime: timeStart, endTime: timeEnd };
-    }
-
-    getDistance(latitude, longitude) {
-        //get current location: currentLocation = blah()
-
+        return { title: request.title, distance: str, startTime: timeStart, endTime: timeEnd };
     }
 
     fetchNearbyRequests() {
@@ -54,10 +48,11 @@ export default class NearbyRequestsScreen extends React.Component {
                     //put data in array
                     dataSource = [];
                     response.forEach(element => {
-                        let request = this.parseSQLData(element);
+                        let request = this.parseSQLData(element.request);
                         if (request.userId !== this.state.user.userId)
-                            dataSource.push(this.createDataCell(request));
+                            dataSource.push(this.createDataCell(request, element.distance));
                     });
+                    console.log(dataSource);
                     this.setState({data: dataSource});
                 });
             });
@@ -70,7 +65,7 @@ export default class NearbyRequestsScreen extends React.Component {
 	render() {
         if (this.state.data) {
             return (
-                <RequestListComponent data={this.state.data}/>
+                <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
             );
         }
         else {

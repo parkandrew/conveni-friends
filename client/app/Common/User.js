@@ -35,8 +35,8 @@ export default class User {
         });
     }
 
-    changePassword(userId, oldPassword, newPassword) {
-        let url = `${config.API_URL}/v1/user/` + userId + '/update';
+    changePassword(oldPassword, newPassword) {
+        let url = `${config.API_URL}/v1/user/` + this.userId + '/update';
         return axios.post(url, {
             password: oldPassword,
             newPassword: newPassword
@@ -90,6 +90,7 @@ export default class User {
                longitude: longitude
            }
        }).then((response) => {
+         console.log(response);
         return response.data;
       }).catch((error) => {
         console.log(error);
