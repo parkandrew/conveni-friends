@@ -26,6 +26,7 @@ export default class HomeScreen extends React.Component {
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
         this.account = this.account.bind(this);
+        this.map = this.map.bind(this);
     }
     logout() {
         this.props.navigation.navigate('LoginScreen');
@@ -51,6 +52,9 @@ export default class HomeScreen extends React.Component {
     }
     account() {
         this.props.navigation.navigate('AccountScreen', {user: this.state.user});
+    }
+    map() {
+        this.props.navigation.navigate('MapScreen', {user: this.state.user});
     }
 
 
@@ -107,6 +111,8 @@ export default class HomeScreen extends React.Component {
                             title='Account Settings' />
                         <Button onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
                             title='Messages' />
+                        <Button onPress={this.map}  // TODO:remove later
+                            title='Map' />
                     </View>
                 </Drawer>
         );

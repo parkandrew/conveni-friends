@@ -110,7 +110,7 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     const password = req.body['password'];
 
     const query = `SELECT * FROM User ` +
-                  `WHERE password="${password}" and userId="${userId}"`;
+                  `WHERE BINARY password="${password}" and BINARY userId="${userId}"`;
 
     db.query(query, (error, results) => {
         console.log(results);

@@ -55,8 +55,9 @@ export default class NearbyRequestsScreen extends React.Component {
                     dataSource = [];
                     response.forEach(element => {
                         let request = this.parseSQLData(element);
-                        if (request.userId !== this.state.user.userId)
+                        if (request.requesterId !== this.state.user.userId) {
                             dataSource.push(this.createDataCell(request));
+                        }
                     });
                     this.setState({data: dataSource});
                 });

@@ -20,7 +20,7 @@ import CustomButton from 'client/app/components/CustomButton';
 import "prop-types"; // 15.6.0
 
 
-export default class MakeRequest extends React.Component {
+export default class MakeRequestScreen extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -33,11 +33,7 @@ export default class MakeRequest extends React.Component {
 		}
 
 		this._onPressHandle = this._onPressHandle.bind(this);
-		this._getTitle = this._getTitle.bind(this);
-		this._getLocation = this._getLocation.bind(this);
-		this._getStartTime = this._getStartTime.bind(this);
-		this._getEndTime = this._getEndTime.bind(this);
-		this._getDescription = this._getDescription.bind(this);
+		this._getUser = this._getUser.bind(this);
 	}
 
 	static navigationOptions = {
@@ -54,7 +50,8 @@ export default class MakeRequest extends React.Component {
 		description: ''
 	}
 
-	onPressHandle() {
+	_onPressHandle() {
+		console.log(this);
 		if (this.state.title && this.state.location && this.state.description) {
 			console.log(this);
 			//get latitude and longitude from address?
@@ -71,11 +68,6 @@ export default class MakeRequest extends React.Component {
 		}
 	}
 
-	updateText(field, value) {
-		stateObject = {field, value};
-		this.setState(stateObject);
-	}
-
 	_getUser() {
         //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
@@ -87,28 +79,23 @@ export default class MakeRequest extends React.Component {
         this._getUser();
 	}
 	  
-	updateValue(field, value) {
-		stateObject = { field: value };
-		this.setState(stateObject);
-	}
-
 	render() {
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.makeContainer}>
 				<View style={styles.makeInputView}>
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"} 
-						style={styles.makeSingleLine} input={this.state.title} title={'Title'} placeholder={'Your short title'}/>
+						style={styles.makeSingleLine} title={'Title'} placeholder={'Your short title'}/>
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"} 
-						style={styles.makeSingleLine} input={this.state.location} title={'Location'} placeholder={'123 Bruin Ave'} />
+						style={styles.makeSingleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
 					<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
 						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"startTime"} style={styles.makeSingleLine} type='Start'/>
 						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"endTime"} style={styles.makeSingleLine} type='End'/>
 					</View>
-					<FormInput setParentState={newState=>{this.setState(newState)}} 
-						style={styles.formMultiLine} field={"description"} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
+					<FormInput setParentState={newState=>{this.setState(newState)}} field={"description"}
+						style={styles.formMultiLine} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
 				</View>
-				<CustomButton text={'Make Request'} onPressHandle={() => {this.onPressHandle();}} />
+				<CustomButton text={'Make Request'} onPressHandle={() => {this._onPressHandle();}} />
 			</View>
 		);
 	}

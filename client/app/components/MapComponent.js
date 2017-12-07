@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
-import MapComponent from 'client/app/components/MapComponent';
 import CustomButton from 'client/app/components/CustomButton';
 import MapView from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
@@ -16,7 +15,7 @@ const WESTWOOD_DEFAULT_REGION = {
 	longitudeDelta: LONGITUDE_DELTA,
 }
 
-export default class MapScreen extends React.Component {
+export default class MapComponent extends React.Component {
 	static navigationOptions = {
 		
 	}
