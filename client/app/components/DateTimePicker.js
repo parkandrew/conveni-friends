@@ -12,7 +12,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'; // 4.13.0
 import "prop-types";
 
 export default class DateTimePicker extends React.Component {
-
+	constructor(props) {
+		super(props);
+		this._handleDatePicked = this._handleDatePicked.bind(this);
+	}
 	state = {
 		isDateTimePickerVisible: false,
 		time: new Date(),
@@ -26,7 +29,11 @@ export default class DateTimePicker extends React.Component {
 
 	_handleDatePicked = (date) => {
 		this.setState({time: date});
+<<<<<<< HEAD
 		this.props.setParentState({[this.props.field]: date});
+=======
+		this.props.onChange(date);
+>>>>>>> upstream/master
 		this._hideDateTimePicker();
 	};
 

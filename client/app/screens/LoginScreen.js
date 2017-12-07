@@ -16,8 +16,8 @@ export default class LoginScreen extends React.Component {
             password: '',
             user: null
         };
-        this._login = this._login.bind(this)
-        this._signup = this._signup.bind(this)
+        this._login = this._login.bind(this);
+        this._signup = this._signup.bind(this);
     }
     _login() {
         //TODO: validate login info with backend server and navigate to
@@ -38,7 +38,7 @@ export default class LoginScreen extends React.Component {
             });
         }
         else {
-            Alert.alert("User ID or password is blank.")
+            Alert.alert("User ID or password is blank.");
         }
     }
     _signup() {
