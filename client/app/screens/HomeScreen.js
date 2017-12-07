@@ -5,13 +5,14 @@ import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import Hamburger from 'client/app/Common/Hamburger';
 import styles from 'client/styles/style';
+import CustomButton from 'client/app/components/CustomButton';
 import User from 'client/app/Common/User';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
         const params = navigation.state.params || {};
         return {
-            headerLeft:  params.headerLeft,
+            headerLeft: params.headerLeft,
         }
     };
     constructor(props) {
@@ -21,20 +22,25 @@ export default class HomeScreen extends React.Component {
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.logout = this.logout.bind(this);
-        this._getUser = this._getUser.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
         this.account = this.account.bind(this);
+        this._getUser = this._getUser.bind(this);
+
     }
+
+
     logout() {
         this.props.navigation.navigate('LoginScreen');
     }
+
     _getUser() {
-        if (this.props.navigation.state.params) {
-            this.setState({user: this.props.navigation.state.params.user});
-        }
+            if (this.props.navigation.state.params) {
+                this.setState({user: this.props.navigation.state.params.user});
+            }
     }
+
     toggleDrawer = () => {
         if (!this._drawer._open) {
             this._drawer.open();
@@ -42,17 +48,19 @@ export default class HomeScreen extends React.Component {
         else {
             this._drawer.close();
         }
-    };
-    provider() {
-        this.props.navigation.navigate('NearbyRequestsScreen', {user: this.state.user});
-    }
-    requester() {
-        this.props.navigation.navigate('MakeRequestScreen', {user: this.state.user});
-    }
-    account() {
-        this.props.navigation.navigate('AccountScreen', {user: this.state.user});
     }
 
+    provider() {
+        //TODO: load nearby requests screen
+        this.props.navigation.navigate('NearbyRequestsScreen', {user:this.state.user});
+    }
+    requester() {
+        this.props.navigation.navigate('MakeRequestScreen', {user:this.state.user});
+    }
+
+    account() {
+        this.props.navigation.navigate('AccountScreen', {user:this.state.user});
+    }
 
     _setNavigationParams() {
         let headerLeft =
@@ -65,8 +73,8 @@ export default class HomeScreen extends React.Component {
     }
 
     componentWillMount() {
-        this._setNavigationParams();
         this._getUser();
+        this._setNavigationParams();
       }
 
     render() {
@@ -82,11 +90,15 @@ export default class HomeScreen extends React.Component {
         if (!this.state.user.userId) {
             navigate('LoginScreen');
         }
+
         return (
                 <Drawer type='overlay'
                     content={<HamburgerMenu
                         logout={() => {
                             this.logout();
+                        }}
+                        account={() => {
+                            this.account();
                         }}
                         />}
                     ref={(ref) => this._drawer = ref}
@@ -96,18 +108,22 @@ export default class HomeScreen extends React.Component {
                     acceptPan={true}
                     panCloseMask={0.6}
                     panOpenMask={0}>
-                    <View style={styles.homeContainer}>
-                        <Text>I am a...</Text>
-                        <Button onPress={this.provider}
-                            title='Provider' />
-                        <Button onPress={this.requester}
-                            title='Requester' />
+                    <View style={styles.genericContainer}>
+                       <Text style={styles.titleLarge}>I am a...</Text>
+                       <CustomButton
+                            onPressHandle={() => {this.provider();}}
+                            text='Provider'/>
 
-                        <Button onPress={this.account}  // TODO:remove later
-                            title='Account Settings' />
-                        <Button onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
-                            title='Messages' />
-                    </View>
+                        <CustomButton
+                            onPressHandle={() => {this.requester();}}
+                            text='Requester' />
+
+                        <CustomButton onPressHandle={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
+                            text='Messages' />
+
+                        <CustomButton onPressHandle={() => navigate('RequestHistory', { user: this.state.user })}  // TODO:remove later
+                            text='history' />
+                   </View>
                 </Drawer>
         );
 

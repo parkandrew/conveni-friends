@@ -7,9 +7,8 @@ export default class HamburgerMenu extends Component {
             <View style={styles.container}>
                 <Text>User ID</Text>
                 <Button title='Request List' onPress={()=>console.log("request list")}/>
-                <Button title='Settings' onPress={()=>this.props.account()} />
-                <Button title='Logout'
-                    onPress={() => {this.props.logout()}}/>
+                <Button title='Settings' onPress={() => {this.props.account();}}/>
+                <Button title='Logout' onPress={() => {this.props.logout();}}/>
             </View>
         );
     }

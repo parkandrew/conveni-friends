@@ -1,26 +1,28 @@
 import { StyleSheet } from 'react-native';
+import { Button } from 'react-native';
 
 // consts
 const screenWidth = 350;
-const $font__large = 40;
+const $font__large = 45;
 const $font__medium = 20;
 const $font__small = 16;
 const $fontSize = 16;
 
+// iOS colors
 const $white = '#FFFFFF';
-const $blue__primary = '#ADD8E6';
-const $blue__secondary = '#3D95DA';
+const $loving_blue = '#0076FF';
+const $ios_blue = '#54C7FC';
 
 const styles = StyleSheet.create({
 
 	labelStyle: {
 		fontSize: 20,
 		paddingBottom: 10,
-		color: $blue__secondary,
+		color: $loving_blue,
 	},
 
 	tabStyle: {
-		borderColor: $blue__secondary,
+		borderColor: $loving_blue,
 		borderWidth: 2
 	},
 
@@ -58,79 +60,64 @@ const styles = StyleSheet.create({
 		fontSize: $font__small
 	},
 
-// HomeScreen
-    homeTitle: {
-      fontSize: $font__large,
-      color: 'red'
-    },
-    homeContainer: {
-      flex: 1,
-      backgroundColor: $white,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    homeButton: {
-      alignItems: 'flex-start',
-    },
+
+// Generic styling
+	titleLarge: {
+		fontSize: $font__large,
+		fontWeight: 'bold',
+	  color: $loving_blue,
+	},
+
+	titleMedium: {
+		fontSize: $font__medium,
+	  color: $loving_blue,
+	},
+
+	titleSmall: {
+		fontSize: $font__small,
+		color: $loving_blue,
+	},
+
+	genericContainer: {
+		flex: 1,
+		backgroundColor: $ios_blue,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 
 
-// LoginScreen
-    loginTitle: {
-      fontSize: $font__large,
-      color: 'red'
-      },
-    loginContainer: {
-      flex: 1,
-      backgroundColor: $white,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
+	homeButton: {
+	  alignItems: 'flex-start',
+	},
 
 
 // NearbyRequests
-    nearbyTitle: {
-      fontSize: $font__medium,
-      color: 'red'
-    },
     nearbyContainer: {
       flex: 1,
       backgroundColor: $white,
     },
 
-// SignupScreen
-
-    signupTitle: {
-      fontSize: $font__medium,
-      color: 'red'
-    },
-    signupContainer: {
-      flex: 1,
-      backgroundColor: $white,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
 
 // MakeRequestScreen/DateTimePicker
-
     dtpContainer: {
-      flex: .12,
+      //flex: .12,
       alignItems: 'flex-start',
     },
     dtpDatePicker: {
-      width: screenWidth/2.4,
+      width: screenWidth/2.1,
+			padding: 10,
       backgroundColor: $white,
-      height: $font__small + 16,
+      height: $font__small + 26,
       fontSize: $font__small,
-      padding: 5,
-      paddingLeft: 10,
-      borderColor: $blue__secondary,
+      paddingLeft: 15,
+      borderColor: $loving_blue,
       borderWidth: 2,
       borderRadius: 6,
       overflow: 'hidden'
     },
     dtpInputHeader: {
       fontSize: $font__small,
-      marginBottom: 1
+      marginBottom: 1,
     },
 
 
@@ -145,7 +132,7 @@ const styles = StyleSheet.create({
 		width: screenWidth,
 		height: $font__small + 26,
 		fontSize: $font__small,
-		borderColor: $blue__secondary,
+		borderColor: $loving_blue,
 		borderWidth: 2,
 		borderRadius: 6
 	},
@@ -157,28 +144,53 @@ const styles = StyleSheet.create({
 		height: $font__small * 6,
 	},
 
+
 // MakeRequestScreen/MakeRequest
 
 	makeContainer: {
 		flex: 1,
-		backgroundColor: $blue__primary,
 		alignItems: 'center',
+		backgroundColor: $ios_blue,
+		justifyContent: 'center',
 		paddingTop: 20,
 	},
 	makeInputView: {
-		flex: .9
+		flex: .9,
 	},
 	makeSingleLine: {
 		flex: 0.17,
-		marginBottom: 24
+		marginBottom: 24,
 	},
 	makeDateContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		width: screenWidth,
-		marginBottom: 10
+		marginBottom: 10,
+	},
+
+
+// CustomButton StyleSheet
+custom_button: {
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		marginTop: 5,
+		marginBottom: 5,
+		borderColor: $loving_blue,
+		height: 40,
+		paddingBottom: 5,
+		width: screenWidth/1.618,
+		borderWidth: 2,
+		backgroundColor: $white,
+		borderRadius: 6
+	},
+	custom_button_font: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		color: $loving_blue,
 	},
 
 });
+
+
 
 export default styles;

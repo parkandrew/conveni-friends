@@ -13,7 +13,7 @@ import WebSocket from "ws";
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '123',
+    password: 'noodless',
     database: 'cs130_project',
 });
 
@@ -419,12 +419,14 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
  */
 app.get('/v1/user/:userId/requests', (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     const query = `SELECT * FROM Request `
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
+  console.log(query)
 
     db.query(query, (error, results) => {
+      console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -461,14 +463,14 @@ app.get('/v1/user/:userId/requests', (req, res) => {
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lon2-lon1); 
-  var a = 
+  var dLon = deg2rad(lon2-lon1);
+  var a =
     Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
     Math.sin(dLon/2) * Math.sin(dLon/2)
-    ; 
+    ;
 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var d = R * c; // Distance in km
   var miles = d * 0.621371
 
