@@ -51,6 +51,7 @@ export default class MakeRequest extends React.Component {
 	}
 
 	_onPressHandle() {
+		console.log(this)
 		if (this.state.title && this.state.location && this.state.description) {
 			console.log(this);
 			//get latitude and longitude from address?

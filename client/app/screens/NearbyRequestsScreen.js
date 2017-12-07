@@ -12,7 +12,7 @@ export default class NearbyRequestsScreen extends React.Component {
     constructor(props) {
         super(props);
         state = {
-            data: null,
+            data: [],
             user: null
         };
         this.fetchNearbyRequests = this.fetchNearbyRequests.bind(this);

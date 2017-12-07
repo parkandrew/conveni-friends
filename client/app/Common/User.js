@@ -70,7 +70,7 @@ export default class User {
     }
 
    getMyRequests() {
-       let url = `${config.API_URL}v1/user/` + this.userId + '/requests'
+       let url = `${config.API_URL}/v1/user/` + this.userId + '/requests'
        return axios.get(url)
        .then((response) => {
            console.log(response)
