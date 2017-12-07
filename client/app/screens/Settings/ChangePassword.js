@@ -37,7 +37,7 @@ export default class ChangePassword extends React.Component {
             }
         }
         else {
-            Alert.alert("Invalid/blank username. Please use alphanumeric characters");
+            Alert.alert("Invalid/blank password. Please use alphanumeric characters");
         }
     }
     render() {
