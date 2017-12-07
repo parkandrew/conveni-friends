@@ -13,7 +13,7 @@ import WebSocket from "ws";
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '123',
+    password: '',
     database: 'cs130_project',
 });
 
@@ -498,9 +498,7 @@ app.get('/v1/requests/all', (req, res) => {
             }
 
             // Sort ascending, based on distance from user
-            retValue.sort(function(a, b) {
-                return b.distance - a.distance
-            });
+            retValue.sort((a, b) => b.distance - a.distance);
 
             res.status(HttpStatus.OK).send(retValue);
         }
