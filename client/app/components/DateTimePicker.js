@@ -29,11 +29,7 @@ export default class DateTimePicker extends React.Component {
 
 	_handleDatePicked = (date) => {
 		this.setState({time: date});
-<<<<<<< HEAD
 		this.props.setParentState({[this.props.field]: date});
-=======
-		this.props.onChange(date);
->>>>>>> upstream/master
 		this._hideDateTimePicker();
 	};
 
