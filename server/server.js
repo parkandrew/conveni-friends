@@ -13,7 +13,7 @@ import WebSocket from "ws";
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '123',
+    password: 'noodless',
     database: 'cs130_project',
 });
 
@@ -150,7 +150,7 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
     const newPassword = req.body['newPassword'];
 
     const query = `UPDATE User SET password="${newPassword}" ` +
-                  `WHERE userId="${userId}"`;
+                  `WHERE BINARY userId="${userId}"`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -172,7 +172,7 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
     // Need to think about the case when user1 accepts 2+ of user2's requests.
     const query = `SELECT * FROM MessageSession `
-                + `WHERE userId1="${userId}" OR userId2="${userId}"`;
+                + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -261,7 +261,7 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const { userId } = req.query;
 
     const query = `DELETE FROM Request ` +
-                  `WHERE requestId=${requestId} AND requesterId=${userId}`;
+                  `WHERE BINARY requestId=${requestId} AND BINARY requesterId=${userId}`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -304,7 +304,7 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+                  `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -346,7 +346,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET confirmed=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+                  `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -387,7 +387,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId} AND ${time} < timeEnd`;
+                + `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -419,12 +419,14 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
  */
 app.get('/v1/user/:userId/requests', (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
+                + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
+  console.log(query)
 
     db.query(query, (error, results) => {
+      console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -437,11 +439,53 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     });
 });
 
+// Credit for the following function goes to:
+// http://www.movable-type.co.uk/scripts/latlong.html
+// User: Deduplicator
+// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+// Modified to return miles instead of kilometers
+/**
+ * Utility function from Stack Overflow user Deduplicator, used to get distance in miles when given longitude/latitude points
+ *
+ * Example call:
+ * getDistanceFromLatLonInMiles(0.1, 0.1, 0.1, 0.1)
+ *
+ * @name getDistanceFromLatLonInMiles
+ *
+ * @version 1
+ * @param {float} lat1 - The first latitude point.
+ * @param {float} lon1 - The first longitude point.
+ * @param {float} lat2 - The second latitude point.
+ * @param {float} lon2 - The second longitude point.
+ *
+ * @returns {float} The distance in miles between the two points given.
+ */
+function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  var miles = d * 0.621371
+
+  return miles;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 /**
  * Called when a user looks up nearby requests.
  *
  * Example call:
- * http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude=30&longitude=30
  *
  * @name /v1/requests/all
  *
@@ -450,7 +494,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
  * @param {float} latitude - The current latitude of the user.
  * @param {float} longitude - The current longitude of the user.
  *
- * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. Also associate distance in miles. In the case of error, the response contains error info.
  */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
@@ -469,13 +513,30 @@ app.get('/v1/requests/all', (req, res) => {
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send(results);
+
+            // List of request, along with the distance from user in miles
+            var retValue = [];
+
+            for (var i = 0; i < results.length; i++) {
+                console.log(results[i]);
+                var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
+                retValue.push({
+                    request : results[i],
+                    distance: dist
+                });
+            }
+
+            // Sort ascending, based on distance from user
+            retValue.sort(function(a, b) {
+                return b.distance - a.distance
+            });
+
+            res.status(HttpStatus.OK).send(retValue);
         }
     });
 });
 
 /********************************** MESSAGES **********************************/
-
 /**
  * Called when creating a new message session
  *
@@ -496,11 +557,11 @@ app.post('/v1/message/session/create', (req, res) => {
                   `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
     db.query(query1, (error, results) => {
-        if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
+    	if (error) {
+    		console.log(error);
+    		return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    			.send({ message: "Internal server error." });
+    	}
         else if (results.length == 1) {
             console.log("MessageSession already in database.");
             return res.status(HttpStatus.OK).send(results);
@@ -600,7 +661,8 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
  */
 app.post('/v1/message/send', (req, res) => {
-    const { messageSessionId, senderId, receiverId, content } = req.query;
+    const { messageSessionId, senderId, receiverId } = req.query;
+    const content = req.body;
     // NOTE: The GiftedChat._id is different than our Message schema id (which
     // currently is an autoincremented int). This needs to be addressed somehow.
 

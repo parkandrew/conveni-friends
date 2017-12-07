@@ -1,11 +1,9 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
-import User from 'client/app/Common/User';
+import CustomButton from 'client/app/components/CustomButton';
 
-const HttpStatus = require('http-status-codes');
-
-export default class SignupScreen extends React.Component {
+export default class ChangePassword extends React.Component {
     static navigationOptions = {
     }
     constructor(props) {
@@ -15,9 +13,9 @@ export default class SignupScreen extends React.Component {
             password: '',
             password2: '',
         };
-        this._makeAccount = this._makeAccount.bind(this)
+        this._changePass = this._changePass.bind(this)
     }
-    _makeAccount() {
+    _changePass() {
         //alphanumeric characters
         const alphanum = /[0-9a-zA-Z]+/g;
         //TODO: check w/backend that the user id does not already exist
@@ -28,19 +26,7 @@ export default class SignupScreen extends React.Component {
                     //We can either navigate them back to the login screen
                     //or get the session key right here and navigate them to the
                     //"home" screen
-                    let user = new User();
-                    user.signup(this.state.userId, this.state.password).then(
-                        (responseData) => {
-                            if (responseData.status == HttpStatus.OK) {
-                                this.props.navigation.navigate('LoginScreen');
-                            }
-                            else {
-                                Alert.alert("There was an error signing up, try again later.");
-                            }
-                        }
-                    ).catch((error) => {
-                        Alert.alert("There was an error signing up, try again later.");
-                    });
+                    this.props.navigation.navigate('AccountScreen')
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");
@@ -51,21 +37,21 @@ export default class SignupScreen extends React.Component {
             }
         }
         else {
-            Alert.alert("Invalid/blank username. Please use alphanumeric characters");
+            Alert.alert("Invalid/blank password. Please use alphanumeric characters");
         }
     }
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.genericContainer}>
-            <Text style={styles.titleMedium}>Sign-up</Text>
+            <View style={styles.signupContainer}>
+            <Text style={styles.signupTitle}>Change Password</Text>
             <TextInput
                 placeholder="User ID"
                 onChangeText={(text) => this.setState({userId: text})}
             />
             <TextInput
                 secureTextEntry={true}
-                placeholder="Password"
+                placeholder="New Password"
                 onChangeText={(text) => this.setState({password: text})}
             />
             <TextInput
@@ -74,8 +60,8 @@ export default class SignupScreen extends React.Component {
                 onChangeText={(text) => this.setState({password2: text})}
             />
             <CustomButton
-                onPress={this._makeAccount}
-                title="Sign up"
+                onPressHandle={this._changePass}
+                title="Confirm"
             />
         </View>
         );

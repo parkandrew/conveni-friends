@@ -17,8 +17,9 @@ const WESTWOOD_DEFAULT_REGION = {
 
 export default class MapComponent extends React.Component {
 	static navigationOptions = {
-		
+
 	}
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -51,15 +52,15 @@ export default class MapComponent extends React.Component {
 	getInitialRegion() {
 		return WESTWOOD_DEFAULT_REGION;
 	}
-	
+
 	onRegionChange(region) {
 		if(!this.state.regionSet) {
 			return;
 		}
 		this.setState({region: region})
 	}
-	
-	/* Required because a bug in react-native maps that sets your location to initial 
+
+	/* Required because a bug in react-native maps that sets your location to initial
 	blank state. See: https://github.com/airbnb/react-native-maps/issues/1338*/
 	notifyMapReady() {
 		this.setState({regionSet: true});
@@ -75,7 +76,7 @@ export default class MapComponent extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				 <MapView 
+				 <MapView
 					style={styles.map}
 					initialRegion={this.getInitialRegion()}
 					onRegionChange={this.onRegionChange}

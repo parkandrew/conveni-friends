@@ -2,6 +2,8 @@ import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
+import CustomButton from 'client/app/components/CustomButton';
+import FormInput from 'client/app/components/FormInput';
 
 const HttpStatus = require('http-status-codes');
 
@@ -48,24 +50,21 @@ export default class LoginScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.loginContainer}>
-            <Text style={styles.loginTitle}>Conveni-friends</Text>
-            <TextInput
-                placeholder="User ID"
-                onChangeText={(text) => this.setState({userIdInput: text})}
+            <View style={styles.genericContainer}>
+            <Text style={styles.titleLarge}>Conveni-friends</Text>
+
+            <FormInput setParentState={newState=>{this.setState(newState)}} field={"userIdInput"}
+  						style={styles.makeSingleLine} placeholder={'User ID'}/>
+  					<FormInput setParentState={newState=>{this.setState(newState)}} field={"password"}
+  						style={styles.makeSingleLine} placeholder={'Password'} />
+
+            <CustomButton
+                onPressHandle={() => {this._login();}}
+                text="Login"
             />
-            <TextInput
-                secureTextEntry={true}
-                placeholder="Password"
-                onChangeText={(text) => this.setState({password: text})}
-            />
-            <Button
-                onPress={this._login}
-                title="Login"
-            />
-            <Button
-                onPress={this._signup}
-                title="Sign up"
+            <CustomButton
+                onPressHandle={() => {this._signup();}}
+                text="Sign up"
             />
         </View>
         );

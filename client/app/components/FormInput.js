@@ -11,8 +11,8 @@ export default class FormInput extends React.Component {
 		return (
 			<View style={[styles.formContainer, this.props.style]}>
 				<Text style={styles.formInputHeader}>{this.props.title}</Text>
-				<TextInput style={this.props.multiLine ? [styles.formInput, styles.formMultiLine] : styles.formInput } 
-					placeholder={this.props.placeholder} multiline={this.props.multiLine} 
+				<TextInput style={this.props.multiLine ? [styles.formInput, styles.formMultiLine] : styles.formInput }
+					placeholder={this.props.placeholder} multiline={this.props.multiLine}
 					onChangeText={(text) => {this.props.setParentState({[this.props.field]: text})}}/>
 			</View>
 		);

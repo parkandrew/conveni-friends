@@ -51,13 +51,17 @@ export default class MakeRequestScreen extends React.Component {
 	}
 
 	_onPressHandle() {
+<<<<<<< HEAD
 		console.log(this);
+=======
+		console.log(this)
+>>>>>>> upstream/master
 		if (this.state.title && this.state.location && this.state.description) {
 			console.log(this);
 			//get latitude and longitude from address?
 			timeStart = this.state.startTime.toISOString().slice(0, 19).replace('T', ' ');;
 			timeEnd = this.state.endTime.toISOString().slice(0, 19).replace('T', ' ');;
-			let request = new Request(this.state.user.userId, null, this.state.title, 
+			let request = new Request(this.state.user.userId, null, this.state.title,
 				this.state.description, '5.5', '5.5', this.state.location, timeStart, timeEnd);
 			this.state.user.createRequest(request).then((responseStatus) => {
 				this.props.navigation.navigate('HomeScreen', {user: this.state.user});
@@ -74,26 +78,47 @@ export default class MakeRequestScreen extends React.Component {
             this.setState({user: this.props.navigation.state.params.user});
         }
 	}
-	
+
 	componentWillMount() {
         this._getUser();
 	}
+<<<<<<< HEAD
 	  
+=======
+
+	updateValue(field, value) {
+		stateObject = { field: value };
+		this.setState(stateObject);
+	}
+
+>>>>>>> upstream/master
 	render() {
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.makeContainer}>
 				<View style={styles.makeInputView}>
+<<<<<<< HEAD
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"} 
 						style={styles.makeSingleLine} title={'Title'} placeholder={'Your short title'}/>
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"} 
 						style={styles.makeSingleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
+=======
+					<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"}
+						style={styles.makeSingleLine} input={this.state.title} title={'Title'} placeholder={'Your short title'}/>
+					<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"}
+						style={styles.makeSingleLine} input={this.state.location} title={'Location'} placeholder={'123 Bruin Ave'} />
+>>>>>>> upstream/master
 					<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
 						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"startTime"} style={styles.makeSingleLine} type='Start'/>
 						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"endTime"} style={styles.makeSingleLine} type='End'/>
 					</View>
+<<<<<<< HEAD
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"description"}
 						style={styles.formMultiLine} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
+=======
+					<FormInput setParentState={newState=>{this.setState(newState)}}
+						style={styles.formMultiLine} field={"description"} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
+>>>>>>> upstream/master
 				</View>
 				<CustomButton text={'Make Request'} onPressHandle={() => {this._onPressHandle();}} />
 			</View>
