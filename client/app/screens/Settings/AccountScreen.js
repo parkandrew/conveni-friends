@@ -14,11 +14,11 @@ export default class Account extends React.Component {
           userId: '',
           password: ''
       };
-      this.changepass = this.changepass.bind(this)
+      this.changePass = this.changePass.bind(this)
       this._getUser = this._getUser.bind(this)
   }
 
-  changepass(){
+  changePass(){
       this.props.navigation.navigate('ChangePassword', {user: this.state.user});
   }
 
@@ -38,9 +38,9 @@ export default class Account extends React.Component {
   render () {
     return (
       <List>
-        <ListItem onPress={() => this.changepass() }
-                  title='Change Name'/>
-        <ListItem onPress={() => this.changepass() }
+        <ListItem onPress={() => this.changePass() }
+                  title='Change Password'/>
+        <ListItem onPress={() => this.changePass() }
                   title='Request History'/>
       </List>
     )

@@ -19,7 +19,7 @@ export default class NearbyRequestsScreen extends React.Component {
         this.createDataCell = this.createDataCell.bind(this);
     }
 
-    parseSQLData(data, distance) {
+    parseSQLData(data) {
         let request = new Request(
             data.requesterId,
             data.providerId,

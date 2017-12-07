@@ -183,7 +183,7 @@ custom_button: {
 		backgroundColor: $white,
 		borderRadius: 6
 	},
-	custom_button_font: {
+	customButtonFont: {
 		fontSize: 20,
 		fontWeight: 'bold',
 		color: $loving_blue,
