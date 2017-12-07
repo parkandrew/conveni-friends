@@ -437,11 +437,37 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     });
 });
 
+// Credit for the following function goes to:
+// http://www.movable-type.co.uk/scripts/latlong.html
+// User: Deduplicator
+// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+// Modified to return miles instead of kilometers
+function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  var miles = d * 0.621371
+
+  return miles;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 /**
  * Called when a user looks up nearby requests.
  *
  * Example call:
- * http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+ * http://localhost:3000/v1/requests/all?userId="test"&latitude=30&longitude=30
  *
  * @name /v1/requests/all
  *
@@ -450,7 +476,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
  * @param {float} latitude - The current latitude of the user.
  * @param {float} longitude - The current longitude of the user.
  *
- * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. Also associate distance in miles. In the case of error, the response contains error info.
  */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
@@ -469,13 +495,30 @@ app.get('/v1/requests/all', (req, res) => {
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send(results);
+
+            // List of request, along with the distance from user in miles
+            var retValue = [];
+
+            for (var i = 0; i < results.length; i++) {
+                console.log(results[i]);
+                var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
+                retValue.push({
+                    request : results[i],
+                    distance: dist
+                });
+            }
+
+            // Sort ascending, based on distance from user
+            retValue.sort(function(a, b) {
+                return b.distance - a.distance
+            });
+
+            res.status(HttpStatus.OK).send(retValue);
         }
     });
 });
 
 /********************************** MESSAGES **********************************/
-
 /**
  * Called when creating a new message session
  *
@@ -496,11 +539,6 @@ app.post('/v1/message/session/create', (req, res) => {
                   `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
     db.query(query1, (error, results) => {
-        if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
         else if (results.length == 1) {
             console.log("MessageSession already in database.");
             return res.status(HttpStatus.OK).send(results);
