@@ -17,7 +17,7 @@ export default class User {
             return response.status;
           })
           .catch((error) => {
-            console.log(error);
+            throw error;
           });
     }
 
@@ -31,6 +31,7 @@ export default class User {
             return response;
         }).catch((error) => {
             console.log(error);
+            throw error;
         });
     }
 
@@ -43,6 +44,7 @@ export default class User {
             console.log(response);
         }).catch((error) => {
             console.log(error);
+            throw error;
         });
     }
 
@@ -63,7 +65,7 @@ export default class User {
           })
           .catch((error) => {
             console.log(error);
-            return error;
+            throw error;
           });
     }
 

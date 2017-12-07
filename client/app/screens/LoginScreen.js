@@ -33,6 +33,8 @@ export default class LoginScreen extends React.Component {
                 else {
                     Alert.alert("Incorrect username or password");
                 }
+            }).catch((error) => {
+                Alert.alert("There was an issue with logging in.");
             });
         }
         else {
