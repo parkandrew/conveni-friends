@@ -26,12 +26,9 @@ export default class HomeScreen extends React.Component {
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
         this.account = this.account.bind(this);
-<<<<<<< HEAD
         this.map = this.map.bind(this);
-=======
         this._getUser = this._getUser.bind(this);
 
->>>>>>> upstream/master
     }
 
 

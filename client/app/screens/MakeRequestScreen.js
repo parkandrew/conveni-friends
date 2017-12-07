@@ -82,43 +82,22 @@ export default class MakeRequestScreen extends React.Component {
 	componentWillMount() {
         this._getUser();
 	}
-<<<<<<< HEAD
 	  
-=======
-
-	updateValue(field, value) {
-		stateObject = { field: value };
-		this.setState(stateObject);
-	}
-
->>>>>>> upstream/master
 	render() {
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.makeContainer}>
 				<View style={styles.makeInputView}>
-<<<<<<< HEAD
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"} 
 						style={styles.makeSingleLine} title={'Title'} placeholder={'Your short title'}/>
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"} 
 						style={styles.makeSingleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
-=======
-					<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"}
-						style={styles.makeSingleLine} input={this.state.title} title={'Title'} placeholder={'Your short title'}/>
-					<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"}
-						style={styles.makeSingleLine} input={this.state.location} title={'Location'} placeholder={'123 Bruin Ave'} />
->>>>>>> upstream/master
 					<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
 						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"startTime"} style={styles.makeSingleLine} type='Start'/>
 						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"endTime"} style={styles.makeSingleLine} type='End'/>
 					</View>
-<<<<<<< HEAD
 					<FormInput setParentState={newState=>{this.setState(newState)}} field={"description"}
 						style={styles.formMultiLine} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
-=======
-					<FormInput setParentState={newState=>{this.setState(newState)}}
-						style={styles.formMultiLine} field={"description"} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
->>>>>>> upstream/master
 				</View>
 				<CustomButton text={'Make Request'} onPressHandle={() => {this._onPressHandle();}} />
 			</View>
