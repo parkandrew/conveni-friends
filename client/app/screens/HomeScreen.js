@@ -112,22 +112,6 @@ export default class HomeScreen extends React.Component {
                     acceptPan={true}
                     panCloseMask={0.6}
                     panOpenMask={0}>
-<<<<<<< HEAD
-                    <View style={styles.homeContainer}>
-                        <Text>I am a...</Text>
-                        <Button onPress={this.provider}
-                            title='Provider' />
-                        <Button onPress={this.requester}
-                            title='Requester' />
-
-                        <Button onPress={this.account}  // TODO:remove later
-                            title='Account Settings' />
-                        <Button onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
-                            title='Messages' />
-                        <Button onPress={this.map}  // TODO:remove later
-                            title='Map' />
-                    </View>
-=======
                     <View style={styles.genericContainer}>
                        <Text style={styles.titleLarge}>I am a...</Text>
                        <CustomButton
@@ -144,7 +128,6 @@ export default class HomeScreen extends React.Component {
                         <CustomButton onPressHandle={() => navigate('RequestHistory', { user: this.state.user })}  // TODO:remove later
                             text='history' />
                    </View>
->>>>>>> upstream/master
                 </Drawer>
         );
 
