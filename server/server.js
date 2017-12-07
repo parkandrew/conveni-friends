@@ -110,7 +110,7 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     const password = req.body['password'];
 
     const query = `SELECT * FROM User ` +
-                  `WHERE password="${password}" and userId="${userId}"`;
+                  `WHERE BINARY password="${password}" and BINARY userId="${userId}"`;
 
     db.query(query, (error, results) => {
         console.log(results);
@@ -150,7 +150,7 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
     const newPassword = req.body['newPassword'];
 
     const query = `UPDATE User SET password="${newPassword}" ` +
-                  `WHERE userId="${userId}"`;
+                  `WHERE BINARY userId="${userId}"`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -172,7 +172,7 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
     // Need to think about the case when user1 accepts 2+ of user2's requests.
     const query = `SELECT * FROM MessageSession `
-                + `WHERE userId1="${userId}" OR userId2="${userId}"`;
+                + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -261,7 +261,7 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const { userId } = req.query;
 
     const query = `DELETE FROM Request ` +
-                  `WHERE requestId=${requestId} AND requesterId=${userId}`;
+                  `WHERE BINARY requestId=${requestId} AND BINARY requesterId=${userId}`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -304,7 +304,7 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+                  `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -346,7 +346,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET confirmed=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId} AND ${time} < timeEnd;`
+                  `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -387,7 +387,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId} AND ${time} < timeEnd`;
+                + `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -422,7 +422,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const { userId } = req.body;
 
     const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
+                + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
     db.query(query, (error, results) => {
         if (error) {
