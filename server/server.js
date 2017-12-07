@@ -442,6 +442,22 @@ app.get('/v1/user/:userId/requests', (req, res) => {
 // User: Deduplicator
 // https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // Modified to return miles instead of kilometers
+/**
+ * Utility function from Stack Overflow user Deduplicator, used to get distance in miles when given longitude/latitude points
+ *
+ * Example call:
+ * getDistanceFromLatLonInMiles(0.1, 0.1, 0.1, 0.1)
+ *
+ * @name getDistanceFromLatLonInMiles
+ *
+ * @version 1
+ * @param {float} lat1 - The first latitude point.
+ * @param {float} lon1 - The first longitude point.
+ * @param {float} lat2 - The second latitude point.
+ * @param {float} lon2 - The second longitude point.
+ *
+ * @returns {float} The distance in miles between the two points given.
+ */
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
@@ -539,6 +555,11 @@ app.post('/v1/message/session/create', (req, res) => {
                   `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
     db.query(query1, (error, results) => {
+    	if (error) {
+    		console.log(error);
+    		return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    			.send({ message: "Internal server error." });
+    	}
         else if (results.length == 1) {
             console.log("MessageSession already in database.");
             return res.status(HttpStatus.OK).send(results);
@@ -638,7 +659,8 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
  */
 app.post('/v1/message/send', (req, res) => {
-    const { messageSessionId, senderId, receiverId, content } = req.query;
+    const { messageSessionId, senderId, receiverId } = req.query;
+    const content = req.body;
     // NOTE: The GiftedChat._id is different than our Message schema id (which
     // currently is an autoincremented int). This needs to be addressed somehow.
 
