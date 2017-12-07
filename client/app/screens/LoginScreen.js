@@ -1,6 +1,9 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
+import User from 'client/app/Common/User';
+
+const HttpStatus = require('http-status-codes');
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
@@ -9,9 +12,9 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: '',
+            userIdInput: '',
             password: '',
-            sessionKey: ''
+            user: null
         };
         this._login = this._login.bind(this);
         this._signup = this._signup.bind(this);
@@ -20,8 +23,19 @@ export default class LoginScreen extends React.Component {
         //TODO: validate login info with backend server and navigate to
         //Select screen if credentials are correct
         const alphanum = /[0-9a-zA-Z]+/g;
-        if (this.state.userId && this.state.password) {
-            this.props.navigation.navigate('HomeScreen', {sessionKey: 'ayy'});
+        if (this.state.userIdInput && this.state.password) {
+            this.state.user = new User();
+            this.state.user.login(this.state.userIdInput, this.state.password).then((responseCode) => {
+                if (responseCode == HttpStatus.OK) {
+                    this.state.user.userId = this.state.userIdInput;
+                    this.props.navigation.navigate('HomeScreen', {user: this.state.user});
+                }
+                else {
+                    Alert.alert("Incorrect username or password");
+                }
+            }).catch((error) => {
+                Alert.alert("There was an issue with logging in.");
+            });
         }
         else {
             Alert.alert("User ID or password is blank.");
@@ -38,7 +52,7 @@ export default class LoginScreen extends React.Component {
             <Text style={styles.loginTitle}>Conveni-friends</Text>
             <TextInput
                 placeholder="User ID"
-                onChangeText={(text) => this.setState({userId: text})}
+                onChangeText={(text) => this.setState({userIdInput: text})}
             />
             <TextInput
                 secureTextEntry={true}
