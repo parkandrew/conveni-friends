@@ -106,7 +106,7 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
             res.status(HttpStatus.OK).send({});
         }
         else {
-            console.log("No user found");
+            console.log("Invalid credentials presented");
             res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
@@ -193,7 +193,6 @@ app.post('/v1/request/create', (req, res) => {
 
     // We're also currently assuming that the frontend passes strings like
     // "string" rather than string.
-    console.log(req.body);
     const { userId, title, description } = req.body;
     const { latitude, longitude, address, timeStart, timeEnd } = req.body;
 

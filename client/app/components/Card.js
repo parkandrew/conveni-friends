@@ -15,7 +15,7 @@ export default class Card extends React.Component {
 			<View >
 				<TouchableOpacity style={styles.cardContainer}>
 					<View style={styles.cardLeft}>
-						<Text style={styles.cardTitle} numberOfLines={1} >{this.props.data.key}</Text>
+						<Text style={styles.cardTitle} numberOfLines={1} >{this.props.data.title}</Text>
 						<Text style={styles.cardSubTitle} numberOfLines={1}>{this.props.data.startTime} - {this.props.data.endTime}</Text>
 					</View>
 					<View style={styles.cardRight}>

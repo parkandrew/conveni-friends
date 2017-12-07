@@ -1,8 +1,9 @@
 //struct for request
 export default class Request {
-    constructor(userId, title, description, latitude, 
+    constructor(requesterId, providerId, title, description, latitude, 
     longitude, address, timeStart, timeEnd) {
-        this.userId = userId,
+        this.requesterId = requesterId,
+        this.provierId = providerId,
         this.title = title,
         this.description = description,
         this.latitude = latitude,

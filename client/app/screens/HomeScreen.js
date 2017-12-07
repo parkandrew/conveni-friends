@@ -31,7 +31,6 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.navigate('LoginScreen');
     }
     _getUser() {
-        //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
             this.setState({user: this.props.navigation.state.params.user});
         }
@@ -45,14 +44,11 @@ export default class HomeScreen extends React.Component {
         }
     };
     provider() {
-        //TODO: load nearby requests screen
         this.props.navigation.navigate('NearbyRequestsScreen', {user: this.state.user});
     }
     requester() {
         this.props.navigation.navigate('MakeRequestScreen', {user: this.state.user});
     }
-
-    // TODO: remove later
     account() {
         this.props.navigation.navigate('AccountScreen', {user: this.state.user});
     }

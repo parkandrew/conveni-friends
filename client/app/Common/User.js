@@ -6,7 +6,6 @@ import config from 'client/config';
 
 export default class User {
     constructor(userId='') {
-        //the only variables actually needed for the user class
         this.userId = userId;
     }
 
@@ -15,12 +14,10 @@ export default class User {
         return axios.post(url, {
                 password: password
         }).then((response) => {
-            console.log(response);
             return response.status;
           })
           .catch((error) => {
             console.log(error);
-            //return error JSON?
           });
     }
 
@@ -51,9 +48,8 @@ export default class User {
 
 
     createRequest(request) {
-        console.log(request);
         return axios.post(`${config.API_URL}/v1/request/create`, {
-                userId: request.userId,
+                userId: request.requesterId,
                 title: request.title,
                 latitude: request.latitude,
                 longitude: request.longitude,
@@ -77,11 +73,10 @@ export default class User {
        .then((response) => {
            console.log(response)
         return response.data;
-        //format into request list and return list
       })
       .catch((error) => {
         console.log(error);
-        //return error JSON?
+        throw error;
       });
    }
 
@@ -92,12 +87,11 @@ export default class User {
                latitude: latitude,
                longitude: longitude
            }
-       }).then(function (response) {
+       }).then((response) => {
         return response.data;
-        //format into request list and return list
-      }).catch(function (error) {
+      }).catch((error) => {
         console.log(error);
-        //return error JSON?
+        throw error;
       });
    }
 }

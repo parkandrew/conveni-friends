@@ -3,6 +3,8 @@ import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
 
+const HttpStatus = require('http-status-codes');
+
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
         headerLeft: null,
@@ -23,13 +25,12 @@ export default class LoginScreen extends React.Component {
         const alphanum = /[0-9a-zA-Z]+/g;
         if (this.state.userIdInput && this.state.password) {
             this.state.user = new User();
-            console.log(this);
             this.state.user.login(this.state.userIdInput, this.state.password).then((responseCode) => {
-                if (responseCode == 200) {
+                if (responseCode == HttpStatus.OK) {
                     this.state.user.userId = this.state.userIdInput;
                     this.props.navigation.navigate('HomeScreen', {user: this.state.user});
                 }
-                else if (responseCode == 417){
+                else {
                     Alert.alert("Incorrect username or password");
                 }
             });

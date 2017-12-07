@@ -3,6 +3,8 @@ import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
 
+const HttpStatus = require('http-status-codes');
+
 export default class SignupScreen extends React.Component {
     static navigationOptions = {
     }
@@ -29,11 +31,15 @@ export default class SignupScreen extends React.Component {
                     let user = new User();
                     user.signup(this.state.userId, this.state.password).then(
                         (responseData) => {
-                            console.log(responseData);
-                            this.props.navigation.navigate('LoginScreen');
+                            if (responseData.status == HttpStatus.OK) {
+                                this.props.navigation.navigate('LoginScreen');
+                            }
+                            else {
+                                Alert.alert("There was an error signing up, try again later.");
+                            }
                         }
                     ).catch((error) => {
-                        console.log(error)
+                        Alert.alert("There was an error signing up, try again later.");
                     });
                 }
                 else {
