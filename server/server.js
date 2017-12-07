@@ -13,7 +13,7 @@ import WebSocket from "ws";
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    password: '123',
     database: 'cs130_project',
 });
 
@@ -113,14 +113,19 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
                   `WHERE password="${password}" and userId="${userId}"`;
 
     db.query(query, (error, results) => {
+        console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
-        else {
+        else if (results.length > 0) {
             console.log("Success");
             res.status(HttpStatus.OK).send({});
+        }
+        else {
+            console.log("Invalid credentials presented");
+            res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
 });
@@ -216,14 +221,14 @@ app.post('/v1/request/create', (req, res) => {
 
     // We're also currently assuming that the frontend passes strings like
     // "string" rather than string.
-    const { userId, title, description } = req.query;
-    const { latitude, longitude, address, timeStart, timeEnd } = req.query;
+    const { userId, title, description } = req.body;
+    const { latitude, longitude, address, timeStart, timeEnd } = req.body;
 
     // TODO: Gotta figure out a more cleaner way to do our queries ..
-    const query = `INSERT INTO Request(requesterId,title,latitude, ` +
-                  `longitude,address,description,timeStart,timeEnd) ` +
-                  `VALUES(${userId},${title},${latitude},${longitude},` +
-                  `${address},${description},${timeStart},${timeEnd})`;
+    const query = `INSERT INTO Request (requesterId, title, latitude, ` +
+                  `longitude, address, description, timeStart, timeEnd) ` +
+                  `VALUES ('${userId}', '${title}', ${latitude}, ${longitude}, ` +
+                  `'${address}', '${description}', '${timeStart}', '${timeEnd}')`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -414,7 +419,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
  */
 app.get('/v1/user/:userId/requests', (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.body;
 
     const query = `SELECT * FROM Request `
                 + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
