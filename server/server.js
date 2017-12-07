@@ -562,13 +562,14 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
             let messageList = [];
 
             for (let i = 0; i < results.length; i++) {
+                var jsonContent = JSON.parse(results[i].content)[0];
                 messageList.push({
-                    _id: results[i].messageId,
-                    text: JSON.parse(results[i].content).text,
-                    createdAt: results[i].timeCreated,
+                    _id: jsonContent._id,
+                    text: jsonContent.text,
+                    createdAt: jsonContent.createdAt,
                     user: {
-                        _id: results[i].senderId,
-                        name: results[i].senderId
+                        _id: jsonContent.user._id,
+                        name: jsonContent.user._id
                     }
                 });
             }
