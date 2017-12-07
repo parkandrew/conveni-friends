@@ -25,8 +25,10 @@ const styles = {
 	button: {
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		marginTop: 45,
-		marginBottom: 65,
+		// marginTop: 45,
+		// marginBottom: 65,
+		marginTop: 10,
+		marginBottom: 10,
 		borderColor: '#3D95DA',
 		height: 40,
 		paddingBottom: 5,

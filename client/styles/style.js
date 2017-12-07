@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Button } from 'react-native';
 
 // consts
 const screenWidth = 350;
@@ -70,6 +71,11 @@ const styles = StyleSheet.create({
 	  color: 'red'
 	},
 
+	titleSmall: {
+		fontSize: $font__small,
+		color: 'red'
+	},
+
 	genericContainer: {
 		flex: 1,
 	  backgroundColor: $white,
@@ -89,8 +95,8 @@ const styles = StyleSheet.create({
       backgroundColor: $white,
     },
 
-// MakeRequestScreen/DateTimePicker
 
+// MakeRequestScreen/DateTimePicker
     dtpContainer: {
       flex: .12,
       alignItems: 'flex-start',
@@ -135,6 +141,7 @@ const styles = StyleSheet.create({
 	formMultiLine: {
 		height: $font__small * 6,
 	},
+
 
 // MakeRequestScreen/MakeRequest
 

@@ -5,6 +5,7 @@ import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import Hamburger from 'client/app/Common/Hamburger';
 import styles from 'client/styles/style';
+import CustomButton from 'client/app/components/CustomButton';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -102,12 +103,15 @@ export default class HomeScreen extends React.Component {
                     panOpenMask={0}>
                     <View style={styles.genericContainer}>
                         <Text>I am a...</Text>
-                        <Button onPress={this.provider}
-                            title='Provider' />
-                        <Button onPress={this.requester}
-                            title='Requester' />
-                        <Button onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
-                            title='Messages' />
+
+                        <CustomButton onPress={this.provider}
+                            text='Provider'/>
+
+                        <CustomButton onPress={this.requester}
+                            text='Requester' />
+
+                        <CustomButton onPress={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
+                            text='Messages' />
                     </View>
                 </Drawer>
         );
