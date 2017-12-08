@@ -19,11 +19,11 @@ export default class ProviderLocation extends React.Component {
 		
     }
     
-    goToNearbyRequests() {
+    goToNearbyRequests(latitude, longitude) {
         this.props.navigation.navigate("NearbyRequestsScreen", 
         {user: this.state.user,
-        latitude: this.state.latitude, 
-        longitude: this.state.longitude});
+        latitude: latitude, 
+        longitude: longitude});
     }
 
     _getUser() {
