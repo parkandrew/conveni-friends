@@ -5,7 +5,7 @@ import CustomButton from 'client/app/components/CustomButton';
 import MapView from 'react-native-maps';
 
 
-export default class ProviderScreen extends React.Component {
+export default class ProviderLocation extends React.Component {
     constructor(props) {
         super(props);
         state = {
@@ -19,11 +19,11 @@ export default class ProviderScreen extends React.Component {
 		
     }
     
-    goToNearbyRequests() {
+    goToNearbyRequests(latitude, longitude) {
         this.props.navigation.navigate("NearbyRequestsScreen", 
         {user: this.state.user,
-        latitude: this.state.latitude, 
-        longitude: this.state.longitude});
+        latitude: latitude, 
+        longitude: longitude});
     }
 
     _getUser() {
