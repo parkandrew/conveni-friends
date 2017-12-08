@@ -42,7 +42,7 @@ wss.on('connection', (ws, req) => {
 
     // TODO: JJ need to test
     ws.on('message', message => {
-        connections[otherUserId] && connections[userId].send(message);
+        connections[otherUserId] && connections[otherUserId].send(message);
     });
 
     // TODO: JJ need to test
@@ -655,6 +655,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
 app.post('/v1/message/send', (req, res) => {
     const { messageSessionId, senderId, receiverId } = req.query;
     const content = req.body;
+
     // NOTE: The GiftedChat._id is different than our Message schema id (which
     // currently is an autoincremented int). This needs to be addressed somehow.
 
