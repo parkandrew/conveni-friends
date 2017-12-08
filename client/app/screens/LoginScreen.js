@@ -51,33 +51,33 @@ export default class LoginScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-          <View style={styles.genericContainer}>
-              <Text style={styles.titleLarge}>Conveni-friends</Text>
+        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <View style={styles.genericContainer}>
+                <Text style={styles.titleLarge}>Conveni-friends</Text>
+                <LoginFormInput
+                    setParentState={newState=>{this.setState(newState)}}
+                    field={"userIdInput"}
+                    style={styles.makeLoginLine}
+                    onSubmitEditing={() => {this._login();}}
+                    placeholder={'User ID'}/>
 
-              <LoginFormInput
-                  setParentState={newState=>{this.setState(newState)}}
-                  field={"userIdInput"}
-      						style={styles.makeLoginLine}
-                  onSubmitEditing={this._login}
-                  placeholder={'User ID'}/>
+                <LoginFormInput
+                    setParentState={newState=>{this.setState(newState)}}
+                    field={"password"}
+                    secureTextEntry={true}
+                    style={styles.makeLoginLine}
+                    onSubmitEditing={() => {this._login();}}
+                    placeholder={'Password'} />
 
-    					<LoginFormInput
-                  setParentState={newState=>{this.setState(newState)}}
-                  field={"password"}
-      						style={styles.makeLoginLine}
-                  secureTextEntry={true}
-                  onSubmitEditing={this._login}
-                  placeholder={'Password'} />
+                <CustomButton
+                    onPressHandle={() => {this._login();}}
+                    text="Login"/>
 
-              <CustomButton
-                  onPressHandle={() => {this._login();}}
-                  text="Login"/>
-
-              <CustomButton
-                  onPressHandle={() => {this._signup();}}
-                  text="Sign up"/>
-
-          </View>
+                <CustomButton
+                    onPressHandle={() => {this._signup();}}
+                    text="Sign up"/>
+            </View>
+          </TouchableWithoutFeedback>
         );
     }
 }
