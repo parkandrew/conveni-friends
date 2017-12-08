@@ -67,9 +67,7 @@ export default class MapComponent extends React.Component {
 	}
 
 	_onPressHandle() {
-		this.props.setParentState({latitude: this.state.region.latitude, longitude: this.state.region.longitude}).then(
-			() => {this.props.goTo();}
-		);
+		this.props.goTo(this.state.region.latitude, this.state.region.longitude);
 	}
 
 	render() {
