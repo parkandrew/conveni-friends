@@ -5,7 +5,7 @@ import CustomButton from 'client/app/components/CustomButton';
 import MapView from 'react-native-maps';
 
 
-export default class ProviderScreen extends React.Component {
+export default class ProviderLocation extends React.Component {
     constructor(props) {
         super(props);
         state = {
