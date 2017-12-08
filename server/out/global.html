@@ -98,6 +98,210 @@
 
         
             
+<h4 class="name" id="/v1/message/send"><span class="type-signature"></span>/v1/message/send<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when a user wants to send a message
+
+Example call:
+http://localhost:3000/v1/message/send?messageSessionId=1&senderId="sender"&receiverId="receiver"&content="this is the message"
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line639">line 639</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/message/session/:messageSessionId"><span class="type-signature"></span>/v1/message/session/:messageSessionId<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when requesting messages based off a message session ID
+
+Example call:
+http://localhost:3000/v1/message/session/2
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line592">line 592</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="/v1/message/session/create"><span class="type-signature"></span>/v1/message/session/create<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Called when creating a new message session
+
+Example call:
+http://localhost:3000/v1/message/session/create?userId1=0&userId2=1
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line539">line 539</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="/v1/request/create"><span class="type-signature"></span>/v1/request/create<span class="type-signature"></span></h4>
 
 
@@ -145,7 +349,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line136">line 136</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -213,7 +417,7 @@ http://localhost:3000/v1/request/1/accept?userId="test"&time="2017-04-04%2011:11
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line221">line 221</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line286">line 286</a>
     </li></ul></dd>
     
 
@@ -281,7 +485,7 @@ http://localhost:3000/v1/request/1/complete?userId="test"&time="2017-04-04%2011:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line305">line 305</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line370">line 370</a>
     </li></ul></dd>
     
 
@@ -349,7 +553,7 @@ http://localhost:3000/v1/request/1/confirm?userId="test"&time="2017-04-04%2011:1
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line263">line 263</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -417,7 +621,7 @@ http://localhost:3000/v1/request/1/delete?userId="test"
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line180">line 180</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -444,7 +648,7 @@ http://localhost:3000/v1/request/1/delete?userId="test"
     Called when a user looks up nearby requests.
 
 Example call:
-http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
+http://localhost:3000/v1/requests/all?userId="test"&latitude=30&longitude=30
 </div>
 
 
@@ -485,7 +689,7 @@ http://localhost:3000/v1/requests/all?userId="test"&latitude="30"&longitude="30"
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line367">line 367</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line483">line 483</a>
     </li></ul></dd>
     
 
@@ -553,7 +757,7 @@ http://localhost:3000/v1/user/testUserId/login
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line68">line 68</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -618,7 +822,7 @@ http://localhost:3000/v1/user/testUserId/login
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line346">line 346</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line411">line 411</a>
     </li></ul></dd>
     
 
@@ -686,7 +890,7 @@ http://localhost:3000/v1/user/testUserId/signup
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line34">line 34</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line60">line 60</a>
     </li></ul></dd>
     
 
@@ -754,7 +958,75 @@ http://localhost:3000/v1/user/testUserId/update
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="server.js.html">server.js</a>, <a href="server.js.html#line100">line 100</a>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line133">line 133</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getDistanceFromLatLonInMiles"><span class="type-signature"></span>getDistanceFromLatLonInMiles<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Utility function from Stack Overflow user Deduplicator, used to get distance in miles when given longitude/latitude points
+
+Example call:
+getDistanceFromLatLonInMiles(0.1, 0.1, 0.1, 0.1)
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-version">Version:</dt>
+    <dd class="tag-version"><ul class="dummy"><li>1</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="server.js.html">server.js</a>, <a href="server.js.html#line446">line 446</a>
     </li></ul></dd>
     
 
@@ -788,13 +1060,13 @@ http://localhost:3000/v1/user/testUserId/update
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#/v1/request/create">/v1/request/create</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/accept">/v1/request/{requestId}/accept</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/complete">/v1/request/{requestId}/complete</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/confirm">/v1/request/{requestId}/confirm</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/delete">/v1/request/{requestId}/delete</a></li><li><a href="global.html#/v1/requests/all">/v1/requests/all</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/login">/v1/user/{userId}/login</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/requests">/v1/user/{userId}/requests</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/signup">/v1/user/{userId}/signup</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/update">/v1/user/{userId}/update</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#/v1/message/send">/v1/message/send</a></li><li><a href="global.html#/v1/message/session/:messageSessionId">/v1/message/session/:messageSessionId</a></li><li><a href="global.html#/v1/message/session/create">/v1/message/session/create</a></li><li><a href="global.html#/v1/request/create">/v1/request/create</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/accept">/v1/request/{requestId}/accept</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/complete">/v1/request/{requestId}/complete</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/confirm">/v1/request/{requestId}/confirm</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/delete">/v1/request/{requestId}/delete</a></li><li><a href="global.html#/v1/requests/all">/v1/requests/all</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/login">/v1/user/{userId}/login</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/requests">/v1/user/{userId}/requests</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/signup">/v1/user/{userId}/signup</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/update">/v1/user/{userId}/update</a></li><li><a href="global.html#getDistanceFromLatLonInMiles">getDistanceFromLatLonInMiles</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 16:02:16 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 08 2017 15:03:33 GMT-0800 (STD)
 </footer>
 
 <script> prettyPrint(); </script>
