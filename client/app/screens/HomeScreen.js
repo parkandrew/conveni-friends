@@ -13,6 +13,7 @@ export default class HomeScreen extends React.Component {
         const params = navigation.state.params || {};
         return {
             headerLeft: params.headerLeft,
+            gesturesEnabled: false
         }
     };
     constructor(props) {
@@ -127,7 +128,7 @@ export default class HomeScreen extends React.Component {
                             onPressHandle={() => {this.requester();}}
                             text='Requester' />
 
-                        <CustomButton onPressHandle={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
+                        <CustomButton onPressHandle={() => navigate('MessagesScreen', { userId: this.state.user.userId })}  // TODO:remove later
                             text='Messages' />
                    </View>
                 </Drawer>

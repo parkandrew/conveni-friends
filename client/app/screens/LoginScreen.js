@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Text, View, TextInput, Button } from 'react-native';
+import { Alert, Text, View, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
 import CustomButton from 'client/app/components/CustomButton';
@@ -10,6 +10,7 @@ const HttpStatus = require('http-status-codes');
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
         headerLeft: null,
+        gesturesEnabled: false
     }
     constructor(props) {
         super(props);
@@ -50,23 +51,27 @@ export default class LoginScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.genericContainer}>
-            <Text style={styles.titleLarge}>Conveni-friends</Text>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <View style={styles.genericContainer}>
+                <Text style={styles.titleLarge}>Conveni-friends</Text>
 
-            <FormInput setParentState={newState=>{this.setState(newState)}} field={"userIdInput"}
-  						style={styles.makeSingleLine} placeholder={'User ID'}/>
-  					<FormInput setParentState={newState=>{this.setState(newState)}} field={"password"}
-  						style={styles.makeSingleLine} placeholder={'Password'} />
+                <FormInput setParentState={newState=>{this.setState(newState)}} field={"userIdInput"}
+                            style={styles.makeSingleLine} placeholder={'User ID'}
+                            onSubmitEditing={ () => this._login() }/>
+                        <FormInput setParentState={newState=>{this.setState(newState)}} field={"password"}
+                            style={styles.makeSingleLine} placeholder={'Password'} secureTextEntry={true}
+                            onSubmitEditing={ () => this._login() }/>
 
-            <CustomButton
-                onPressHandle={() => {this._login();}}
-                text="Login"
-            />
-            <CustomButton
-                onPressHandle={() => {this._signup();}}
-                text="Sign up"
-            />
-        </View>
+                <CustomButton
+                    onPressHandle={() => {this._login();}}
+                    text="Login"
+                />
+                <CustomButton
+                    onPressHandle={() => {this._signup();}}
+                    text="Sign up"
+                />
+            </View>
+        </TouchableWithoutFeedback>
         );
     }
 }
