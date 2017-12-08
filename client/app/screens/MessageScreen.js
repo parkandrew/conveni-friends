@@ -59,6 +59,10 @@ export default class MessageScreen extends Component {
                 messages: GiftedChat.append(this.state.messages, messages),
             });
         };
+
+        this.ws.onopen = e => {
+            console.log("CONNECTION OPENED");
+        };
     }
 
     onSend(messages) {
@@ -75,8 +79,8 @@ export default class MessageScreen extends Component {
 
         // Send message to server
         fetch(config.API_URL + `/v1/message/send/?messageSessionId=${messageSessionId}` +
-                               `&senderId=${userId}` +
-                               `&receiverId=${otherUserId}` +
+                               `&senderId='${userId}'` +
+                               `&receiverId='${otherUserId}` +
                                `&content=${JSON.stringify(messages)}`,
              { method: 'POST' })
             .then(response => {
