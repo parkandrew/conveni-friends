@@ -51,11 +51,6 @@ export default class MakeRequestScreen extends React.Component {
 	}
 
 	_onPressHandle() {
-<<<<<<< HEAD
-		console.log(this);
-=======
-		console.log(this)
->>>>>>> upstream/master
 		if (this.state.title && this.state.location && this.state.description) {
 			console.log(this);
 			//get latitude and longitude from address?
@@ -64,7 +59,7 @@ export default class MakeRequestScreen extends React.Component {
 			let request = new Request(this.state.user.userId, null, this.state.title,
 				this.state.description, '5.5', '5.5', this.state.location, timeStart, timeEnd);
 			this.state.user.createRequest(request).then((responseStatus) => {
-				this.props.navigation.navigate('HomeScreen', {user: this.state.user});
+				this.props.navigation.goBack(null);
 			});
 		}
 		else {
