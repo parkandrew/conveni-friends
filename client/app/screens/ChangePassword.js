@@ -28,7 +28,7 @@ export default class ChangePassword extends React.Component {
                     //or get the session key right here and navigate them to the
                     //"home" screen
 
-                    this.props.navigation.navigate('AccountScreen')
+                    this.props.navigation.navigate('LoginScreen')
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");

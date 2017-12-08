@@ -51,7 +51,6 @@ export default class RequestHistory extends React.Component {
     fetchMyRequests() {
         if (this.props.navigation.state.params) {
             this.setState({user: this.props.navigation.state.params.user}, () => {
-							console.log(this.state.user);
                 this.state.user.getMyRequests().then((response) => {
                     //put data in array
                     dataSource = [];
@@ -59,7 +58,6 @@ export default class RequestHistory extends React.Component {
                         let request = this.parseSQLData(element);
                         dataSource.push(this.createDataCell(request));
                     });
-										console.log(dataSource)
                     this.setState({data: dataSource});
                 });
             });

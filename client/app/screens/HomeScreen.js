@@ -25,8 +25,8 @@ export default class HomeScreen extends React.Component {
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
-        this.account = this.account.bind(this);
         this._getUser = this._getUser.bind(this);
+        this.history = this.history.bind(this);
 
     }
 
@@ -50,16 +50,19 @@ export default class HomeScreen extends React.Component {
         }
     }
 
+    history() {
+      this.props.navigation.navigate('RequestHistory', {user:this.state.user});
+    }
+
     provider() {
-        //TODO: load nearby requests screen
         this.props.navigation.navigate('NearbyRequestsScreen', {user:this.state.user});
     }
     requester() {
         this.props.navigation.navigate('MakeRequestScreen', {user:this.state.user});
     }
 
-    account() {
-        this.props.navigation.navigate('AccountScreen', {user:this.state.user});
+    changePass(){
+        this.props.navigation.navigate('ChangePassword', {user: this.state.user});
     }
 
     _setNavigationParams() {
@@ -97,8 +100,11 @@ export default class HomeScreen extends React.Component {
                         logout={() => {
                             this.logout();
                         }}
-                        account={() => {
-                            this.account();
+                        history={() => {
+                            this.history();
+                        }}
+                        changePass={() => {
+                            this.changePass();
                         }}
                         />}
                     ref={(ref) => this._drawer = ref}
@@ -120,9 +126,6 @@ export default class HomeScreen extends React.Component {
 
                         <CustomButton onPressHandle={() => navigate('MessagesScreen', { userId: 'userId' })}  // TODO:remove later
                             text='Messages' />
-
-                        <CustomButton onPressHandle={() => navigate('RequestHistory', { user: this.state.user })}  // TODO:remove later
-                            text='history' />
                    </View>
                 </Drawer>
         );

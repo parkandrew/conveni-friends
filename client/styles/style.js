@@ -9,9 +9,12 @@ const $font__small = 16;
 const $fontSize = 16;
 
 // iOS colors
+// refer to http://www.colourlovers.com/palette/3888271/IOS_9_Colors
 const $white = '#FFFFFF';
 const $loving_blue = '#0076FF';
 const $ios_blue = '#54C7FC';
+const $ip = '#8E8E93';
+
 
 const styles = StyleSheet.create({
 
@@ -88,6 +91,12 @@ const styles = StyleSheet.create({
 
 	homeButton: {
 	  alignItems: 'flex-start',
+	},
+
+// HamburgerMenu
+	hamburgerContainer: {
+		flex: 1,
+		backgroundColor: $white,
 	},
 
 

@@ -9,15 +9,6 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	render() {
-					console.log(this);
-		// const requestDetails = {
-		// 	title: 'Groceries from Ralph\'s',
-		// 	location: '1000 Tiverton Ave',
-		// 	distance: '0.5 mi',
-		// 	startTime: '9:00 am',
-		// 	endTime: '10:00 pm',
-		// 	details: 'like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplantsome rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eggplants, 2 oranges, and some rice. I would like 3 eould like 3 eggplants, 2 oranges, and some rice. I would like '
-		// }
 		return (
 			<View style={{ flex: 1 }}>
 				<ScrollView style={reqStyles.makeContainer}>

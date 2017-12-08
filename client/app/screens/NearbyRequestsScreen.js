@@ -52,7 +52,6 @@ export default class NearbyRequestsScreen extends React.Component {
                         if (request.userId !== this.state.user.userId)
                             dataSource.push(this.createDataCell(request, element.distance));
                     });
-                    console.log(dataSource);
                     this.setState({data: dataSource});
                 });
             });
