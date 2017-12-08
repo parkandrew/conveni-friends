@@ -26,9 +26,17 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import express from "express";
+            <pre class="prettyprint source linenums"><code>/**
+ * @FileOverview Backend endpoints
+ * @author Michael, Andrew, JJ, Kevin, Michelle, Brandon
+ * @version: 1.0
+ */
+
+import express from "express";
 import http from "http";
 import mysql from "mysql";
+import url from "url"
+import WebSocket from "ws";
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -37,7 +45,7 @@ const db = mysql.createConnection({
     database: 'cs130_project',
 });
 
-const app = express();
+export const app = express();
 const server = http.Server(app);
 const PORT = 3000;
 const HttpStatus = require('http-status-codes');
@@ -49,14 +57,32 @@ var upload = multer(); // for parsing multipart/form-data
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-// TODO: We should split up the routes into separate files .. one for
-// user endpoints, request endpoints, etc.
+const wss = new WebSocket.Server({ port: 8080 });
+const connections = {}; // { userId: ws }
 
-// TODO: I think we could create our own function that handles the db queries
-// so that we can define a way to handle errors
+// When userId opens his message session with otherUserId, userId creates a
+// websocket connection with the server. otherUserId may not have a websocket
+// connection with the server.
+wss.on('connection', (ws, req) => {
+    const { userId, otherUserId } = url.parse(req.url, true).query;
+
+    connections[userId] = ws;
+
+    // TODO: JJ need to test
+    ws.on('message', message => {
+        connections[otherUserId] &amp;&amp; connections[userId].send(message);
+    });
+
+    // TODO: JJ need to test
+    ws.on('close', () => {
+        connections[userId] = undefined;
+    });
+});
 
 app.get('/', (req, res) => {
-    res.send("Test GET request");
+    // TODO1: This breaks the test for some reason
+    // res.setHeader('Content-Type', 'application/json');
+    res.status(HttpStatus.OK).send("Test GET request");
 });
 
 /**
@@ -81,12 +107,13 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
         }
     });
 });
@@ -111,16 +138,22 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     const password = req.body['password'];
 
     const query = `SELECT * FROM User ` +
-                  `WHERE password="${password}" and userId="${userId}"`;
+                  `WHERE BINARY password="${password}" and BINARY userId="${userId}"`;
 
     db.query(query, (error, results) => {
+        console.log(results);
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else if (results.length > 0) {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
+        }
+        else {
+            console.log("Invalid credentials presented");
+            res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
 });
@@ -145,16 +178,48 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
     const newPassword = req.body['newPassword'];
 
     const query = `UPDATE User SET password="${newPassword}" ` +
-                  `WHERE userId="${userId}"`;
+                  `WHERE BINARY userId="${userId}"`;
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
+        }
+    });
+});
+
+// Returns messageSessions
+app.get('/v1/user/:userId/messageSessions', (req, res) => {
+    const { userId } = req.params;
+
+    // TODO: return MessageSessions where userId == userId1 or userId == userId2.
+    // Need to think about the case when user1 accepts 2+ of user2's requests.
+    const query = `SELECT * FROM MessageSession `
+                + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
 
     db.query(query, (error, results) => {
         if (error) {
-            console.log(error.message);
-            res.send(false);
-        } else {
-            console.log("SUCCESS!");
-            console.log(results);
-            res.send(true)
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            var messageSessions = []
+
+            for (var i = 0; i &lt; results.length; i++) {
+                var messageSession = {
+                    messageSessionId: results[i].messageSessionId,
+                    userId1: results[i].userId1,
+                    userId2: results[i].userId2
+                }
+                messageSessions.push(messageSession)
+            }
+            console.log("Success");
+            res.status(HttpStatus.OK).send(messageSessions);
         }
     });
 });
@@ -183,20 +248,20 @@ app.post('/v1/request/create', (req, res) => {
 
     // We're also currently assuming that the frontend passes strings like
     // "string" rather than string.
-    const { userId, title, description } = req.query;
-    const { latitude, longitude, address, timeStart, timeEnd } = req.query;
+    const { userId, title, description } = req.body;
+    const { latitude, longitude, address, timeStart, timeEnd } = req.body;
 
     // TODO: Gotta figure out a more cleaner way to do our queries ..
-    const query = `INSERT INTO Request(requesterId,title,latitude, ` +
-                  `longitude,address,description,timeStart,timeEnd) ` +
-                  `VALUES(${userId},${title},${latitude},${longitude},` +
-                  `${address},${description},${timeStart},${timeEnd})`;
+    const query = `INSERT INTO Request (requesterId, title, latitude, ` +
+                  `longitude, address, description, timeStart, timeEnd) ` +
+                  `VALUES ('${userId}', '${title}', ${latitude}, ${longitude}, ` +
+                  `'${address}', '${description}', '${timeStart}', '${timeEnd}')`;
 
     db.query(query, (error, results) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-               .send({ message: error.message });
+               .send({  message: "Internal server error."  });
         }
         else {
             console.log("Success");
@@ -223,7 +288,7 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const { userId } = req.query;
 
     const query = `DELETE FROM Request ` +
-                  `WHERE requestId=${requestId} AND requesterId=${userId}`;
+                  `WHERE BINARY requestId=${requestId} AND BINARY requesterId=${userId}`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -266,7 +331,7 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId} AND ${time} &lt; timeEnd;`
+                  `WHERE BINARY requestId=${requestId} AND ${time} &lt; timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -308,7 +373,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
 
     const query = `UPDATE Request ` +
                   `SET confirmed=${time}, providerId=${userId} ` +
-                  `WHERE requestId=${requestId} AND ${time} &lt; timeEnd;`
+                  `WHERE BINARY requestId=${requestId} AND ${time} &lt; timeEnd;`
 
     db.query(query, (error, results) => {
         if (error) {
@@ -349,7 +414,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
-                + `WHERE requestId=${requestId} AND ${time} &lt; timeEnd`;
+                + `WHERE BINARY requestId=${requestId} AND ${time} &lt; timeEnd`;
 
     db.query(query, (error, results) => {
         if (error) {
@@ -384,19 +449,70 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const { userId } = req.params;
 
     const query = `SELECT * FROM Request `
-                + `WHERE requesterId="${userId}" OR providerId="${userId}"`;
+                + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
+  console.log(query)
 
     db.query(query, (error, results) => {
-        console.log(error || "Success");
-        res.send(results || error);
+      console.log(results);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send(results);
+        }
     });
 });
+
+// Credit for the following function goes to:
+// http://www.movable-type.co.uk/scripts/latlong.html
+// User: Deduplicator
+// https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+// Modified to return miles instead of kilometers
+/**
+ * Utility function from Stack Overflow user Deduplicator, used to get distance in miles when given longitude/latitude points
+ *
+ * Example call:
+ * getDistanceFromLatLonInMiles(0.1, 0.1, 0.1, 0.1)
+ *
+ * @name getDistanceFromLatLonInMiles
+ *
+ * @version 1
+ * @param {float} lat1 - The first latitude point.
+ * @param {float} lon1 - The first longitude point.
+ * @param {float} lat2 - The second latitude point.
+ * @param {float} lon2 - The second longitude point.
+ *
+ * @returns {float} The distance in miles between the two points given.
+ */
+function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  var miles = d * 0.621371
+
+  return miles;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
 
 /**
  * Called when a user looks up nearby requests.
  *
  * Example call:
- * http://localhost:3000/v1/requests/all?userId="test"&amp;latitude="30"&amp;longitude="30"
+ * http://localhost:3000/v1/requests/all?userId="test"&amp;latitude=30&amp;longitude=30
  *
  * @name /v1/requests/all
  *
@@ -404,8 +520,8 @@ app.get('/v1/user/:userId/requests', (req, res) => {
  * @param {int} userId - The username of the user.
  * @param {float} latitude - The current latitude of the user.
  * @param {float} longitude - The current longitude of the user.
- * 
- * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. In the case of error, the response contains error info.
+ *
+ * @returns {res} The response, including an HTTP status indicating success or failure, and the relevant requests. Also associate distance in miles. In the case of error, the response contains error info.
  */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
@@ -417,11 +533,176 @@ app.get('/v1/requests/all', (req, res) => {
                   `AND longitude &lt;= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
     db.query(query, (error, results) => {
-        console.log(error || "Success")
-        res.send(results || error);
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+
+            // List of request, along with the distance from user in miles
+            var retValue = [];
+
+            for (var i = 0; i &lt; results.length; i++) {
+                console.log(results[i]);
+                var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
+                retValue.push({
+                    request : results[i],
+                    distance: dist
+                });
+            }
+
+            // Sort ascending, based on distance from user
+            retValue.sort(function(a, b) {
+                return b.distance - a.distance
+            });
+
+            res.status(HttpStatus.OK).send(retValue);
+        }
     });
 });
 
+/********************************** MESSAGES **********************************/
+/**
+ * Called when creating a new message session
+ *
+ * Example call:
+ * http://localhost:3000/v1/message/session/create?userId1=0&amp;userId2=1
+ *
+ * @name /v1/message/session/create
+ *
+ * @version 1
+ * @param {string} userId1 - The id of the first user in message session
+ * @param {string} userId2 - The id of the second user in message session
+ */
+app.post('/v1/message/session/create', (req, res) => {
+    const { userId1, userId2 } = req.query;
+
+    const query1 = `SELECT * FROM MessageSession ` +
+                  `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
+                  `OR (userId1=${userId2} AND userId2 = ${userId1})`;
+
+    db.query(query1, (error, results) => {
+    	if (error) {
+    		console.log(error);
+    		return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    			.send({ message: "Internal server error." });
+    	}
+        else if (results.length == 1) {
+            console.log("MessageSession already in database.");
+            return res.status(HttpStatus.OK).send(results);
+        }
+        else if (results.length != 0) {
+            console.log("Duplicate MessageSessions found.")
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
+                          `VALUES(${userId1},${userId2})`;
+
+            db.query(query2, (error, results) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .send({ message: "Internal server error." });
+                }
+                else {
+                    console.log("Success");
+                    res.status(HttpStatus.OK).send(results);
+                }
+            });
+        }
+    });
+});
+
+/**
+ * Called when requesting messages based off a message session ID
+ *
+ * Example call:
+ * http://localhost:3000/v1/message/session/2
+ *
+ * @name /v1/message/session/:messageSessionId
+ *
+ * @version 1
+ * @param {messageSessionId} userId - The ID of the requested message session
+ *
+ * @returns {res} An array of messages from requested message session, including an HTTP status indicating success or failure. In the case of error, the response contains error info.
+ */
+app.get('/v1/message/session/:messageSessionId', (req, res) => {
+    const { messageSessionId } = req.params;
+    // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
+    // knows who sent what).
+    //
+    // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
+    // for the messaging interface, for a message object has the form:
+    //
+    // { _id, text, createdAt, user: { _id } }
+
+    const query = `SELECT * FROM Message ` +
+                  `WHERE messageSessionId=${messageSessionId}`;
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+
+            let messageList = [];
+
+            for (let i = 0; i &lt; results.length; i++) {
+                const messages = JSON.parse(results[i].content);
+                messageList.push(messages);
+            }
+
+            res.status(HttpStatus.OK).send(messageList);
+        }
+    });
+});
+
+/**
+ * Called when a user wants to send a message
+ *
+ * Example call:
+ * http://localhost:3000/v1/message/send?messageSessionId=1&amp;senderId="sender"&amp;receiverId="receiver"&amp;content="this is the message"
+ *
+ * @name /v1/message/send
+ *
+ * @version 1
+ * @param {int} messageSessionId - The session ID for the message.
+ * @param {string} senderId - The ID for the sender.
+ * @param {string} receiverId - The ID for the receiver.
+ * @param {string} content - The message body.
+ *
+ * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
+ */
+app.post('/v1/message/send', (req, res) => {
+    const { messageSessionId, senderId, receiverId } = req.query;
+    const content = req.body;
+    // NOTE: The GiftedChat._id is different than our Message schema id (which
+    // currently is an autoincremented int). This needs to be addressed somehow.
+
+    const query = `INSERT INTO Message(messageSessionId,senderId, ` +
+                  `receiverId,content) ` +
+                  `VALUES(${messageSessionId},${senderId},` +
+                  `${receiverId},${content})`;
+
+    db.query(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
+            res.status(HttpStatus.OK).send({});
+        }
+    });
+});
 
 server.listen(PORT, () => {
     db.connect();
@@ -439,13 +720,13 @@ export default server;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#/v1/request/create">/v1/request/create</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/accept">/v1/request/{requestId}/accept</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/complete">/v1/request/{requestId}/complete</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/confirm">/v1/request/{requestId}/confirm</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/delete">/v1/request/{requestId}/delete</a></li><li><a href="global.html#/v1/requests/all">/v1/requests/all</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/login">/v1/user/{userId}/login</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/requests">/v1/user/{userId}/requests</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/signup">/v1/user/{userId}/signup</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/update">/v1/user/{userId}/update</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#/v1/message/send">/v1/message/send</a></li><li><a href="global.html#/v1/message/session/:messageSessionId">/v1/message/session/:messageSessionId</a></li><li><a href="global.html#/v1/message/session/create">/v1/message/session/create</a></li><li><a href="global.html#/v1/request/create">/v1/request/create</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/accept">/v1/request/{requestId}/accept</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/complete">/v1/request/{requestId}/complete</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/confirm">/v1/request/{requestId}/confirm</a></li><li><a href="global.html#/v1/request/%257BrequestId%257D/delete">/v1/request/{requestId}/delete</a></li><li><a href="global.html#/v1/requests/all">/v1/requests/all</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/login">/v1/user/{userId}/login</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/requests">/v1/user/{userId}/requests</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/signup">/v1/user/{userId}/signup</a></li><li><a href="global.html#/v1/user/%257BuserId%257D/update">/v1/user/{userId}/update</a></li><li><a href="global.html#getDistanceFromLatLonInMiles">getDistanceFromLatLonInMiles</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Nov 16 2017 16:02:16 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Dec 08 2017 15:03:33 GMT-0800 (STD)
 </footer>
 
 <script> prettyPrint(); </script>
