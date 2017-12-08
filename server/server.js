@@ -151,7 +151,6 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     const query = `UPDATE User SET password="${newPassword}" ` +
                   `WHERE BINARY userId="${userId}"`;
-
     db.query(query, (error, results) => {
         if (error) {
             console.log(error);

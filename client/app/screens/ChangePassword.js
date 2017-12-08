@@ -9,24 +9,26 @@ export default class ChangePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: '',
+            oldPassword: '',
             password: '',
             password2: '',
         };
         this._changePass = this._changePass.bind(this)
+        this._getUser = this._getUser.bind(this);
     }
     _changePass() {
         //alphanumeric characters
         const alphanum = /[0-9a-zA-Z]+/g;
         //TODO: check w/backend that the user id does not already exist
-        if (this.state.userId && alphanum.test(this.state.userId)) {
-            if (this.state.password && this.state.password) {
+            if (this.state.oldPassword && this.state.password && this.state.password2) {
                 if (this.state.password === this.state.password2) {
+                  this.state.user.changePassword(this.state.oldPassword, this.state.password);
                     //TODO: make account w/backend
                     //We can either navigate them back to the login screen
                     //or get the session key right here and navigate them to the
                     //"home" screen
-                    this.props.navigation.navigate('AccountScreen')
+
+                    this.props.navigation.navigate('LoginScreen')
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");
@@ -35,19 +37,25 @@ export default class ChangePassword extends React.Component {
             else {
                 Alert.alert("Password field(s) blank, please enter.");
             }
-        }
-        else {
-            Alert.alert("Invalid/blank password. Please use alphanumeric characters");
-        }
     }
+    componentWillMount() {
+        this._getUser();
+    }
+    _getUser() {
+            if (this.props.navigation.state.params) {
+                this.setState({user: this.props.navigation.state.params.user});
+            }
+    }
+
     render() {
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.signupContainer}>
             <Text style={styles.signupTitle}>Change Password</Text>
             <TextInput
-                placeholder="User ID"
-                onChangeText={(text) => this.setState({userId: text})}
+                secureTextEntry={true}
+                placeholder="Old Password"
+                onChangeText={(text) => this.setState({oldPassword: text})}
             />
             <TextInput
                 secureTextEntry={true}

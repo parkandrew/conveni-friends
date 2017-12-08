@@ -8,7 +8,11 @@ import styles from 'client/styles/style'
 export default class RequestInfoDetails extends React.Component {
 	render() {
 		return (
-			<Text style={reqStyles.primary}>{this.props.primary}: <Text style={reqStyles.secondary}>{this.props.secondary}</Text></Text>
+			<Text style={reqStyles.primary}>{this.props.primary}:
+				<Text style={reqStyles.secondary}>{this.props.secondary}
+				</Text>
+			</Text>
+
 		);
 	}
 }
