@@ -1,21 +1,15 @@
 import React, {Component} from 'react';
 import {Text,View,Button,StyleSheet} from 'react-native';
+import styles from 'client/styles/style';
 
 export default class HamburgerMenu extends Component {
     render() {
         return(
-            <View style={styles.container}>
-                <Text>User ID</Text>
-                <Button title='Request List' onPress={()=>console.log("request list")}/>
-                <Button title='Settings' onPress={() => {this.props.account();}}/>
+            <View style={styles.hamburgerContainer}>
+                <Button title='Change Password' onPress={() => {this.props.changePass();}}/>
+                <Button title='Request History' onPress={() => {this.props.history();}}/>
                 <Button title='Logout' onPress={() => {this.props.logout();}}/>
             </View>
         );
     }
 }
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#2f1',
-    }
-  });

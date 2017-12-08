@@ -2,8 +2,7 @@ import React from 'react';
 import LoginScreen from 'client/app/screens/LoginScreen'
 import HomeScreen from 'client/app/screens/HomeScreen'
 import MakeRequestScreen from 'client/app/screens/MakeRequestScreen';
-import AccountScreen from 'client/app/screens/Settings/AccountScreen';
-import ChangePassword from 'client/app/screens/Settings/ChangePassword';
+import ChangePassword from 'client/app/screens/ChangePassword';
 import NearbyRequestsScreen from 'client/app/screens/NearbyRequestsScreen';
 import SignupScreen from 'client/app/screens/SignupScreen';
 import PersonalRequestsScreen from 'client/app/screens/PersonalRequestsScreen';
@@ -11,7 +10,8 @@ import RequestDetailsScreen from 'client/app/screens/RequestDetailsScreen';
 import MessageScreen from 'client/app/screens/MessageScreen';
 import MessagesScreen from 'client/app/screens/MessagesScreen';
 import MapScreen from 'client/app/screens/MapScreen';
-import RequestHistory from 'client/app/screens/Settings/RequestHistory';
+import RequestHistory from 'client/app/screens/RequestHistory';
+import RequestInfoDetails from 'client/app/components/RequestInfoDetails';
 import { StackNavigator } from 'react-navigation';
 
 const ReactNavigation = StackNavigator({
@@ -20,7 +20,6 @@ const ReactNavigation = StackNavigator({
 	MakeRequestScreen: {screen: MakeRequestScreen},
 	SignupScreen: {screen: SignupScreen},
 	NearbyRequestsScreen: {screen: NearbyRequestsScreen},
-	AccountScreen: {screen: AccountScreen},
 	ChangePassword: {screen: ChangePassword},
 	PersonalRequestsScreen: {screen: PersonalRequestsScreen},
 	RequestDetailsScreen: {screen: RequestDetailsScreen},
@@ -28,6 +27,7 @@ const ReactNavigation = StackNavigator({
 	MessagesScreen: {screen: MessagesScreen},
 	MapScreen: {screen: MapScreen}, // maybe a requester map and a provider map screen? or just use props to pass in properly.
 	RequestHistory: {screen: RequestHistory},
+	RequestInfoDetails: {screen: RequestInfoDetails},
 })
 
 export default ReactNavigation;
