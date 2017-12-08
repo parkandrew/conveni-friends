@@ -13,7 +13,7 @@ import WebSocket from "ws";
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'noodless',
+    password: '',
     database: 'cs130_project',
 });
 
@@ -42,7 +42,7 @@ wss.on('connection', (ws, req) => {
 
     // TODO: JJ need to test
     ws.on('message', message => {
-        connections[otherUserId] && connections[userId].send(message);
+        connections[otherUserId] && connections[otherUserId].send(message);
     });
 
     // TODO: JJ need to test
@@ -627,15 +627,8 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
             let messageList = [];
 
             for (let i = 0; i < results.length; i++) {
-                messageList.push({
-                    _id: results[i].messageId,
-                    text: results[i].content,
-                    createdAt: results[i].timeCreated,
-                    user: {
-                        _id: results[i].senderId,
-                        name: results[i].senderId
-                    }
-                });
+                const messages = JSON.parse(results[i].content);
+                messageList.push(messages);
             }
 
             res.status(HttpStatus.OK).send(messageList);
@@ -662,6 +655,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
 app.post('/v1/message/send', (req, res) => {
     const { messageSessionId, senderId, receiverId } = req.query;
     const content = req.body;
+
     // NOTE: The GiftedChat._id is different than our Message schema id (which
     // currently is an autoincremented int). This needs to be addressed somehow.
 

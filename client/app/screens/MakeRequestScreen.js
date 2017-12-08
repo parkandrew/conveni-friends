@@ -4,7 +4,9 @@ import {
 	TextInput,
 	Button,
 	View,
-	Alert
+	Alert,
+	TouchableWithoutFeedback,
+	Keyboard
 } from 'react-native';
 import styles from 'client/styles/style';
 
@@ -20,7 +22,7 @@ import CustomButton from 'client/app/components/CustomButton';
 import "prop-types"; // 15.6.0
 
 
-export default class MakeRequest extends React.Component {
+export default class MakeRequestScreen extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -58,17 +60,12 @@ export default class MakeRequest extends React.Component {
 			let request = new Request(this.state.user.userId, null, this.state.title,
 				this.state.description, '5.5', '5.5', this.state.location, timeStart, timeEnd);
 			this.state.user.createRequest(request).then((responseStatus) => {
-				this.props.navigation.navigate('HomeScreen', {user: this.state.user});
+				this.props.navigation.goBack(null);
 			});
 		}
 		else {
 			Alert.alert("Please fill in all the fields.");
 		}
-	}
-
-	updateText(field, value) {
-		stateObject = {field, value};
-		this.setState(stateObject);
 	}
 
 	_getUser() {
@@ -81,30 +78,27 @@ export default class MakeRequest extends React.Component {
 	componentWillMount() {
         this._getUser();
 	}
-
-	updateValue(field, value) {
-		stateObject = { field: value };
-		this.setState(stateObject);
-	}
-
+	  
 	render() {
 		const { navigate } = this.props.navigation;
 		return (
-			<View style={styles.makeContainer}>
-				<View style={styles.makeInputView}>
-					<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"}
-						style={styles.makeSingleLine} input={this.state.title} title={'Title'} placeholder={'Your short title'}/>
-					<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"}
-						style={styles.makeSingleLine} input={this.state.location} title={'Location'} placeholder={'123 Bruin Ave'} />
-					<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
-						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"startTime"} style={styles.makeSingleLine} type='Start'/>
-						<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"endTime"} style={styles.makeSingleLine} type='End'/>
+			<TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+				<View style={styles.makeContainer}>
+					<View style={styles.makeInputView}>
+						<FormInput setParentState={newState=>{this.setState(newState)}} field={"title"} 
+							style={styles.makeSingleLine} title={'Title'} placeholder={'Your short title'}/>
+						<FormInput setParentState={newState=>{this.setState(newState)}} field={"location"} 
+							style={styles.makeSingleLine} title={'Location'} placeholder={'123 Bruin Ave'} />
+						<View style={[styles.makeDateContainer, styles.makeSingleLine]}>
+							<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"startTime"} style={styles.makeSingleLine} type='Start'/>
+							<DateTimePicker setParentState={newState=>{this.setState(newState)}} field={"endTime"} style={styles.makeSingleLine} type='End'/>
+						</View>
+						<FormInput setParentState={newState=>{this.setState(newState)}} field={"description"}
+							style={styles.formMultiLine} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
 					</View>
-					<FormInput setParentState={newState=>{this.setState(newState)}}
-						style={styles.formMultiLine} field={"description"} title={'Description'} placeholder={'Some other details would include...'} multiLine={true}/>
+					<CustomButton text={'Make Request'} onPressHandle={() => {this._onPressHandle();}} />
 				</View>
-				<CustomButton text={'Make Request'} onPressHandle={() => {this._onPressHandle();}} />
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }

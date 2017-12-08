@@ -71,6 +71,7 @@ export default class MapComponent extends React.Component {
 		let curLongitude = this.state.region.longitude;
 		// TODO: Make your request here...
 		console.log(curLatitude + ', ' + curLongitude);
+		this.props.setParentState({latitude: this.state.region.latitude, longitude: this.state.region.longitude});
 	}
 
 	render() {

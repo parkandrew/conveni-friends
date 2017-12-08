@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Text, View, TextInput, Button } from 'react-native';
+import { Alert, Text, View, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
 import CustomButton from 'client/app/components/CustomButton';
@@ -34,7 +34,7 @@ export default class SignupScreen extends React.Component {
                     user.signup(this.state.userId, this.state.password).then(
                         (responseData) => {
                             if (responseData.status == HttpStatus.OK) {
-                                this.props.navigation.navigate('LoginScreen');
+                                this.props.navigation.goBack(null);
                             }
                             else {
                                 Alert.alert("There was an error signing up, try again later.");
@@ -59,6 +59,7 @@ export default class SignupScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
+<<<<<<< HEAD
             <View style={styles.genericContainer}>
             <Text style={styles.titleMedium}>Sign-up</Text>
             <TextInput
@@ -80,6 +81,34 @@ export default class SignupScreen extends React.Component {
                 title="Sign up"
             />
         </View>
+=======
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <View style={styles.genericContainer}>
+                <Text style={styles.titleMedium}>Sign-up</Text>
+                <TextInput
+                    placeholder="User ID"
+                    onChangeText={(text) => this.setState({userId: text})}
+                    onSubmitEditing={ () => this._makeAccount() }
+                />
+                <TextInput
+                    secureTextEntry={true}
+                    placeholder="Password"
+                    onChangeText={(text) => this.setState({password: text})}
+                    onSubmitEditing={ () => this._makeAccount() }
+                />
+                <TextInput
+                    secureTextEntry={true}
+                    placeholder="Confirm Password"
+                    onChangeText={(text) => this.setState({password2: text})}
+                    onSubmitEditing={ () => this._makeAccount() }
+                />
+                <CustomButton
+                    onPress={this._makeAccount}
+                    title="Sign up"
+                />
+            </View>
+        </TouchableWithoutFeedback>
+>>>>>>> upstream/master
         );
     }
 }
