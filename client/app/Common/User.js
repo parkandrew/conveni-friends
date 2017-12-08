@@ -27,7 +27,6 @@ export default class User {
         return axios.post(url, {
             password: password
         }).then((response) => {
-            console.log(response);
             return response;
         }).catch((error) => {
             console.log(error);
@@ -41,7 +40,7 @@ export default class User {
             password: oldPassword,
             newPassword: newPassword
         }).then((response) => {
-            console.log(response);
+            return response;
         }).catch((error) => {
             console.log(error);
             throw error;
@@ -60,7 +59,6 @@ export default class User {
                 timeStart: request.timeStart,
                 timeEnd: request.timeEnd
         }).then((response) => {
-            console.log(response);
             return response.data;
           })
           .catch((error) => {
@@ -73,7 +71,6 @@ export default class User {
        let url = `${config.API_URL}/v1/user/` + this.userId + '/requests'
        return axios.get(url)
        .then((response) => {
-           console.log(response)
         return response.data;
       })
       .catch((error) => {
@@ -90,7 +87,6 @@ export default class User {
                longitude: longitude
            }
        }).then((response) => {
-         console.log(response);
         return response.data;
       }).catch((error) => {
         console.log(error);

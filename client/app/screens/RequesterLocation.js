@@ -24,6 +24,8 @@ export default class RequesterLocation extends React.Component {
     submitRequest(latitude, longitude) {
         this.state.request.latitude = latitude;
         this.state.request.longitude = longitude;
+        console.log(latitude)
+        console.log(longitude)
         this.state.user.createRequest(this.state.request).then((responseStatus) => {
             this.props.navigation.navigate("HomeScreen", {user: this.state.user});
         });

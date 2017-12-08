@@ -1,0 +1,5 @@
+.DS_Store
+client/.DS_Store
+server/.DS_Store
+client/package-lock.json
+server/package-lock.json

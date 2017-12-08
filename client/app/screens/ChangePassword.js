@@ -67,7 +67,7 @@ export default class ChangePassword extends React.Component {
             />
             <CustomButton
                 onPressHandle={this._changePass}
-                title="Confirm"
+                text="Confirm"
             />
         </View>
         );
