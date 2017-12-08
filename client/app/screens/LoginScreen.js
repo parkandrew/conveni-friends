@@ -58,12 +58,15 @@ export default class LoginScreen extends React.Component {
                   setParentState={newState=>{this.setState(newState)}}
                   field={"userIdInput"}
       						style={styles.makeLoginLine}
+                  onSubmitEditing={this._login}
                   placeholder={'User ID'}/>
 
     					<LoginFormInput
                   setParentState={newState=>{this.setState(newState)}}
                   field={"password"}
       						style={styles.makeLoginLine}
+                  secureTextEntry={true}
+                  onSubmitEditing={this._login}
                   placeholder={'Password'} />
 
               <CustomButton
