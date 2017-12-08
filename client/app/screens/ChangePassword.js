@@ -22,16 +22,11 @@ export default class ChangePassword extends React.Component {
         const alphanum = /[0-9a-zA-Z]+/g;
             if (this.state.oldPassword && this.state.password && this.state.password2) {
                 if (this.state.password === this.state.password2) {
-<<<<<<< HEAD
-                  this.state.user.changePassword(this.state.oldPassword, this.state.password);
-                    this.props.navigation.navigate('LoginScreen')
-=======
                   this.state.user.changePassword(this.state.oldPassword, this.state.password).then(
                     (response) => {this.props.navigation.navigate('LoginScreen')}
                   ).catch((error) => {Alert.alert("There was an error changing your password.")});
 
-                    
->>>>>>> upstream/master
+
                 }
                 else {
                     Alert.alert("Passwords do not match, please reenter.");

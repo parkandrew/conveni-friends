@@ -51,7 +51,6 @@ export default class LoginScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-<<<<<<< HEAD
           <View style={styles.genericContainer}>
               <Text style={styles.titleLarge}>Conveni-friends</Text>
 
@@ -76,29 +75,6 @@ export default class LoginScreen extends React.Component {
                   text="Sign up"/>
 
           </View>
-=======
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-                <View style={styles.genericContainer}>
-                <Text style={styles.titleLarge}>Conveni-friends</Text>
-
-                <FormInput setParentState={newState=>{this.setState(newState)}} field={"userIdInput"}
-                            style={styles.makeSingleLine} placeholder={'User ID'}
-                            onSubmitEditing={ () => this._login() }/>
-                        <FormInput setParentState={newState=>{this.setState(newState)}} field={"password"}
-                            style={styles.makeSingleLine} placeholder={'Password'} secureTextEntry={true}
-                            onSubmitEditing={ () => this._login() }/>
-
-                <CustomButton
-                    onPressHandle={() => {this._login();}}
-                    text="Login"
-                />
-                <CustomButton
-                    onPressHandle={() => {this._signup();}}
-                    text="Sign up"
-                />
-            </View>
-        </TouchableWithoutFeedback>
->>>>>>> upstream/master
         );
     }
 }

@@ -59,29 +59,6 @@ export default class SignupScreen extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-<<<<<<< HEAD
-            <View style={styles.genericContainer}>
-            <Text style={styles.titleMedium}>Sign-up</Text>
-            <TextInput
-                placeholder="User ID"
-                onChangeText={(text) => this.setState({userId: text})}
-            />
-            <TextInput
-                secureTextEntry={true}
-                placeholder="Password"
-                onChangeText={(text) => this.setState({password: text})}
-            />
-            <TextInput
-                secureTextEntry={true}
-                placeholder="Confirm Password"
-                onChangeText={(text) => this.setState({password2: text})}
-            />
-            <CustomButton
-                onPressHandle={this._makeAccount}
-                title="Sign up"
-            />
-        </View>
-=======
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
                 <View style={styles.genericContainer}>
                 <Text style={styles.titleMedium}>Sign-up</Text>
@@ -108,7 +85,6 @@ export default class SignupScreen extends React.Component {
                 />
             </View>
         </TouchableWithoutFeedback>
->>>>>>> upstream/master
         );
     }
 }
