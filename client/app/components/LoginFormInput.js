@@ -13,6 +13,7 @@ export default class LoginFormInput extends React.Component {
 				<Text style={styles.loginFormInputHeader}>{this.props.title}</Text>
 				<TextInput style={ styles.loginFormInput }
 					placeholder={this.props.placeholder}
+					onSubmitEditing={this.props.onSubmitEditing} secureTextEntry={this.props.secureTextEntry}
 					onChangeText={(text) => {this.props.setParentState({[this.props.field]: text})}}/>
 			</View>
 		);
