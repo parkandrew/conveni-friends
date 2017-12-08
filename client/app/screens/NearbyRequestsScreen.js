@@ -44,7 +44,8 @@ export default class NearbyRequestsScreen extends React.Component {
     fetchNearbyRequests() {
         if (this.props.navigation.state.params) {
             this.setState({user: this.props.navigation.state.params.user}, () => {
-                this.state.user.getNearbyRequests(5.5, 5.5).then((response) => {
+                this.state.user.getNearbyRequests(this.props.navigation.state.params.latitude, 
+                    this.props.navigation.state.params.longitude).then((response) => {
                     //put data in array
                     dataSource = [];
                     response.forEach(element => {

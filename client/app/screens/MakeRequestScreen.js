@@ -55,13 +55,15 @@ export default class MakeRequestScreen extends React.Component {
 	_onPressHandle() {
 		if (this.state.title && this.state.location && this.state.description) {
 			//get latitude and longitude from address?
-			timeStart = this.state.startTime.toISOString().slice(0, 19).replace('T', ' ');;
-			timeEnd = this.state.endTime.toISOString().slice(0, 19).replace('T', ' ');;
+			timeStart = this.state.startTime.toISOString().slice(0, 19).replace('T', ' ');
+			timeEnd = this.state.endTime.toISOString().slice(0, 19).replace('T', ' ');
 			let request = new Request(this.state.user.userId, null, this.state.title,
-				this.state.description, '5.5', '5.5', this.state.location, timeStart, timeEnd);
-			this.state.user.createRequest(request).then((responseStatus) => {
-				this.props.navigation.goBack(null);
-			});
+				this.state.description, 0.0, 0.0, this.state.location, timeStart, timeEnd);
+			this.props.navigation.navigate("RequesterLocation", {
+				user: this.state.user,
+				request: request
+			})
+
 		}
 		else {
 			Alert.alert("Please fill in all the fields.");
@@ -69,7 +71,6 @@ export default class MakeRequestScreen extends React.Component {
 	}
 
 	_getUser() {
-        //TODO: get key from storage somehow
         if (this.props.navigation.state.params) {
             this.setState({user: this.props.navigation.state.params.user});
         }

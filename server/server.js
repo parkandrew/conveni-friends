@@ -626,9 +626,18 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
 
             let messageList = [];
 
-            for (let i = 0; i < results.length; i++) {
-                const messages = JSON.parse(results[i].content);
-                messageList.push(messages);
+            for (let i = results.length-1; i >= 0; i--) {
+                
+                const message = {
+                    _id: results[i]['giftedChatId'],
+                    text: results[i]['text'],
+                    createdAt: results[i]['createdAt'],
+                    user: {
+                        _id: results[i]['senderId']
+                    }
+
+                }
+                messageList.push(message);
             }
 
             res.status(HttpStatus.OK).send(messageList);
@@ -652,17 +661,19 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
  *
  * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
  */
-app.post('/v1/message/send', (req, res) => {
-    const { messageSessionId, senderId, receiverId } = req.query;
-    const content = req.body;
-
+app.post('/v1/message/send', upload.array(), (req, res) => {
+    const { messageSessionId, senderId, receiverId, content} = req.query;
+    const contentJSON = JSON.parse(content)
+    const text = contentJSON[0]['text'];
+    const createdAt = contentJSON[0]['createdAt'].slice(0, 19).replace('T', ' ');
+    const _id = contentJSON[0]['_id'];
     // NOTE: The GiftedChat._id is different than our Message schema id (which
     // currently is an autoincremented int). This needs to be addressed somehow.
 
-    const query = `INSERT INTO Message(messageSessionId,senderId, ` +
-                  `receiverId,content) ` +
-                  `VALUES(${messageSessionId},${senderId},` +
-                  `${receiverId},${content})`;
+    const query = `INSERT INTO MESSAGE(messageSessionId, senderId, ` +
+                  `receiverId, text, timeCreated, giftedChatId) ` +
+                  `VALUES(${messageSessionId}, '${senderId}', '${receiverId}', ` +
+                  `"${text}", "${createdAt}", "${_id}")`;
 
     db.query(query, (error, results) => {
         if (error) {
