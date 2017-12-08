@@ -4,7 +4,6 @@ import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
 import CustomButton from 'client/app/components/CustomButton';
 
-
 const HttpStatus = require('http-status-codes');
 
 export default class SignupScreen extends React.Component {
@@ -80,8 +79,8 @@ export default class SignupScreen extends React.Component {
                     onSubmitEditing={ () => this._makeAccount() }
                 />
                 <CustomButton
-                    onPress={this._makeAccount}
-                    title="Sign up"
+                    onPressHandle={this._makeAccount}
+                    text="Sign up"
                 />
             </View>
         </TouchableWithoutFeedback>
