@@ -19,7 +19,7 @@ const db = mysql.createConnection({
 
 export const app = express();
 const server = http.Server(app);
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const HttpStatus = require('http-status-codes');
 
 // HTTP body parser
