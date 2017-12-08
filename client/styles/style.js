@@ -209,19 +209,20 @@ const styles = StyleSheet.create({
 
 
 // CustomButton StyleSheet
-	custom_button: {
-		flexDirection: 'column',
+	customButton: {
+    paddingVertical: 15,
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginTop: 5,
 		marginBottom: 5,
 		borderColor: $loving_blue,
 		height: $font__small + 26,
-		paddingBottom: 6,
+		paddingTop: 7,
+		paddingBottom: 0,
 		width: screenWidth/1.618,
 		borderWidth: 2,
 		backgroundColor: $white,
-		borderRadius: 6
+		borderRadius: 6,
 	},
 	customButtonFont: {
 		fontSize: 20,
