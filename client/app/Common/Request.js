@@ -3,7 +3,7 @@ export default class Request {
     constructor(requesterId, providerId, title, description, latitude, 
     longitude, address, timeStart, timeEnd) {
         this.requesterId = requesterId,
-        this.provierId = providerId,
+        this.providerId = providerId,
         this.title = title,
         this.description = description,
         this.latitude = latitude,

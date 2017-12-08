@@ -56,7 +56,7 @@ export default class HomeScreen extends React.Component {
     }
 
     provider() {
-        this.props.navigation.navigate('NearbyRequestsScreen', {user:this.state.user});
+        this.props.navigation.navigate('ProviderLocation', {user:this.state.user});
     }
     requester() {
         this.props.navigation.navigate('MakeRequestScreen', {user:this.state.user});
