@@ -83,9 +83,10 @@ const styles = StyleSheet.create({
 
 	genericContainer: {
 		flex: 1,
-		backgroundColor: $ios_blue,
-		alignItems: 'center',
+		flexDirection: 'column',
 		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: $ios_blue,
 	},
 
 
@@ -154,6 +155,35 @@ const styles = StyleSheet.create({
 	},
 
 
+// LoginScreen
+
+	loginFormContainer: {
+		alignItems: 'center',
+	},
+	loginFormInput: {
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		borderColor: $loving_blue,
+		height: $font__small + 26,
+		fontSize: $font__small,
+		paddingBottom: 0,
+		paddingLeft: 8,
+		width: screenWidth/1.618,
+		borderWidth: 2,
+		backgroundColor: $white,
+		borderRadius: 6,
+	},
+	loginFormInputHeader: {
+		fontSize: $font__small,
+		marginBottom: 1
+	},
+	makeLoginLine: {
+		flex: 0.11,
+		marginBottom: 5,
+
+	},
+
+
 // MakeRequestScreen/MakeRequest
 
 	makeContainer: {
@@ -179,14 +209,15 @@ const styles = StyleSheet.create({
 
 
 // CustomButton StyleSheet
-custom_button: {
-		justifyContent: 'flex-end',
+	custom_button: {
+		flexDirection: 'column',
+		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginTop: 5,
 		marginBottom: 5,
 		borderColor: $loving_blue,
-		height: 40,
-		paddingBottom: 5,
+		height: $font__small + 26,
+		paddingBottom: 6,
 		width: screenWidth/1.618,
 		borderWidth: 2,
 		backgroundColor: $white,

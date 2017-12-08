@@ -2,6 +2,8 @@ import React from 'react';
 import { Alert, Text, View, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
+import CustomButton from 'client/app/components/CustomButton';
+
 
 const HttpStatus = require('http-status-codes');
 
