@@ -11,10 +11,10 @@ import url from "url"
 import WebSocket from "ws";
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123',
-    database: 'cs130_project',
+    host: 'us-cdbr-iron-east-05.cleardb.net',
+    user: 'beffa2b11a15f1',
+    password: '704f96be',
+    database: 'heroku_f4bd3eb0d7b7de1',
 });
 
 export const app = express();
@@ -29,7 +29,7 @@ var upload = multer(); // for parsing multipart/form-data
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ server });
 const connections = {}; // { userId: ws }
 
 // When userId opens his message session with otherUserId, userId creates a
@@ -627,7 +627,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
             let messageList = [];
 
             for (let i = results.length-1; i >= 0; i--) {
-                
+
                 const message = {
                     _id: results[i]['giftedChatId'],
                     text: results[i]['text'],
