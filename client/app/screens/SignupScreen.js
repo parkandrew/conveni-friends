@@ -2,6 +2,8 @@ import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
+import CustomButton from 'client/app/components/CustomButton';
+
 
 const HttpStatus = require('http-status-codes');
 
@@ -74,7 +76,7 @@ export default class SignupScreen extends React.Component {
                 onChangeText={(text) => this.setState({password2: text})}
             />
             <CustomButton
-                onPress={this._makeAccount}
+                onPressHandle={this._makeAccount}
                 title="Sign up"
             />
         </View>

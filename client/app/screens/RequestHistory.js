@@ -8,7 +8,7 @@ import CustomButton from 'client/app/components/CustomButton';
 
 export default class RequestHistory extends React.Component {
     static navigationOptions = {
-        title: 'Request History'
+        drawerLabel: 'Request History'
     }
     constructor(props) {
         super(props);

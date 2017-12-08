@@ -33,7 +33,6 @@ export default class RequestListComponent extends React.Component {
 				ItemSeparatorComponent={this._renderSeparator}
 				data={this.props.data}
 				renderItem={this._renderItem}
-				// navigation={this.props.navigation}
 			/>
 		);
 	}

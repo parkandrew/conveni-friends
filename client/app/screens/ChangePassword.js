@@ -5,6 +5,7 @@ import CustomButton from 'client/app/components/CustomButton';
 
 export default class ChangePassword extends React.Component {
     static navigationOptions = {
+      drawerLabel: 'Change Password'
     }
     constructor(props) {
         super(props);
@@ -19,15 +20,9 @@ export default class ChangePassword extends React.Component {
     _changePass() {
         //alphanumeric characters
         const alphanum = /[0-9a-zA-Z]+/g;
-        //TODO: check w/backend that the user id does not already exist
             if (this.state.oldPassword && this.state.password && this.state.password2) {
                 if (this.state.password === this.state.password2) {
                   this.state.user.changePassword(this.state.oldPassword, this.state.password);
-                    //TODO: make account w/backend
-                    //We can either navigate them back to the login screen
-                    //or get the session key right here and navigate them to the
-                    //"home" screen
-
                     this.props.navigation.navigate('LoginScreen')
                 }
                 else {
