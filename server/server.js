@@ -422,7 +422,6 @@ app.get('/v1/user/:userId/requests', (req, res) => {
 
     const query = `SELECT * FROM Request `
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
-  console.log(query)
 
     db.query(query, (error, results) => {
       console.log(results);
