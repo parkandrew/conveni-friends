@@ -20,10 +20,10 @@ const db = mysql.createConnection({
     multipleStatements: true,
 });
 
+//Clear the test database
 const query = `SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE User; ` +
 				`SET FOREIGN_KEY_CHECKS = 1;`;
 
-//Clear the test database
 db.query(query, (error, results) => {
     if (error) {
         console.log(error);
