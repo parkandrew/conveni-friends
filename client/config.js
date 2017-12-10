@@ -1,4 +1,4 @@
 export default config = {
-    API_URL: 'http://0818c916.ngrok.io',
-    WS_URL: 'ws://2ed8367f.ngrok.io',
+    API_URL: 'http://009233e1.ngrok.io',
+    WS_URL: 'ws://69ee687d.ngrok.io',
 };
