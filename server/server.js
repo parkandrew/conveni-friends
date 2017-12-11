@@ -100,7 +100,7 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
 
     dbQuery(query, (error, results) => {
         if (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
@@ -134,7 +134,6 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
                   `WHERE BINARY password="${password}" and BINARY userId="${userId}"`;
 
     dbQuery(query, (error, results) => {
-        console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -172,15 +171,20 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     const query = `UPDATE User SET password="${newPassword}" ` +
                   `WHERE BINARY userId="${userId}"`;
+  
     dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
-        else {
+        else if (results.affectedRows > 0){
             console.log("Success");
             res.status(HttpStatus.OK).send({});
+        }
+        else {
+            console.log("Invalid credentials presented");
+            res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
 });
@@ -328,6 +332,7 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
 
     dbQuery(query, (error, results) => {
         if (error) {
+            console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
         } else {
