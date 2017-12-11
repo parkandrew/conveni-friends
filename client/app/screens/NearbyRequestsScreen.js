@@ -38,7 +38,8 @@ export default class NearbyRequestsScreen extends React.Component {
       let str = distance + ' mi';
         timeStart = new Date(request.timeStart).toLocaleTimeString();
         timeEnd = new Date(request.timeEnd).toLocaleTimeString();
-        return { title: request.title, distance: str, startTime: timeStart, endTime: timeEnd };
+        return { title: request.title, distance: str, location: request.address, 
+            details: request.description, startTime: timeStart, endTime: timeEnd };
     }
 
     fetchNearbyRequests() {
