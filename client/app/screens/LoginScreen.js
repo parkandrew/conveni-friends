@@ -59,7 +59,6 @@ export default class LoginScreen extends React.Component {
                   source={require('client/styles/logo.png')}
                   resizeMode='center'
                 />
-
                 <LoginFormInput
                     setParentState={newState=>{this.setState(newState)}}
                     field={"userIdInput"}
