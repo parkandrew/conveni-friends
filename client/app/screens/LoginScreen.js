@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Text, View, TextInput, Button, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Alert, Text, View, TextInput, Button, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
 import styles from 'client/styles/style';
 import User from 'client/app/Common/User';
 import CustomButton from 'client/app/components/CustomButton';
@@ -52,8 +52,13 @@ export default class LoginScreen extends React.Component {
         const { navigate } = this.props.navigation;
         return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-            <View style={styles.genericContainer}>
-                <Text style={styles.titleLarge}>Conveni-friends</Text>
+            <View style={styles.loginContainer}>
+                <Image
+                  style={styles.loginDisplay}
+                  source={require('client/styles/logo.png')}
+                  resizeMode='center'
+                />
+              
                 <LoginFormInput
                     setParentState={newState=>{this.setState(newState)}}
                     field={"userIdInput"}

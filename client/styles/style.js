@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native';
+import { Button, Image, Dimensions } from 'react-native';
 
 // consts
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 const screenWidth = 350;
 const $font__large = 45;
 const $font__medium = 20;
@@ -157,11 +159,15 @@ const styles = StyleSheet.create({
 
 // LoginScreen
 
-	loginFormContainer: {
+	loginContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor: $white,
 	},
 	loginFormInput: {
-		justifyContent: 'flex-end',
+		justifyContent: 'space-around',
 		alignItems: 'center',
 		borderColor: $loving_blue,
 		height: $font__small + 26,
@@ -171,7 +177,7 @@ const styles = StyleSheet.create({
 		width: screenWidth/1.618,
 		borderWidth: 2,
 		backgroundColor: $white,
-		borderRadius: 6,
+		borderRadius: 10,
 	},
 	loginFormInputHeader: {
 		fontSize: $font__small,
@@ -182,7 +188,11 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 
 	},
-
+	loginDisplay: {
+		flex: 0.5,
+		width: deviceWidth,
+		height: deviceHeight/3,
+	},
 
 // MakeRequestScreen/MakeRequest
 
@@ -210,19 +220,17 @@ const styles = StyleSheet.create({
 
 // CustomButton StyleSheet
 	customButton: {
-    paddingVertical: 15,
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		alignItems: 'center',
-		marginTop: 5,
-		marginBottom: 5,
+		marginTop: 15,
 		borderColor: $loving_blue,
 		height: $font__small + 26,
-		paddingTop: 7,
-		paddingBottom: 0,
+		paddingTop: 5,
+		paddingBottom: 5,
 		width: screenWidth/1.618,
 		borderWidth: 2,
 		backgroundColor: $white,
-		borderRadius: 6,
+		borderRadius: 10,
 	},
 	customButtonFont: {
 		fontSize: 20,

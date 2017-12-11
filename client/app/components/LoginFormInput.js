@@ -9,7 +9,7 @@ import styles from 'client/styles/style';
 export default class LoginFormInput extends React.Component {
 	render() {
 		return (
-			<View style={[styles.loginFormContainer, this.props.style]}>
+			<View style={[styles.loginFContainer, this.props.style]}>
 				<Text style={styles.loginFormInputHeader}>{this.props.title}</Text>
 				<TextInput style={ styles.loginFormInput }
 					placeholder={this.props.placeholder}
