@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Button } from 'react-native';
+import { Button, Image, Dimensions } from 'react-native';
 
 // consts
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 const screenWidth = 350;
 const $font__large = 45;
 const $font__medium = 20;
@@ -9,11 +11,14 @@ const $font__small = 16;
 const $fontSize = 16;
 
 // iOS colors
-// refer to http://www.colourlovers.com/palette/3888271/IOS_9_Colors
+// http://www.colourlovers.com/palette/3888271/IOS_9_Colors
 const $white = '#FFFFFF';
+const $midnight = '#12132E';
+const $sky = '#C3EBFB';
 const $loving_blue = '#0076FF';
 const $ios_blue = '#54C7FC';
 const $ip = '#8E8E93';
+const $menu = '#24B8F3';
 
 
 const styles = StyleSheet.create({
@@ -27,11 +32,6 @@ const styles = StyleSheet.create({
 	tabStyle: {
 		borderColor: $loving_blue,
 		borderWidth: 2
-	},
-
-	listSeparatorContainer: {
-		height: 1,
-		backgroundColor: '#000',
 	},
 
 	cardContainer: {
@@ -68,17 +68,17 @@ const styles = StyleSheet.create({
 	titleLarge: {
 		fontSize: $font__large,
 		fontWeight: 'bold',
-	  color: $loving_blue,
+	  color: $sky,
 	},
 
 	titleMedium: {
 		fontSize: $font__medium,
-	  color: $loving_blue,
+	  color: $sky,
 	},
 
 	titleSmall: {
 		fontSize: $font__small,
-		color: $loving_blue,
+		color: $sky,
 	},
 
 	genericContainer: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: $ios_blue,
+		backgroundColor: $midnight,
 	},
 
 
@@ -95,11 +95,21 @@ const styles = StyleSheet.create({
 	},
 
 // HamburgerMenu
-	hamburgerContainer: {
-		flex: 1,
-		backgroundColor: $white,
+	hamburgerItem: {
+		fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    padding: 10,
+    margin: 5,
+    textAlign: 'center'
 	},
 
+	hamburgerContainer: {
+		flex: 1,
+    backgroundColor: $menu,
+    paddingTop: 40,
+    paddingHorizontal: 20
+	},
 
 // NearbyRequests
     nearbyContainer: {
@@ -122,12 +132,8 @@ const styles = StyleSheet.create({
       paddingLeft: 15,
       borderColor: $loving_blue,
       borderWidth: 2,
-      borderRadius: 6,
+      borderRadius: 10,
       overflow: 'hidden'
-    },
-    dtpInputHeader: {
-      fontSize: $font__small,
-      marginBottom: 1,
     },
 
 
@@ -144,11 +150,12 @@ const styles = StyleSheet.create({
 		fontSize: $font__small,
 		borderColor: $loving_blue,
 		borderWidth: 2,
-		borderRadius: 6
+		borderRadius: 10
 	},
-	formInputHeader: {
+	inputHeader: {
 		fontSize: $font__small,
-		marginBottom: 1
+		marginBottom: 2,
+		color: $white,
 	},
 	formMultiLine: {
 		height: $font__small * 6,
@@ -156,12 +163,15 @@ const styles = StyleSheet.create({
 
 
 // LoginScreen
-
-	loginFormContainer: {
+	loginContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor: $midnight,
 	},
 	loginFormInput: {
-		justifyContent: 'flex-end',
+		justifyContent: 'space-around',
 		alignItems: 'center',
 		borderColor: $loving_blue,
 		height: $font__small + 26,
@@ -171,7 +181,7 @@ const styles = StyleSheet.create({
 		width: screenWidth/1.618,
 		borderWidth: 2,
 		backgroundColor: $white,
-		borderRadius: 6,
+		borderRadius: 10,
 	},
 	loginFormInputHeader: {
 		fontSize: $font__small,
@@ -182,6 +192,11 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 
 	},
+	loginDisplay: {
+		flex: 0.5,
+		width: deviceWidth,
+		height: deviceHeight/3,
+	},
 
 
 // MakeRequestScreen/MakeRequest
@@ -189,7 +204,7 @@ const styles = StyleSheet.create({
 	makeContainer: {
 		flex: 1,
 		alignItems: 'center',
-		backgroundColor: $ios_blue,
+		backgroundColor: $midnight,
 		justifyContent: 'center',
 		paddingTop: 20,
 	},
@@ -210,28 +225,66 @@ const styles = StyleSheet.create({
 
 // CustomButton StyleSheet
 	customButton: {
-    paddingVertical: 15,
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
 		alignItems: 'center',
-		marginTop: 5,
-		marginBottom: 5,
+		marginTop: 15,
 		borderColor: $loving_blue,
 		height: $font__small + 26,
-		paddingTop: 7,
-		paddingBottom: 0,
+		paddingTop: 5,
+		paddingBottom: 5,
 		width: screenWidth/1.618,
 		borderWidth: 2,
 		backgroundColor: $white,
-		borderRadius: 6,
+		borderRadius: 10,
 	},
 	customButtonFont: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		color: $loving_blue,
+		color: 'black',
 	},
 
-});
 
+// RequestInfoDetails
+
+		requestMakeContainer: {
+			flex: 1,
+			backgroundColor: $midnight,
+			alignItems: 'center',
+			padding: 10,
+			paddingTop: 70,
+		},
+		primary: {
+			fontSize: 20,
+			fontWeight: 'bold',
+			color: $white,
+			marginBottom: 20,
+		},
+		secondary: {
+			fontWeight: 'normal',
+			color: $sky,
+		},
+
+// RequestDetailsScreen
+		detailsMakeContainer: {
+			backgroundColor: $midnight,
+			paddingRight: 10,
+			paddingLeft: 10,
+			paddingTop: 25,
+		},
+		buttonContainer: {
+			alignItems: 'center',
+		},
+		key: {
+			fontSize: 20,
+			fontWeight: 'bold',
+			color: $white,
+		},
+		value: {
+			fontWeight: 'normal',
+			color: $sky,
+		},
+
+});
 
 
 export default styles;

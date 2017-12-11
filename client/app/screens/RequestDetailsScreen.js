@@ -48,15 +48,15 @@ export default class RequestDetailsScreen extends React.Component {
 
 		return (
 			<View style={{ flex: 1 }}>
-				<ScrollView style={reqStyles.makeContainer}>
-					<View style={reqStyles.makeInputView}>
-						<RequestInfoLine primary={'Request'} secondary={title} />
-						<RequestInfoLine primary={'Location'} secondary={location} />
-						<RequestInfoLine primary={'Start Time'} secondary={startTime} />
-						<RequestInfoLine primary={'End Time'} secondary={endTime} />
-						<Text style={reqStyles.key}>Details: <Text style={reqStyles.value}>{details}</Text></Text>
+				<ScrollView style={styles.detailsMakeContainer}>
+					<View style={styles.makeInputView}>
+						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
+						<RequestInfoLine primary={'Location'} secondary={' ' + location} />
+						<RequestInfoLine primary={'Start Time'} secondary={' ' + startTime} />
+						<RequestInfoLine primary={'End Time'} secondary={' ' + endTime} />
+						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
 					</View>
-					<CustomButton style={reqStyles.buttonContainer} text={'Message Requester'}/>
+					<CustomButton style={styles.buttonContainer} text={'Message Requester'}/>
 				</ScrollView>
 
 				{ accepted
@@ -67,24 +67,3 @@ export default class RequestDetailsScreen extends React.Component {
 		);
 	}
 }
-
-// move to styles when it gets cleaned up
-const reqStyles = {
-	makeContainer: {
-		backgroundColor: 'white',
-		paddingRight: 10,
-		paddingLeft: 10,
-		paddingTop: 25,
-	},
-	buttonContainer: {
-		alignItems: 'center',
-	},
-	key: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		color: '#3D95DA',
-	},
-	value: {
-		fontWeight: 'normal'
-	},
-};
