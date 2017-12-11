@@ -10,10 +10,12 @@ import User from 'client/app/Common/User';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
+
         const params = navigation.state.params || {};
         return {
             headerLeft: params.headerLeft,
-            gesturesEnabled: false
+            gesturesEnabled: false,
+            title: 'Home',
         }
     };
     constructor(props) {

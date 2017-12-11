@@ -10,7 +10,8 @@ const HttpStatus = require('http-status-codes');
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
         headerLeft: null,
-        gesturesEnabled: false
+        gesturesEnabled: false,
+        title: 'Login',
     }
     constructor(props) {
         super(props);
@@ -58,7 +59,7 @@ export default class LoginScreen extends React.Component {
                   source={require('client/styles/logo.png')}
                   resizeMode='center'
                 />
-              
+
                 <LoginFormInput
                     setParentState={newState=>{this.setState(newState)}}
                     field={"userIdInput"}
