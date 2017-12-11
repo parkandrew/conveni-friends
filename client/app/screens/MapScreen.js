@@ -7,7 +7,7 @@ import MapView from 'react-native-maps';
 
 export default class MapScreen extends React.Component {
 	static navigationOptions = {
-		
+		title: 'Choose Location'
 	}
 
 	render() {
@@ -19,4 +19,3 @@ export default class MapScreen extends React.Component {
 		);
 	}
 }
-

@@ -47,7 +47,7 @@ export default class RequestDetailsScreen extends React.Component {
 		const { accepted, confirmed, completed } = this.props.navigation.state.params.data;
 
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={styles.simpleContainer}>
 				<ScrollView style={styles.detailsMakeContainer}>
 					<View style={styles.makeInputView}>
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
@@ -57,12 +57,19 @@ export default class RequestDetailsScreen extends React.Component {
 						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
 					</View>
 					<CustomButton style={styles.buttonContainer} text={'Message Requester'}/>
+					{ accepted
+						? <CustomButton
+								onPressHandle={() => {this.accept()}}
+								style={styles.buttonContainer}
+								text={'Accept'}
+							/>
+						: <CustomButton
+								onPressHandle={() => {this.complete()}}
+								style={styles.buttonContainer}
+								text={'Complete'}
+							/>
+					}
 				</ScrollView>
-
-				{ accepted
-					? <Button title="Accept" onPress={() => this.accept()} />
-					: <Button title="Complete" onPress={() => this.complete()} />
-				}
 			</View>
 		);
 	}

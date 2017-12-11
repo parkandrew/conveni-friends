@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 
 	tabStyle: {
 		borderColor: $loving_blue,
-		borderWidth: 2
+		borderWidth: 2,
 	},
 
 	cardContainer: {
@@ -39,8 +39,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		height: 65,
 		paddingRight: 6,
-		paddingLeft: 6,
-		backgroundColor: $white,
+		paddingLeft: 12,
+		backgroundColor: $midnight,
+		borderRadius: 0,
+		borderColor: $ios_blue,
+		borderWidth: 1,
 	},
 	cardLeft: {
 		flex: 0.8,
@@ -49,9 +52,11 @@ const styles = StyleSheet.create({
 	},
 	cardTitle: {
 		fontSize: $font__medium,
+		color: $white,
 	},
 	cardSubTitle: {
 		fontSize: $font__small,
+		color: $ip,
 		marginTop: 4
 	},
 	cardRight: {
@@ -60,7 +65,8 @@ const styles = StyleSheet.create({
 		paddingLeft: 6,
 	},
 	cardDistance: {
-		fontSize: $font__small
+		fontSize: $font__small,
+		color: $white,
 	},
 
 
@@ -79,6 +85,13 @@ const styles = StyleSheet.create({
 	titleSmall: {
 		fontSize: $font__small,
 		color: $sky,
+	},
+
+	simpleContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-around',
+		backgroundColor: $midnight,
 	},
 
 	genericContainer: {
@@ -153,7 +166,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10
 	},
 	inputHeader: {
-		fontSize: $font__small,
+		fontSize: $font__medium,
 		marginBottom: 2,
 		color: $white,
 	},
@@ -206,7 +219,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: $midnight,
 		justifyContent: 'center',
-		paddingTop: 20,
 	},
 	makeInputView: {
 		flex: .9,
