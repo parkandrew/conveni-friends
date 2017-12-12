@@ -48,7 +48,7 @@ export default class DateTimePicker extends React.Component {
 		*/
 		return (
 			<View>
-				<Text style={styles.dtpInputHeader}>{this.props.type} Date</Text>
+				<Text style={styles.inputHeader}>{this.props.type} Date</Text>
 				<Text style={styles.dtpDatePicker}onPress={() => {
 					this._showDateTimePicker(this.props.type)
 				}

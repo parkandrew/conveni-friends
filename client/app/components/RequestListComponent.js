@@ -10,17 +10,25 @@ export default class RequestListComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this._renderItem = this._renderItem.bind(this);
+		this.getRequestDetails = this.getRequestDetails.bind(this);
 	}
 
-
 	_renderItem = ({ item }) => (
-		<Card data={item}
-		navigation={this.props.navigation}/>
+		<Card
+			data={item}
+			navigation={this.props.navigation}
+			onClick={() => this.getRequestDetails(item)}
+		/>
 	);
 
 	_renderSeparator = () => (
 		<RenderSeparator/>
 	);
+
+	getRequestDetails(data) {
+		const { navigation } = this.props;
+		navigation.navigate('RequestDetailsScreen', { request: data.request });
+	}
 
 	render() {
 		const ITEM_HEIGHT = 400;

@@ -12,8 +12,8 @@ export default class ListSeparator extends React.Component {
 	render() {
 		return (
 			<View
-			style={styles.listSeparatorContainer}
-		/>
+				style={styles.listSeparatorContainer}
+			/>
 		);
 	}
 }

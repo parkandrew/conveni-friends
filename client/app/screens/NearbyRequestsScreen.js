@@ -31,7 +31,7 @@ export default class NearbyRequestsScreen extends React.Component {
             data.timeStart,
             data.timeEnd
         )
-        return request;
+        return data.request;
     }
 
     createDataCell(request, distance) {
@@ -45,17 +45,10 @@ export default class NearbyRequestsScreen extends React.Component {
     fetchNearbyRequests() {
         if (this.props.navigation.state.params) {
             this.setState({user: this.props.navigation.state.params.user}, () => {
-                this.state.user.getNearbyRequests(this.props.navigation.state.params.latitude, 
-                    this.props.navigation.state.params.longitude).then((response) => {
-                    //put data in array
-                    dataSource = [];
-                    response.forEach(element => {
-                        let request = this.parseSQLData(element.request);
-                        if (request.userId !== this.state.user.userId)
-                            dataSource.push(this.createDataCell(request, element.distance));
+                this.state.user.getNearbyRequests(this.props.navigation.state.params.latitude,
+                    this.props.navigation.state.params.longitude).then(data => {
+                        this.setState({ data });
                     });
-                    this.setState({data: dataSource});
-                });
             });
         }
     }

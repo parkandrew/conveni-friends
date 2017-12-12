@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import { AsyncStorage, Text, View, TextInput, Button } from 'react-native';
 import LoginScreen from 'client/app/screens/LoginScreen';
 import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from 'client/app/Common/HamburgerMenu';
@@ -10,10 +10,12 @@ import User from 'client/app/Common/User';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
+
         const params = navigation.state.params || {};
         return {
             headerLeft: params.headerLeft,
-            gesturesEnabled: false
+            gesturesEnabled: false,
+            title: 'Home',
         }
     };
     constructor(props) {
@@ -28,7 +30,6 @@ export default class HomeScreen extends React.Component {
         this._setNavigationParams = this._setNavigationParams.bind(this);
         this._getUser = this._getUser.bind(this);
         this.history = this.history.bind(this);
-
     }
 
 
@@ -38,7 +39,10 @@ export default class HomeScreen extends React.Component {
 
     _getUser() {
             if (this.props.navigation.state.params) {
-                this.setState({user: this.props.navigation.state.params.user});
+                const { user } = this.props.navigation.state.params;
+                this.setState({ user });
+
+                AsyncStorage.setItem('userId', user.userId);
             }
     }
 

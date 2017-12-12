@@ -2,9 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
-import { Button, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { AsyncStorage, Button, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import RequestInfoLine from 'client/app/components/RequestInfoDetails';
 import CustomButton from 'client/app/components/CustomButton';
+
+import { getUser } from 'client/app/utils';
 import styles from 'client/styles/style';
 import config from 'client/config';
 
@@ -17,74 +19,88 @@ export default class RequestDetailsScreen extends React.Component {
 		super(props);
 
 		this.state = {
+			userId: '',
 		};
 
+		this.getButtons = this.getButtons.bind(this);
 		this.accept = this.accept.bind(this);
 		this.complete = this.complete.bind(this);
+		this.messageRequester = this.messageRequester.bind(this);
+	}
+
+	componentWillMount() {
+		AsyncStorage.getItem('userId')
+			.then(userId => this.setState({ userId }));
+	}
+
+	getButtons() {
+		const { userId } = this.state;
+		const { accepted, requesterId } = this.props.navigation.state.params.request;
+
+		if (!userId || userId == requesterId) {
+			return;
+		}
+
+		return accepted
+			? <Button title="Accept" onPress={() => this.accept()} />
+			: <Button title="Complete" onPress={() => this.complete()} />;
 	}
 
 	accept() {
+		const { userId } = this.state;
 		const { requesterId, requestId } = this.props.navigation.state.params.data;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
-			userId: requesterId,
+			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		});
 	}
 
 	complete() {
+		const { userId } = this.state;
 		const { requesterId, requestId } = this.props.navigation.state.params.data;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
-			userId: requesterId,
+			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		});
 	}
 
+	messageRequester() {
+		const navigation = this.props.navigation;
+		const { requesterId } = navigation.state.params.data;;
+		const { userId } = this.state;
+
+		axios.get(`${config.API_URL}/v1/message/session/create`, { userId, otherUserId: requesterId })
+			.then(response => response.json())
+			.then(messageSession => {
+				navigation.navigate('MessageScreen', {
+					messageSessionId: messageSession.messageSessionId,
+					userId,
+					otherUserId: requesterId
+				});
+			});
+	}
+
 	render() {
-		const { title, location, details } = this.props.navigation.state.params.data;
-		const { startTime, endTime } = this.props.navigation.state.params.data;
-		const { accepted, confirmed, completed } = this.props.navigation.state.params.data;
+		const request = this.props.navigation.state.params.request;
+		const { requesterId, title, location, details } = request;
+		const { timeStart, timeEnd, accepted, confirmed, completed } = request;
+		const { userId } = this.state;
 
 		return (
 			<View style={{ flex: 1 }}>
-				<ScrollView style={reqStyles.makeContainer}>
-					<View style={reqStyles.makeInputView}>
-						<RequestInfoLine primary={'Request'} secondary={title} />
-						<RequestInfoLine primary={'Location'} secondary={location} />
-						<RequestInfoLine primary={'Start Time'} secondary={startTime} />
-						<RequestInfoLine primary={'End Time'} secondary={endTime} />
-						<Text style={reqStyles.key}>Details: <Text style={reqStyles.value}>{details}</Text></Text>
+				<ScrollView style={styles.detailsMakeContainer}>
+					<View style={styles.makeInputView}>
+						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
+						<RequestInfoLine primary={'Location'} secondary={' ' + location} />
+						<RequestInfoLine primary={'Start Time'} secondary={' ' + timeStart} />
+						<RequestInfoLine primary={'End Time'} secondary={' ' + timeEnd} />
+						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
 					</View>
-					<CustomButton style={reqStyles.buttonContainer} text={'Message Requester'}/>
+					<Button title="Message Requester" onPress={() => this.messageRequester()} />
 				</ScrollView>
-
-				{ accepted
-					? <Button title="Accept" onPress={() => this.accept()} />
-					: <Button title="Complete" onPress={() => this.complete()} />
-				}
 			</View>
 		);
 	}
 }
-
-// move to styles when it gets cleaned up
-const reqStyles = {
-	makeContainer: {
-		backgroundColor: 'white',
-		paddingRight: 10,
-		paddingLeft: 10,
-		paddingTop: 25,
-	},
-	buttonContainer: {
-		alignItems: 'center',
-	},
-	key: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		color: '#3D95DA',
-	},
-	value: {
-		fontWeight: 'normal'
-	},
-};
