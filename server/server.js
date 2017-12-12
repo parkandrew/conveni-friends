@@ -10,13 +10,21 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
+// const pool = mysql.createPool({
+//   connectionLimit : 20,
+//   host: 'us-cdbr-iron-east-05.cleardb.net',
+//   user: 'beffa2b11a15f1',
+//   password: '704f96be',
+//   database: 'heroku_f4bd3eb0d7b7de1',
+// });
+
 const pool = mysql.createPool({
-  connectionLimit : 20,
-  host: 'us-cdbr-iron-east-05.cleardb.net',
-  user: 'beffa2b11a15f1',
-  password: '704f96be',
-  database: 'heroku_f4bd3eb0d7b7de1',
-});
+    connectionLimit : 20,
+    host: 'localhost',
+    user: 'root',
+    password: '123',
+    database: 'cs130_project',
+  });
 
 const dbQuery = (query, callback) => {
     pool.getConnection((err, connection) => {
@@ -199,8 +207,8 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
         else {
             var messageSessions = []
 
-            for (var i = 0; i < results.length; i++) {
-                var messageSession = {
+            for (let i = 0; i < results.length; i++) {
+                let messageSession = {
                     messageSessionId: results[i].messageSessionId,
                     userId1: results[i].userId1,
                     userId2: results[i].userId2
@@ -316,11 +324,11 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
  */
 app.post('/v1/request/:request_id/accept', (req, res) => {
     const requestId = req.params.request_id;
-    const { userId, time } = req.query;
+    const { userId, time } = req.body;
 
     const query = `UPDATE Request ` +
-                  `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
+                  `SET accepted='${time}', providerId='${userId}' ` +
+                  `WHERE BINARY requestId=${requestId} AND '${time}' < timeEnd;`
 
     dbQuery(query, (error, results) => {
         if (error) {
@@ -442,6 +450,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
     dbQuery(query, (error, results) => {
+        let retValue = [];
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -449,8 +458,13 @@ app.get('/v1/user/:userId/requests', (req, res) => {
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send(results);
+            for (let i = 0; i < results.length; i++) {
+                retValue.push({
+                    request : results[i],
+                });
+            }
         }
+        res.status(HttpStatus.OK).send(retValue);
     });
 });
 
@@ -513,12 +527,13 @@ function deg2rad(deg) {
  */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
-
+    const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
     // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
     const query = `SELECT * FROM Request ` +
                   `WHERE accepted is NULL ` +
                   `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
-                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
+                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)` + 
+                  `AND '${time}' < timeEnd`;
 
     dbQuery(query, (error, results) => {
         if (error) {
@@ -568,10 +583,9 @@ app.get('/v1/requests/all', (req, res) => {
 app.post('/v1/message/session/create', (req, res) => {
     const { userId1, userId2 } = req.query;
 
-     const query1 = `SELECT * FROM MessageSession ` +
-                    `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
-                    `OR (userId1=${userId2} AND userId2 = ${userId1})`;
-
+    const query1 = `SELECT * FROM MessageSession ` +
+                `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
+                `OR (userId1=${userId2} AND userId2 = ${userId1})`;
     dbQuery(query1, (error, results) => {
     	if (error) {
     		console.log(error);
