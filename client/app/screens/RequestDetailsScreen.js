@@ -35,7 +35,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	getButtons() {
 		const { userId } = this.state;
-		const { accepted, requesterId } = this.props.navigation.state.params.data;
+		const { accepted, requesterId } = this.props.navigation.state.params.request;
 
 		if (!userId || userId == requesterId) {
 			return;
@@ -83,9 +83,9 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	render() {
-		const request = this.props.navigation.state.params.data;
+		const request = this.props.navigation.state.params.request;
 		const { requesterId, title, location, details } = request;
-		const { startTime, endTime, accepted, confirmed, completed } = request;
+		const { timeStart, timeEnd, accepted, confirmed, completed } = request;
 		const { userId } = this.state;
 
 		return (
@@ -94,8 +94,8 @@ export default class RequestDetailsScreen extends React.Component {
 					<View style={styles.makeInputView}>
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
 						<RequestInfoLine primary={'Location'} secondary={' ' + location} />
-						<RequestInfoLine primary={'Start Time'} secondary={' ' + startTime} />
-						<RequestInfoLine primary={'End Time'} secondary={' ' + endTime} />
+						<RequestInfoLine primary={'Start Time'} secondary={' ' + timeStart} />
+						<RequestInfoLine primary={'End Time'} secondary={' ' + timeEnd} />
 						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
 					</View>
 					<Button title="Message Requester" onPress={() => this.messageRequester()} />
