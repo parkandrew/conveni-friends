@@ -41,9 +41,9 @@ const PORT = process.env.PORT || 3000;
 const HttpStatus = require('http-status-codes');
 
 // HTTP body parser
-var bodyParser = require('body-parser');
-var multer = require('multer'); // v1.0.5
-var upload = multer(); // for parsing multipart/form-data
+let bodyParser = require('body-parser');
+let multer = require('multer'); // v1.0.5
+let upload = multer(); // for parsing multipart/form-data
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
@@ -205,7 +205,7 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
                 .send({ message: "Internal server error." });
         }
         else {
-            var messageSessions = []
+            let messageSessions = []
 
             for (let i = 0; i < results.length; i++) {
                 let messageSession = {
@@ -490,18 +490,18 @@ app.get('/v1/user/:userId/requests', (req, res) => {
  * @returns {float} The distance in miles between the two points given.
  */
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lon2-lon1);
-  var a =
+  let R = 6371; // Radius of the earth in km
+  let dLat = deg2rad(lat2-lat1);  // deg2rad below
+  let dLon = deg2rad(lon2-lon1);
+  let a =
     Math.sin(dLat/2) * Math.sin(dLat/2) +
     Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
     Math.sin(dLon/2) * Math.sin(dLon/2)
     ;
 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var d = R * c; // Distance in km
-  var miles = d * 0.621371
+  let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  let d = R * c; // Distance in km
+  let miles = d * 0.621371
 
   return miles;
 }
@@ -545,11 +545,11 @@ app.get('/v1/requests/all', (req, res) => {
             console.log("Success");
 
             // List of request, along with the distance from user in miles
-            var retValue = [];
+            let retValue = [];
 
-            for (var i = 0; i < results.length; i++) {
+            for (let i = 0; i < results.length; i++) {
                 if (results[i].requesterId !== userId) {
-                    var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
+                    let dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
                     retValue.push({
                         request : results[i],
                         distance: dist

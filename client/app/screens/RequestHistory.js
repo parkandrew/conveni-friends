@@ -36,28 +36,6 @@ export default class RequestHistory extends React.Component {
         this._handleIndexChange = this._handleIndexChange.bind(this);
     }
 
-    parseSQLData(data) {
-        let request = new Request(
-            data.requesterId,
-            data.providerId,
-            data.title,
-            data.description,
-            data.latitude,
-            data.longitude,
-            data.address,
-            data.timeStart,
-            data.timeEnd
-        )
-        return request;
-    }
-
-    createDataCell(request) {
-        timeStart = new Date(request.timeStart).toLocaleTimeString();
-        timeEnd = new Date(request.timeEnd).toLocaleTimeString();
-        return { title: request.title, location: request.address, 
-            details: request.description, startTime: timeStart, endTime: timeEnd };
-      }
-
     fetchMyRequests() {
         if (this.props.navigation.state.params) {
             this.setState({user: this.props.navigation.state.params.user, 
