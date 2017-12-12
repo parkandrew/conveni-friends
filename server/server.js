@@ -190,8 +190,12 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 });
 
 // Returns messageSessions
+// Returns messageSessions
 app.get('/v1/user/:userId/messageSessions', (req, res) => {
     const { userId } = req.params;
+
+    // TODO: We need a POST route for creating a new messageSession between
+    // two users when a request is accepted.
 
     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
     // Need to think about the case when user1 accepts 2+ of user2's requests.
