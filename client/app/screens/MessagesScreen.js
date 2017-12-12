@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
 import Drawer from 'react-native-drawer';
-
 import { View } from 'react-native';
 import styles from 'client/styles/style';
 import config from 'client/config';
@@ -88,6 +87,7 @@ export default class MessagesScreen extends Component {
         // TODO: Display most recent message
         return (
             <Drawer type='overlay'
+<<<<<<< HEAD
                 content={<HamburgerMenu
                     user={this.state.user}
                     navigation={this.props.navigation}
@@ -118,6 +118,38 @@ export default class MessagesScreen extends Component {
                     </List>
                 </View>
             </Drawer>
+=======
+            content={<HamburgerMenu
+                user={this.state.user}
+                navigation={this.props.navigation}
+                _drawer={this._drawer}
+                />}
+            ref={(ref) => this._drawer = ref}
+            openDrawerOffset={0.6}
+            style={drawerStyles}
+            tapToClose={true}
+            acceptPan={true}
+            side={'right'}
+            panCloseMask={0.6}
+            panOpenMask={0}>
+          <View style={styles.messageContainer}>
+            <List>
+                { messageSessions.map( messageSession => {
+                    const { messageSessionId, userId1, userId2 } = messageSession;
+                    const otherUserId = userId == userId1 ? userId2 : userId1;
+
+                    return (
+                        <ListItem
+                            key={ messageSessionId }
+                            title={ otherUserId }
+                            onPress={ () => this.getMessageSession(messageSessionId, otherUserId) }
+                        />
+                    );
+                })}
+            </List>
+          </View>
+        </Drawer>
+>>>>>>> 3d71e855426d0cf4892b1ebab87816a26891623a
         );
     }
 }

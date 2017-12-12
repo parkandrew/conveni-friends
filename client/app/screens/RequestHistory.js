@@ -11,8 +11,6 @@ import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
 export default class RequestHistory extends React.Component {
-    static CREATED = 1;
-    static ACCEPTED = 2;
     static navigationOptions = ({navigation, screenProps}) => {
         const params = navigation.state.params || {};
         return {
@@ -126,7 +124,6 @@ export default class RequestHistory extends React.Component {
     }
 
     _renderHeader = props => <TabBar {...props} />;
-    //_renderPage = (props) => <TabViewPage {...props} renderScene={this._renderScene} />;
     _handleIndexChange = index => this.setState({ index });
 
     componentWillMount() {
@@ -135,28 +132,12 @@ export default class RequestHistory extends React.Component {
         this.fetchMyRequests();
     }
 	render() {
-<<<<<<< HEAD
         const drawerStyles = {
             drawer: { backgroundColor: '#000000',
                 shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
             main: {paddingLeft: 3},
-=======
-        if (this.state.data) {
-            return (
-              <View style={styles.simpleContainer}>
-                  <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
-              </View>
-            );
+
         }
-        else {
-            return (
-            <View style={styles.genericContainer}>
-                <Text>No requests found.</Text>
-            </View>
-            );
->>>>>>> upstream/master
-        }
-        { }
         return (
             <Drawer type='overlay'
                 content={<HamburgerMenu
