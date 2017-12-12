@@ -10,19 +10,12 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
-// const pool = mysql.createPool({
-//   connectionLimit : 20,
-//   host            : 'localhost',
-//   user            : 'root',
-//   password        : '',
-//   database        : 'cs130_project'
-// });
-
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123',
-    database: 'cs130_project',
+const pool = mysql.createPool({
+  connectionLimit : 20,
+  host: 'us-cdbr-iron-east-05.cleardb.net',
+  user: 'beffa2b11a15f1',
+  password: '704f96be',
+  database: 'heroku_f4bd3eb0d7b7de1',
 });
 
 const dbQuery = (query, callback) => {
@@ -449,7 +442,6 @@ app.get('/v1/user/:userId/requests', (req, res) => {
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
     dbQuery(query, (error, results) => {
-      console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -541,12 +533,13 @@ app.get('/v1/requests/all', (req, res) => {
             var retValue = [];
 
             for (var i = 0; i < results.length; i++) {
-                console.log(results[i]);
-                var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
-                retValue.push({
-                    request : results[i],
-                    distance: dist
-                });
+                if (results[i].requesterId !== userId) {
+                    var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
+                    retValue.push({
+                        request : results[i],
+                        distance: dist
+                    });
+                }
             }
 
             // Sort ascending, based on distance from user

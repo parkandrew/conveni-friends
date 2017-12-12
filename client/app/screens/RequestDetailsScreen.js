@@ -53,7 +53,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	accept() {
 		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.data;
+		const { requesterId, requestId } = this.props.navigation.state.params.request;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
 			userId,
@@ -63,7 +63,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	complete() {
 		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.data;
+		const { requesterId, requestId } = this.props.navigation.state.params.request;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
 			userId,
@@ -73,7 +73,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	messageRequester() {
 		const navigation = this.props.navigation;
-		const { requesterId } = navigation.state.params.data;;
+		const { requesterId } = navigation.state.params.request;
 		const { userId } = this.state;
 
 		axios.get(`${config.API_URL}/v1/message/session/create`, { userId, otherUserId: requesterId })
@@ -89,7 +89,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	render() {
 		const request = this.props.navigation.state.params.request;
-		const { requesterId, title, location, details } = request;
+		const { requesterId, title, address, description } = request;
 		const { timeStart, timeEnd, accepted, confirmed, completed } = request;
 		const { userId } = this.state;
 
@@ -98,10 +98,10 @@ export default class RequestDetailsScreen extends React.Component {
 				<ScrollView style={styles.detailsMakeContainer}>
 					<View style={styles.makeInputView}>
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
-						<RequestInfoLine primary={'Location'} secondary={' ' + location} />
+						<RequestInfoLine primary={'Location'} secondary={' ' + address} />
 						<RequestInfoLine primary={'Start Time'} secondary={' ' + timeStart} />
 						<RequestInfoLine primary={'End Time'} secondary={' ' + timeEnd} />
-						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
+						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + description}</Text></Text>
 					</View>
 					<Button title="Message Requester" onPress={() => this.messageRequester()} />
 				</ScrollView>
