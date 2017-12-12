@@ -71,8 +71,11 @@ export default class RequestDetailsScreen extends React.Component {
 		const { requesterId } = navigation.state.params.request;
 		const { userId } = this.state;
 
-		axios.get(`${config.API_URL}/v1/message/session/create`, { userId, otherUserId: requesterId })
-			.then(response => response.json())
+		axios.post(`${config.API_URL}/v1/message/session/create`, {
+			userId1: userId,
+			userId2: requesterId
+		})
+			.then(response => JSON.parse(response.data))
 			.then(messageSession => {
 				navigation.navigate('MessageScreen', {
 					messageSessionId: messageSession.messageSessionId,
