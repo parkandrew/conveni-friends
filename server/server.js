@@ -9,7 +9,6 @@ import http from "http";
 import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
-
 //
 // const pool = mysql.createPool({
 //   connectionLimit : 20,
@@ -19,20 +18,12 @@ import WebSocket from "ws";
 //   database        : 'cs130_project'
 // });
 
-const pool = mysql.createPool({
-    connectionLimit : 20,
+const db = mysql.createConnection({
     host: 'us-cdbr-iron-east-05.cleardb.net',
     user: 'beffa2b11a15f1',
     password: '704f96be',
     database: 'heroku_f4bd3eb0d7b7de1',
 });
-//
-// const db = mysql.createConnection({
-//     host: 'us-cdbr-iron-east-05.cleardb.net',
-//     user: 'beffa2b11a15f1',
-//     password: '704f96be',
-//     database: 'heroku_f4bd3eb0d7b7de1',
-// });
 
 const dbQuery = (query, callback) => {
     pool.getConnection((err, connection) => {
@@ -179,7 +170,7 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     const query = `UPDATE User SET password="${newPassword}" ` +
                   `WHERE BINARY userId="${userId}"`;
-  
+
     dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
@@ -584,28 +575,24 @@ app.get('/v1/requests/all', (req, res) => {
 app.post('/v1/message/session/create', (req, res) => {
     const { userId1, userId2 } = req.query;
 
-    const query1 = `SELECT * FROM MessageSession ` +
-                  `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
-                  `OR (userId1=${userId2} AND userId2 = ${userId1})`;
+     const query1 = `SELECT * FROM MessageSession ` +
+                    `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
+                    `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
     dbQuery(query1, (error, results) => {
     	if (error) {
     		console.log(error);
     		return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
     			.send({ message: "Internal server error." });
-    	}
-        else if (results.length == 1) {
-            console.log("MessageSession already in database.");
-            return res.status(HttpStatus.OK).send(results);
-        }
-        else if (results.length != 0) {
-            console.log("Duplicate MessageSessions found.")
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
-        else {
+
+        // Found MessageSession
+        } else if (results.length == 1){
+            res.status(HttpStatus.OK).send(results[0]);
+
+        // Create MessageSession
+        } else {
             const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
-                          `VALUES(${userId1},${userId2})`;
+                           `VALUES(${userId1},${userId2})`;
 
             dbQuery(query2, (error, results) => {
                 if (error) {
@@ -615,7 +602,7 @@ app.post('/v1/message/session/create', (req, res) => {
                 }
                 else {
                     console.log("Success");
-                    res.status(HttpStatus.OK).send(results);
+                    res.status(HttpStatus.OK).send(results[0]);
                 }
             });
         }

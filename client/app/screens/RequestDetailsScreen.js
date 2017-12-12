@@ -25,6 +25,7 @@ export default class RequestDetailsScreen extends React.Component {
 		this.getButtons = this.getButtons.bind(this);
 		this.accept = this.accept.bind(this);
 		this.complete = this.complete.bind(this);
+		this.messageRequester = this.messageRequester.bind(this);
 	}
 
 	componentWillMount() {
@@ -65,6 +66,22 @@ export default class RequestDetailsScreen extends React.Component {
 		});
 	}
 
+	messageRequester() {
+		const navigation = this.props.navigation;
+		const { requesterId } = navigation.state.params.data;;
+		const { userId } = this.state;
+
+		axios.get(`${config.API_URL}/v1/message/session/create`, { userId, otherUserId: requesterId })
+			.then(response => response.json())
+			.then(messageSession => {
+				navigation.navigate('MessageScreen', {
+					messageSessionId: messageSession.messageSessionId,
+					userId,
+					otherUserId: requesterId
+				});
+			});
+	}
+
 	render() {
 		const request = this.props.navigation.state.params.data;
 		const { requesterId, title, location, details } = request;
@@ -81,8 +98,7 @@ export default class RequestDetailsScreen extends React.Component {
 						<RequestInfoLine primary={'End Time'} secondary={' ' + endTime} />
 						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
 					</View>
-					<CustomButton style={styles.buttonContainer} text={'Message Requester'}/>
-					{ this.getButtons() }
+					<Button title="Message Requester" onPress={() => this.messageRequester()} />
 				</ScrollView>
 			</View>
 		);
