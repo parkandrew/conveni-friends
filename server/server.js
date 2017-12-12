@@ -12,11 +12,20 @@ import WebSocket from "ws";
 
 const pool = mysql.createPool({
   connectionLimit : 20,
-  host: 'us-cdbr-iron-east-05.cleardb.net',
-  user: 'beffa2b11a15f1',
-  password: '704f96be',
-  database: 'heroku_f4bd3eb0d7b7de1',
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'cs130_project',
 });
+
+//
+// const pool = mysql.createPool({
+//   connectionLimit : 20,
+//   host: 'us-cdbr-iron-east-05.cleardb.net',
+//   user: 'beffa2b11a15f1',
+//   password: '704f96be',
+//   database: 'heroku_f4bd3eb0d7b7de1',
+// });
 
 const dbQuery = (query, callback) => {
     pool.getConnection((err, connection) => {
@@ -479,7 +488,6 @@ app.get('/v1/user/:userId/requests', (req, res) => {
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
     dbQuery(query, (error, results) => {
-      console.log(results);
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -603,11 +611,11 @@ app.get('/v1/requests/all', (req, res) => {
  * @param {string} userId2 - The id of the second user in message session
  */
 app.post('/v1/message/session/create', (req, res) => {
-    const { userId1, userId2 } = req.query;
+    const { userId1, userId2 } = req.body;
 
      const query1 = `SELECT * FROM MessageSession ` +
-                    `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
-                    `OR (userId1=${userId2} AND userId2 = ${userId1})`;
+                    `WHERE (userId1='${userId1}' AND userId2 = '${userId2}') ` +
+                    `OR (userId1='${userId2}' AND userId2 = '${userId1}')`;
 
     dbQuery(query1, (error, results) => {
     	if (error) {
@@ -617,22 +625,22 @@ app.post('/v1/message/session/create', (req, res) => {
 
         // Found MessageSession
         } else if (results.length == 1){
-            res.status(HttpStatus.OK).send(results[0]);
+            res.status(HttpStatus.OK).json(JSON.stringify(results[0]));
 
         // Create MessageSession
         } else {
             const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
-                           `VALUES(${userId1},${userId2})`;
+                           `VALUES('${userId1}','${userId2}')`;
 
             dbQuery(query2, (error, results) => {
                 if (error) {
                     console.log(error);
                     return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .send({ message: "Internal server error." });
+                        .json({ message: "Internal server error." });
                 }
                 else {
                     console.log("Success");
-                    res.status(HttpStatus.OK).send(results[0]);
+                    res.status(HttpStatus.OK).json(JSON.stringify(results[0]));
                 }
             });
         }
@@ -652,6 +660,19 @@ app.post('/v1/message/session/create', (req, res) => {
  *
  * @returns {res} An array of messages from requested message session, including an HTTP status indicating success or failure. In the case of error, the response contains error info.
  */
+app.get('/v1/message/session/:messageSessionId', (req, res) => {
+    const { messageSessionId } = req.params;
+
+    // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
+    // knows who sent what).
+    //
+    // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
+    // for the messaging interface, for a message object has the form:
+    //
+    // { _id, text, createdAt, user: { _id } }
+
+    const query = `SELECT * FROM Message ` +
+                  `WHERE messageSessionId=${messageSessionId}`;
 
     dbQuery(query, (error, results) => {
         if (error) {

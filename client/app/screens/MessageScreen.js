@@ -23,13 +23,7 @@ export default class MessageScreen extends Component {
 
         // Get messages with otherUserId
         fetch(config.API_URL + `/v1/message/session/${messageSessionId}`)
-            .then(response => {
-                if (!response.ok) {
-                    // TODO: Handle errors
-                }
-
-                return response.json()
-            })
+            .then(response => response.json())
             .then(messages => this.setState({ messages }))
             .catch(error => {
                 // TODO: Handle network errors
