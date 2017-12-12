@@ -10,21 +10,22 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
-// TODO remove local workaround
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'noodless',
-    database: 'cs130_project',
+const pool = mysql.createPool({
+  connectionLimit : 20,
+  host: 'us-cdbr-iron-east-05.cleardb.net',
+  user: 'beffa2b11a15f1',
+  password: '704f96be',
+  database: 'heroku_f4bd3eb0d7b7de1',
 });
 
-// TODO: revert to this later
-// const db = mysql.createConnection({
-//     host: 'us-cdbr-iron-east-05.cleardb.net',
-//     user: 'beffa2b11a15f1',
-//     password: '704f96be',
-//     database: 'heroku_f4bd3eb0d7b7de1',
-// });
+const dbQuery = (query, callback) => {
+    pool.getConnection((err, connection) => {
+        connection.query(query, (error, results) => {
+            connection.release();
+            callback(error, results);
+        });
+    });
+};
 
 export const app = express();
 const server = http.Server(app);
@@ -63,7 +64,10 @@ wss.on('connection', (ws, req) => {
 app.get('/', (req, res) => {
     // TODO1: This breaks the test for some reason
     // res.setHeader('Content-Type', 'application/json');
-    res.status(HttpStatus.OK).send("Test GET request");
+    dbQuery('SELECT * FROM User', (error, results) => {
+        res.status(HttpStatus.OK).send(results);
+        // res.status(HttpStatus.OK).send("Test GET request");
+    });
 });
 
 /**
@@ -86,9 +90,9 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
     const query = `INSERT INTO User(userId,password) ` +
                   `VALUES("${userId}","${password}")`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
@@ -121,8 +125,7 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     const query = `SELECT * FROM User ` +
                   `WHERE BINARY password="${password}" and BINARY userId="${userId}"`;
 
-    db.query(query, (error, results) => {
-        console.log(results);
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -160,15 +163,20 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     const query = `UPDATE User SET password="${newPassword}" ` +
                   `WHERE BINARY userId="${userId}"`;
-    db.query(query, (error, results) => {
+
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
-        else {
+        else if (results.affectedRows > 0){
             console.log("Success");
             res.status(HttpStatus.OK).send({});
+        }
+        else {
+            console.log("Invalid credentials presented");
+            res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
 });
@@ -183,6 +191,17 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
 
     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
     // Need to think about the case when user1 accepts 2+ of user2's requests.
+    const query = `SELECT * FROM MessageSession `
+                + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
+
+    dbQuery(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            var messageSessions = []
 
     const messageSessionsExample = [
         {
@@ -264,7 +283,7 @@ app.post('/v1/request/create', (req, res) => {
                   `VALUES ('${userId}', '${title}', ${latitude}, ${longitude}, ` +
                   `'${address}', '${description}', '${timeStart}', '${timeEnd}')`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -297,7 +316,7 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const query = `DELETE FROM Request ` +
                   `WHERE BINARY requestId=${requestId} AND BINARY requesterId=${userId}`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -340,8 +359,9 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
                   `SET accepted=${time}, providerId=${userId} ` +
                   `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
+            console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
         } else {
@@ -382,7 +402,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
                   `SET confirmed=${time}, providerId=${userId} ` +
                   `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
@@ -423,7 +443,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const query = `UPDATE Request SET completed=${time} `
                 + `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
@@ -458,7 +478,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const query = `SELECT * FROM Request `
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
       console.log(results);
         if (error) {
             console.log(error);
@@ -538,7 +558,7 @@ app.get('/v1/requests/all', (req, res) => {
                   `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
                   `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -585,30 +605,26 @@ app.get('/v1/requests/all', (req, res) => {
 app.post('/v1/message/session/create', (req, res) => {
     const { userId1, userId2 } = req.query;
 
-    const query1 = `SELECT * FROM MessageSession ` +
-                  `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
-                  `OR (userId1=${userId2} AND userId2 = ${userId1})`;
+     const query1 = `SELECT * FROM MessageSession ` +
+                    `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
+                    `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
-    db.query(query1, (error, results) => {
+    dbQuery(query1, (error, results) => {
     	if (error) {
     		console.log(error);
     		return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
     			.send({ message: "Internal server error." });
-    	}
-        else if (results.length == 1) {
-            console.log("MessageSession already in database.");
-            return res.status(HttpStatus.OK).send(results);
-        }
-        else if (results.length != 0) {
-            console.log("Duplicate MessageSessions found.")
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
-        else {
-            const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
-                          `VALUES(${userId1},${userId2})`;
 
-            db.query(query2, (error, results) => {
+        // Found MessageSession
+        } else if (results.length == 1){
+            res.status(HttpStatus.OK).send(results[0]);
+
+        // Create MessageSession
+        } else {
+            const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
+                           `VALUES(${userId1},${userId2})`;
+
+            dbQuery(query2, (error, results) => {
                 if (error) {
                     console.log(error);
                     return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -616,7 +632,7 @@ app.post('/v1/message/session/create', (req, res) => {
                 }
                 else {
                     console.log("Success");
-                    res.status(HttpStatus.OK).send(results);
+                    res.status(HttpStatus.OK).send(results[0]);
                 }
             });
         }
@@ -637,109 +653,35 @@ app.post('/v1/message/session/create', (req, res) => {
  * @returns {res} An array of messages from requested message session, including an HTTP status indicating success or failure. In the case of error, the response contains error info.
  */
 
- app.get('/v1/message/session/:messageSessionId', (req, res) => {
-     const { messageSessionId } = req.params;
+    dbQuery(query, (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({ message: "Internal server error." });
+        }
+        else {
+            console.log("Success");
 
-     // TODO: Remove messageStubs and instead grab messages from mysql.
-     // We have to reconstruct the messages to send to
-     // the frontend. Our Message schema is not the same as the message object
-     // required by GiftedChat.
-     //
-     // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
-     // knows who sent what).
-     //
-     // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
-     // for the messaging interface, for a message object has the form:
-     //
-     // { _id, text, createdAt, user: {_id, name}, optionalParams }
-     const messageExamples1 = [
-       {
-           _id: 1,
-           text: 'My message to someOtherUserId',
-           createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
-           user: {
-             _id: 'userId',
-             name: 'userId',
-           },
-       },
-       {
-         _id: 2,
-         text: `someOtherUserId's message to me`,
-         createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
-         user: {
-           _id: 'someOtherUserId',
-           name: 'someOtherUserId',
-         },
-       }
-     ];
+            let messageList = [];
 
-     const messageExamples2 = [
-       {
-           _id: 1,
-           text: 'My message to anotherOtherUserId',
-           createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
-           user: {
-             _id: 'userId',
-             name: 'userId',
-           },
-       },
-       {
-         _id: 2,
-         text: `anotherOtherUserId's message to me`,
-         createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
-         user: {
-           _id: 'anotherOtherUserId',
-           name: 'anotherOtherUserId',
-         },
-       }
-     ];
+            for (let i = results.length-1; i >= 0; i--) {
 
-     res.send(messageSessionId == 1 ? messageExamples1 : messageExamples2);
- });
+                const message = {
+                    _id: results[i]['giftedChatId'],
+                    text: results[i]['text'],
+                    createdAt: results[i]['createdAt'],
+                    user: {
+                        _id: results[i]['senderId']
+                    }
 
+                }
+                messageList.push(message);
+            }
 
-// app.get('/v1/message/session/:messageSessionId', (req, res) => {
-//     const { messageSessionId } = req.params;
-//     // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
-//     // knows who sent what).
-//     //
-//     // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
-//     // for the messaging interface, for a message object has the form:
-//     //
-//     // { _id, text, createdAt, user: { _id } }
-//
-//     const query = `SELECT * FROM Message ` +
-//                   `WHERE messageSessionId=${messageSessionId}`;
-//
-//     db.query(query, (error, results) => {
-//         if (error) {
-//             console.log(error);
-//             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                 .send({ message: "Internal server error." });
-//         }
-//         else {
-//             console.log("Success");
-//
-//             let messageList = [];
-//
-//             for (let i = results.length-1; i >= 0; i--) {
-//
-//                 const message = {
-//                     _id: results[i]['giftedChatId'],
-//                     text: results[i]['text'],
-//                     createdAt: results[i]['createdAt'],
-//                     user: {
-//                         _id: results[i]['senderId']
-//                     }
-//
-//                 }
-//                 messageList.push(message);
-//             }
-//
-//             res.status(HttpStatus.OK).send(messageList);
-//         }
-//     });
-// });
+            res.status(HttpStatus.OK).send(messageList);
+        }
+    });
+});
 
 /**
  * Called when a user wants to send a message
@@ -771,7 +713,7 @@ app.post('/v1/message/send', upload.array(), (req, res) => {
                   `VALUES(${messageSessionId}, '${senderId}', '${receiverId}', ` +
                   `"${text}", "${createdAt}", "${_id}")`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -785,7 +727,6 @@ app.post('/v1/message/send', upload.array(), (req, res) => {
 });
 
 server.listen(PORT, () => {
-    db.connect();
     console.log(`Listening on ${PORT}`);
 });
 
