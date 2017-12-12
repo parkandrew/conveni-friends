@@ -210,54 +210,25 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
                 .send({ message: "Internal server error." });
         }
         else {
-            var messageSessions = []
+          var messageSessions = []
 
-    const messageSessionsExample = [
-        {
-            messageSessionId: 1,
-            userId1: 'userId',
-            userId2: 'someOtherUserId',
-        },
-        {
-            messageSessionId: 2,
-            userId1: 'anotherOtherUserId',
-            userId2: 'userId',
-        },
-    ];
+          for (var i = 0; i < results.length; i++) {
+              var messageSession = {
+                  messageSessionId: results[i].messageSessionId,
+                  userId1: results[i].userId1,
+                  userId2: results[i].userId2
+              }
+              messageSessions.push(messageSession)
+          }
+          console.log("Success");
+          res.status(HttpStatus.OK).send(messageSessions);
+      }
 
-    res.send(messageSessionsExample);
+
+
+  });
+
 });
-
-// app.get('/v1/user/:userId/messageSessions', (req, res) => {
-//     const { userId } = req.params;
-//
-//     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
-//     // Need to think about the case when user1 accepts 2+ of user2's requests.
-//     const query = `SELECT * FROM MessageSession `
-//                 + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
-//
-//     db.query(query, (error, results) => {
-//         if (error) {
-//             console.log(error);
-//             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                 .send({ message: "Internal server error." });
-//         }
-//         else {
-//             var messageSessions = []
-//
-//             for (var i = 0; i < results.length; i++) {
-//                 var messageSession = {
-//                     messageSessionId: results[i].messageSessionId,
-//                     userId1: results[i].userId1,
-//                     userId2: results[i].userId2
-//                 }
-//                 messageSessions.push(messageSession)
-//             }
-//             console.log("Success");
-//             res.status(HttpStatus.OK).send(messageSessions);
-//         }
-//     });
-// });
 
 /********************************** REQUESTS **********************************/
 
