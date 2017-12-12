@@ -19,10 +19,10 @@ import WebSocket from "ws";
 // });
 
 const db = mysql.createConnection({
-    host: 'us-cdbr-iron-east-05.cleardb.net',
-    user: 'beffa2b11a15f1',
-    password: '704f96be',
-    database: 'heroku_f4bd3eb0d7b7de1',
+    host: 'localhost',
+    user: 'root',
+    password: '123',
+    database: 'cs130_project',
 });
 
 const dbQuery = (query, callback) => {

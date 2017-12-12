@@ -13,9 +13,10 @@ export default class HomeScreen extends React.Component {
 
         const params = navigation.state.params || {};
         return {
-            headerLeft: params.headerLeft,
-            gesturesEnabled: false,
             title: 'Home',
+            headerRight: params.headerRight,
+            gesturesEnabled: false,
+            headerLeft: null
         }
     };
     constructor(props) {
@@ -24,28 +25,18 @@ export default class HomeScreen extends React.Component {
             user: new User()
         };
         this.toggleDrawer = this.toggleDrawer.bind(this);
-        this.logout = this.logout.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
         this._getUser = this._getUser.bind(this);
-        this.history = this.history.bind(this);
     }
-
-
-    logout() {
-        this.props.navigation.navigate('LoginScreen');
-    }
-
     _getUser() {
             if (this.props.navigation.state.params) {
                 const { user } = this.props.navigation.state.params;
                 this.setState({ user });
-
                 AsyncStorage.setItem('userId', user.userId);
             }
     }
-
     toggleDrawer = () => {
         if (!this._drawer._open) {
             this._drawer.open();
@@ -54,32 +45,19 @@ export default class HomeScreen extends React.Component {
             this._drawer.close();
         }
     }
-
-    history() {
-      this.props.navigation.navigate('RequestHistory', {user:this.state.user});
-    }
-
     provider() {
         this.props.navigation.navigate('ProviderLocation', {user:this.state.user});
     }
     requester() {
         this.props.navigation.navigate('MakeRequestScreen', {user:this.state.user});
     }
-
-    changePass(){
-        this.props.navigation.navigate('ChangePassword', {user: this.state.user});
-    }
-    map() {
-        this.props.navigation.navigate('MapScreen', {user: this.state.user});
-    }
-
     _setNavigationParams() {
-        let headerLeft =
+        let headerRight =
         <Hamburger
             onPress={()=>{this.toggleDrawer()}}
         />;
         this.props.navigation.setParams({
-          headerLeft,
+          headerRight,
         });
     }
 
@@ -105,21 +83,16 @@ export default class HomeScreen extends React.Component {
         return (
                 <Drawer type='overlay'
                     content={<HamburgerMenu
-                        logout={() => {
-                            this.logout();
-                        }}
-                        history={() => {
-                            this.history();
-                        }}
-                        changePass={() => {
-                            this.changePass();
-                        }}
+                        user={this.state.user}
+                        navigation={this.props.navigation}
+                        _drawer={this._drawer}
                         />}
                     ref={(ref) => this._drawer = ref}
                     openDrawerOffset={0.6}
                     style={drawerStyles}
                     tapToClose={true}
                     acceptPan={true}
+                    side={'right'}
                     panCloseMask={0.6}
                     panOpenMask={0}>
                     <View style={styles.genericContainer}>

@@ -21,10 +21,6 @@ export default class SignupScreen extends React.Component {
         this._makeAccount = this._makeAccount.bind(this)
     }
 
-    _signup() {
-        this.props.navigation.navigate('LoginScreen')
-    }
-
     _makeAccount() {
         //alphanumeric characters
         const alphanum = /[0-9a-zA-Z]+/g;
@@ -101,7 +97,7 @@ export default class SignupScreen extends React.Component {
                     placeholder={'Confirm password'} />
 
                 <CustomButton
-                    onPressHandle={() => {this._signup();}}
+                    onPressHandle={() => {this._makeAccount();}}
                     text="Sign up"/>
             </View>
 

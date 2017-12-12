@@ -20,7 +20,6 @@ const $ios_blue = '#54C7FC';
 const $ip = '#8E8E93';
 const $menu = '#24B8F3';
 
-
 const styles = StyleSheet.create({
 
 	labelStyle: {

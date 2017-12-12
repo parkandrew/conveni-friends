@@ -46,6 +46,11 @@ export default class RequestDetailsScreen extends React.Component {
 			: <Button title="Complete" onPress={() => this.complete()} />;
 	}
 
+	goToMessagesScreen() {
+		console.log(this)
+		this.props.navigation.navigate('MessagesScreen', {userId: this.state.user.userId});
+	}
+
 	accept() {
 		const { userId } = this.state;
 		const { requesterId, requestId } = this.props.navigation.state.params.data;

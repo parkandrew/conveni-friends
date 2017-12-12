@@ -57,6 +57,7 @@ export default class NearbyRequestsScreen extends React.Component {
         this.fetchNearbyRequests();
     }
 	render() {
+        console.log(this.props.navigation.state.params.user);        
         if (this.state.data) {
             return (
                 <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
