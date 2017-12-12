@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-
 import config from 'client/config';
 
 
@@ -24,13 +23,7 @@ export default class MessageScreen extends Component {
 
         // Get messages with otherUserId
         fetch(config.API_URL + `/v1/message/session/${messageSessionId}`)
-            .then(response => {
-                if (!response.ok) {
-                    // TODO: Handle errors
-                }
-
-                return response.json()
-            })
+            .then(response => response.json())
             .then(messages => this.setState({ messages }))
             .catch(error => {
                 // TODO: Handle network errors

@@ -77,8 +77,12 @@ export default class RequestDetailsScreen extends React.Component {
 		const navigation = this.props.navigation;
 		const { requesterId } = navigation.state.params.request;
 		const { userId } = this.state;
-		axios.get(`${config.API_URL}/v1/message/session/create`, { userId: userId, otherUserId: requesterId })
-			.then(response => {response.json(); console.log(response)})
+
+		axios.post(`${config.API_URL}/v1/message/session/create`, {
+			userId1: userId,
+			userId2: requesterId
+		})
+			.then(response => JSON.parse(response.data))
 			.then(messageSession => {
 				navigation.navigate('MessageScreen', {
 					messageSessionId: messageSession.messageSessionId,
@@ -95,7 +99,7 @@ export default class RequestDetailsScreen extends React.Component {
 		const { userId } = this.state;
 
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={styles.simpleContainer}>
 				<ScrollView style={styles.detailsMakeContainer}>
 					<View style={styles.makeInputView}>
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />

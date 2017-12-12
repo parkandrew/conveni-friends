@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
 import Drawer from 'react-native-drawer';
 
+import { View } from 'react-native';
+import styles from 'client/styles/style';
 import config from 'client/config';
-
 import MessageScreen from 'client/app/screens/MessageScreen';
 
 export default class MessagesScreen extends Component {
@@ -11,7 +12,7 @@ export default class MessagesScreen extends Component {
         const params = navigation.state.params || {};
         return {
             headerRight: params.headerRight,
-            gesturesEnabled: false
+            title: 'Messages',
         }
     };
     constructor(props) {
@@ -87,33 +88,35 @@ export default class MessagesScreen extends Component {
         // TODO: Display most recent message
         return (
             <Drawer type='overlay'
-            content={<HamburgerMenu
-                user={this.state.user}
-                navigation={this.props.navigation}
-                _drawer={this._drawer}
-                />}
-            ref={(ref) => this._drawer = ref}
-            openDrawerOffset={0.6}
-            style={drawerStyles}
-            tapToClose={true}
-            acceptPan={true}
-            side={'right'}
-            panCloseMask={0.6}
-            panOpenMask={0}>
-            <List>
-                { messageSessions.map( messageSession => {
-                    const { messageSessionId, userId1, userId2 } = messageSession;
-                    const otherUserId = userId == userId1 ? userId2 : userId1;
+                content={<HamburgerMenu
+                    user={this.state.user}
+                    navigation={this.props.navigation}
+                    _drawer={this._drawer}
+                    />}
+                ref={(ref) => this._drawer = ref}
+                openDrawerOffset={0.6}
+                style={drawerStyles}
+                tapToClose={true}
+                acceptPan={true}
+                side={'right'}
+                panCloseMask={0.6}
+                panOpenMask={0}>
+                <View style={styles.messageContainer}>
+                    <List>
+                        { messageSessions.map( messageSession => {
+                            const { messageSessionId, userId1, userId2 } = messageSession;
+                            const otherUserId = userId == userId1 ? userId2 : userId1;
 
-                    return (
-                        <ListItem
-                            key={ messageSessionId }
-                            title={ otherUserId }
-                            onPress={ () => this.getMessageSession(messageSessionId, otherUserId) }
-                        />
-                    );
-                })}
-            </List>
+                            return (
+                                <ListItem
+                                    key={ messageSessionId }
+                                    title={ otherUserId }
+                                    onPress={ () => this.getMessageSession(messageSessionId, otherUserId) }
+                                />
+                            );
+                        })}
+                    </List>
+                </View>
             </Drawer>
         );
     }

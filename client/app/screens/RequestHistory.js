@@ -135,10 +135,26 @@ export default class RequestHistory extends React.Component {
         this.fetchMyRequests();
     }
 	render() {
+<<<<<<< HEAD
         const drawerStyles = {
             drawer: { backgroundColor: '#000000',
                 shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
             main: {paddingLeft: 3},
+=======
+        if (this.state.data) {
+            return (
+              <View style={styles.simpleContainer}>
+                  <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
+              </View>
+            );
+        }
+        else {
+            return (
+            <View style={styles.genericContainer}>
+                <Text>No requests found.</Text>
+            </View>
+            );
+>>>>>>> upstream/master
         }
         { }
         return (
