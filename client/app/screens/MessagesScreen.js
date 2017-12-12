@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
 import Drawer from 'react-native-drawer';
-
+import { View } from 'react-native';
+import styles from 'client/styles/style';
 import config from 'client/config';
-
 import MessageScreen from 'client/app/screens/MessageScreen';
 
 export default class MessagesScreen extends Component {
@@ -11,7 +11,8 @@ export default class MessagesScreen extends Component {
         const params = navigation.state.params || {};
         return {
             headerRight: params.headerRight,
-            gesturesEnabled: false
+            gesturesEnabled: false,
+            title: 'Messages',
         }
     };
     constructor(props) {
@@ -100,6 +101,7 @@ export default class MessagesScreen extends Component {
             side={'right'}
             panCloseMask={0.6}
             panOpenMask={0}>
+          <View style={styles.messageContainer}>
             <List>
                 { messageSessions.map( messageSession => {
                     const { messageSessionId, userId1, userId2 } = messageSession;
@@ -114,7 +116,8 @@ export default class MessagesScreen extends Component {
                     );
                 })}
             </List>
-            </Drawer>
+          </View>
+        </Drawer>
         );
     }
 }

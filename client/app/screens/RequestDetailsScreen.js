@@ -94,7 +94,7 @@ export default class RequestDetailsScreen extends React.Component {
 		const { userId } = this.state;
 
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={styles.simpleContainer}>
 				<ScrollView style={styles.detailsMakeContainer}>
 					<View style={styles.makeInputView}>
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
