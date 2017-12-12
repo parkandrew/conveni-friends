@@ -1,4 +1,4 @@
 export default config = {
-    API_URL: 'http://23d8418f.ngrok.io',
-    WS_URL: 'ws://23d8418f.ngrok.io',
+    API_URL: 'https://conveni-friends.herokuapp.com',
+    WS_URL: 'ws://conveni-friends.herokuapp.com',
 };
