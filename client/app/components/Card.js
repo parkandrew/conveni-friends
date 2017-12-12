@@ -15,23 +15,21 @@ export default class Card extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this._onClickHandle = this._onClickHandle.bind(this);
-	}
-
-	_onClickHandle(e) {
-		this.props.navigation.navigate('RequestDetailsScreen', {data: this.props.data});
 	}
 
 	render() {
+		const { data, onClick } = this.props;
+		const { distance, request } = data;
+
 		return (
 			<View >
-				<TouchableOpacity onPress={this._onClickHandle}style={styles.cardContainer}>
+				<TouchableOpacity onPress={() => onClick()} style={styles.cardContainer}>
 					<View style={styles.cardLeft}>
-						<Text style={styles.cardTitle} numberOfLines={1} >{this.props.data.title}</Text>
-						<Text style={styles.cardSubTitle} numberOfLines={1}>{this.props.data.startTime} - {this.props.data.endTime}</Text>
+						<Text style={styles.cardTitle} numberOfLines={1} >{request.title}</Text>
+						<Text style={styles.cardSubTitle} numberOfLines={1}>{request.timeStart} - {request.timEnd}</Text>
 					</View>
 					<View style={styles.cardRight}>
-						<Text style={styles.cardDistance}>{this.props.data.distance}</Text>
+						<Text style={styles.cardDistance}>{distance}</Text>
 					</View>
 				</TouchableOpacity>
 			</View>
