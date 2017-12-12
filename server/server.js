@@ -10,12 +10,22 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
-const db = mysql.createConnection({
-    host: 'us-cdbr-iron-east-05.cleardb.net',
-    user: 'beffa2b11a15f1',
-    password: '704f96be',
-    database: 'heroku_f4bd3eb0d7b7de1',
+const pool = mysql.createPool({
+  connectionLimit : 20,
+  host: 'us-cdbr-iron-east-05.cleardb.net',
+  user: 'beffa2b11a15f1',
+  password: '704f96be',
+  database: 'heroku_f4bd3eb0d7b7de1',
 });
+
+const dbQuery = (query, callback) => {
+    pool.getConnection((err, connection) => {
+        connection.query(query, (error, results) => {
+            connection.release();
+            callback(error, results);
+        });
+    });
+};
 
 export const app = express();
 const server = http.Server(app);
@@ -54,7 +64,10 @@ wss.on('connection', (ws, req) => {
 app.get('/', (req, res) => {
     // TODO1: This breaks the test for some reason
     // res.setHeader('Content-Type', 'application/json');
-    res.status(HttpStatus.OK).send("Test GET request");
+    dbQuery('SELECT * FROM User', (error, results) => {
+        res.status(HttpStatus.OK).send(results);
+        // res.status(HttpStatus.OK).send("Test GET request");
+    });
 });
 
 /**
@@ -77,9 +90,9 @@ app.post('/v1/user/:userId/signup', upload.array(), (req, res) => {
     const query = `INSERT INTO User(userId,password) ` +
                   `VALUES("${userId}","${password}")`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
@@ -112,8 +125,7 @@ app.post('/v1/user/:userId/login', upload.array(), (req, res) => {
     const query = `SELECT * FROM User ` +
                   `WHERE BINARY password="${password}" and BINARY userId="${userId}"`;
 
-    db.query(query, (error, results) => {
-        console.log(results);
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -151,15 +163,20 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 
     const query = `UPDATE User SET password="${newPassword}" ` +
                   `WHERE BINARY userId="${userId}"`;
-    db.query(query, (error, results) => {
+
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .send({ message: "Internal server error." });
         }
-        else {
+        else if (results.affectedRows > 0){
             console.log("Success");
             res.status(HttpStatus.OK).send({});
+        }
+        else {
+            console.log("Invalid credentials presented");
+            res.status(HttpStatus.EXPECTATION_FAILED).send({});
         }
     });
 });
@@ -173,7 +190,7 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
     const query = `SELECT * FROM MessageSession `
                 + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -229,7 +246,7 @@ app.post('/v1/request/create', (req, res) => {
                   `VALUES ('${userId}', '${title}', ${latitude}, ${longitude}, ` +
                   `'${address}', '${description}', '${timeStart}', '${timeEnd}')`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -262,7 +279,7 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
     const query = `DELETE FROM Request ` +
                   `WHERE BINARY requestId=${requestId} AND BINARY requesterId=${userId}`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -305,8 +322,9 @@ app.post('/v1/request/:request_id/accept', (req, res) => {
                   `SET accepted=${time}, providerId=${userId} ` +
                   `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
+            console.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
         } else {
@@ -347,7 +365,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
                   `SET confirmed=${time}, providerId=${userId} ` +
                   `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
@@ -388,7 +406,7 @@ app.post('/v1/request/:requestId/complete', (req, res) => {
     const query = `UPDATE Request SET completed=${time} `
                 + `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             res.status(HttpStatus.INTERNAL_SERVER_ERROR)
                .send({ message: "Internal server error." });
@@ -423,7 +441,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
     const query = `SELECT * FROM Request `
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
       console.log(results);
         if (error) {
             console.log(error);
@@ -503,7 +521,7 @@ app.get('/v1/requests/all', (req, res) => {
                   `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
                   `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -550,30 +568,26 @@ app.get('/v1/requests/all', (req, res) => {
 app.post('/v1/message/session/create', (req, res) => {
     const { userId1, userId2 } = req.query;
 
-    const query1 = `SELECT * FROM MessageSession ` +
-                  `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
-                  `OR (userId1=${userId2} AND userId2 = ${userId1})`;
+     const query1 = `SELECT * FROM MessageSession ` +
+                    `WHERE (userId1=${userId1} AND userId2 = ${userId2}) ` +
+                    `OR (userId1=${userId2} AND userId2 = ${userId1})`;
 
-    db.query(query1, (error, results) => {
+    dbQuery(query1, (error, results) => {
     	if (error) {
     		console.log(error);
     		return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
     			.send({ message: "Internal server error." });
-    	}
-        else if (results.length == 1) {
-            console.log("MessageSession already in database.");
-            return res.status(HttpStatus.OK).send(results);
-        }
-        else if (results.length != 0) {
-            console.log("Duplicate MessageSessions found.")
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
-        else {
-            const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
-                          `VALUES(${userId1},${userId2})`;
 
-            db.query(query2, (error, results) => {
+        // Found MessageSession
+        } else if (results.length == 1){
+            res.status(HttpStatus.OK).send(results[0]);
+
+        // Create MessageSession
+        } else {
+            const query2 = `INSERT INTO MessageSession(userId1, userId2) ` +
+                           `VALUES(${userId1},${userId2})`;
+
+            dbQuery(query2, (error, results) => {
                 if (error) {
                     console.log(error);
                     return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -581,7 +595,7 @@ app.post('/v1/message/session/create', (req, res) => {
                 }
                 else {
                     console.log("Success");
-                    res.status(HttpStatus.OK).send(results);
+                    res.status(HttpStatus.OK).send(results[0]);
                 }
             });
         }
@@ -614,7 +628,7 @@ app.get('/v1/message/session/:messageSessionId', (req, res) => {
     const query = `SELECT * FROM Message ` +
                   `WHERE messageSessionId=${messageSessionId}`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -674,7 +688,7 @@ app.post('/v1/message/send', upload.array(), (req, res) => {
                   `VALUES(${messageSessionId}, '${senderId}', '${receiverId}', ` +
                   `"${text}", "${createdAt}", "${_id}")`;
 
-    db.query(query, (error, results) => {
+    dbQuery(query, (error, results) => {
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -688,7 +702,6 @@ app.post('/v1/message/send', upload.array(), (req, res) => {
 });
 
 server.listen(PORT, () => {
-    db.connect();
     console.log(`Listening on ${PORT}`);
 });
 
