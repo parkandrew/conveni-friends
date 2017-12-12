@@ -10,21 +10,21 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
-// const pool = mysql.createPool({
-//   connectionLimit : 20,
-//   host: 'us-cdbr-iron-east-05.cleardb.net',
-//   user: 'beffa2b11a15f1',
-//   password: '704f96be',
-//   database: 'heroku_f4bd3eb0d7b7de1',
-// });
-
 const pool = mysql.createPool({
-    connectionLimit : 20,
-    host: 'localhost',
-    user: 'root',
-    password: '123',
-    database: 'cs130_project',
-  });
+  connectionLimit : 50,
+  host: 'us-cdbr-iron-east-05.cleardb.net',
+  user: 'beffa2b11a15f1',
+  password: '704f96be',
+  database: 'heroku_f4bd3eb0d7b7de1',
+});
+//
+// const pool = mysql.createPool({
+//     connectionLimit : 20,
+//     host: 'localhost',
+//     user: 'root',
+//     password: '',
+//     database: 'cs130_project',
+//   });
 
 const dbQuery = (query, callback) => {
     pool.getConnection((err, connection) => {
@@ -536,7 +536,7 @@ app.get('/v1/requests/all', (req, res) => {
     const query = `SELECT * FROM Request ` +
                   `WHERE accepted is NULL ` +
                   `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
-                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)` + 
+                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)` +
                   `AND '${time}' < timeEnd`;
 
     dbQuery(query, (error, results) => {
