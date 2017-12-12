@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Text, View,Button, StyleSheet} from 'react-native';
 import styles from 'client/styles/style';
 import Drawer from 'react-native-drawer';
-import Hamburger from 'client/app/Common/Hamburger'
 
 export default class HamburgerMenu extends Component {
     constructor(props) {
@@ -31,7 +30,7 @@ export default class HamburgerMenu extends Component {
     }
     messages() {
         this._drawer.close();
-        this.props.navigation.navigate('LoginScreen', {userId: this.props.user.userId});
+        this.props.navigation.navigate('MessagesScreen', {userId: this.props.user.userId});
     }
     componentDidMount() {
         this.props.setParentState({hamburgerMenu: this});

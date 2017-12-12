@@ -1,7 +1,6 @@
 import React from 'react';
 import { AsyncStorage, Text, View, TextInput, Button } from 'react-native';
 import LoginScreen from 'client/app/screens/LoginScreen';
-import Drawer from 'react-native-drawer'; // 2.5.0
 import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import Hamburger from 'client/app/Common/Hamburger';
 import styles from 'client/styles/style';
