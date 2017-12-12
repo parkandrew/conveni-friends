@@ -10,13 +10,12 @@ import User from 'client/app/Common/User';
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = ({navigation, screenProps}) => {
-
         const params = navigation.state.params || {};
         return {
-            title: 'Home',
             headerRight: params.headerRight,
+            headerLeft: null,
             gesturesEnabled: false,
-            headerLeft: null
+            title: 'Home',
         }
     };
     constructor(props) {
@@ -24,10 +23,8 @@ export default class HomeScreen extends React.Component {
         this.state = {
             user: new User()
         };
-        this.toggleDrawer = this.toggleDrawer.bind(this);
         this.provider = this.provider.bind(this);
         this.requester = this.requester.bind(this);
-        this._setNavigationParams = this._setNavigationParams.bind(this);
         this._getUser = this._getUser.bind(this);
     }
     _getUser() {
@@ -37,24 +34,18 @@ export default class HomeScreen extends React.Component {
                 AsyncStorage.setItem('userId', user.userId);
             }
     }
-    toggleDrawer = () => {
-        if (!this._drawer._open) {
-            this._drawer.open();
-        }
-        else {
-            this._drawer.close();
-        }
-    }
     provider() {
+        console.log(this)
         this.props.navigation.navigate('ProviderLocation', {user:this.state.user});
     }
     requester() {
         this.props.navigation.navigate('MakeRequestScreen', {user:this.state.user});
     }
+
     _setNavigationParams() {
         let headerRight =
         <Hamburger
-            onPress={()=>{this.toggleDrawer()}}
+            onPress={()=>{this.state.hamburgerMenu.toggleDrawer()}}
         />;
         this.props.navigation.setParams({
           headerRight,
@@ -62,53 +53,35 @@ export default class HomeScreen extends React.Component {
     }
 
     componentWillMount() {
-        this._getUser();
         this._setNavigationParams();
+        this._getUser();
       }
 
     render() {
-        const drawerStyles = {
-            drawer: { backgroundColor: '#000000',
-                shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-            main: {paddingLeft: 3},
-        }
         const { navigate } = this.props.navigation;
-        //TODO: either create a splash screen to navigate
-        //to the loginscreen/homescreen or navigate from homescreen
-        //to loginscreen (prefer splash screen)
         if (!this.state.user.userId) {
             navigate('LoginScreen');
         }
+        const view = (<View style={styles.genericContainer}>
+            <Text style={styles.titleLarge}>I am a...</Text>
+            <CustomButton
+                 onPressHandle={() => {this.provider();}}
+                 text='Provider'/>
 
-        return (
-                <Drawer type='overlay'
-                    content={<HamburgerMenu
-                        user={this.state.user}
-                        navigation={this.props.navigation}
-                        _drawer={this._drawer}
-                        />}
-                    ref={(ref) => this._drawer = ref}
-                    openDrawerOffset={0.6}
-                    style={drawerStyles}
-                    tapToClose={true}
-                    acceptPan={true}
-                    side={'right'}
-                    panCloseMask={0.6}
-                    panOpenMask={0}>
-                    <View style={styles.genericContainer}>
-                       <Text style={styles.titleLarge}>I am a...</Text>
-                       <CustomButton
-                            onPressHandle={() => {this.provider();}}
-                            text='Provider'/>
+             <CustomButton
+                 onPressHandle={() => {this.requester();}}
+                 text='Requester' />
 
-                        <CustomButton
-                            onPressHandle={() => {this.requester();}}
-                            text='Requester' />
-
-                        <CustomButton onPressHandle={() => navigate('MessagesScreen', { userId: this.state.user.userId })}  // TODO:remove later
-                            text='Messages' />
-                   </View>
-                </Drawer>
+             <CustomButton onPressHandle={() => navigate('MessagesScreen', { userId: this.state.user.userId })}  // TODO:remove later
+                 text='Messages' />
+        </View>);
+        return (          
+            <HamburgerMenu
+                setParentState={newState=>{this.setState(newState)}}
+                user={this.state.user}
+                navigation={this.props.navigation}
+                view={view}
+            />        
         );
 
     }

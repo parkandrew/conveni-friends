@@ -29,7 +29,6 @@ export default class RequestHistory extends React.Component {
             ],
         };
         this.fetchMyRequests = this.fetchMyRequests.bind(this);
-        this.createDataCell = this.createDataCell.bind(this);
         this._renderHeader = this._renderHeader.bind(this);
         this._renderScene = this._renderScene.bind(this);
         this._setNavigationParams = this._setNavigationParams.bind(this);
@@ -76,19 +75,10 @@ export default class RequestHistory extends React.Component {
         }
       };
 
-    toggleDrawer = () => {
-        if (!this._drawer._open) {
-            this._drawer.open();
-        }
-        else {
-            this._drawer.close();
-        }
-    }
-
       _setNavigationParams() {
         let headerRight =
         <Hamburger
-            onPress={()=>{this.toggleDrawer()}}
+            onPress={()=>{this.state.hamburgerMenu.toggleDrawer()}}
         />;
         this.props.navigation.setParams({
           headerRight,
@@ -110,35 +100,21 @@ export default class RequestHistory extends React.Component {
         this.fetchMyRequests();
     }
 	render() {
-        const drawerStyles = {
-            drawer: { backgroundColor: '#000000',
-                shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
-            main: {paddingLeft: 3},
-
-        }
+        let view = (
+        <TabViewAnimated
+            style={styles.container}
+            navigationState={this.state}
+            renderScene={this._renderScene}
+            renderHeader={this._renderHeader}
+            onIndexChange={this._handleIndexChange}
+        />);
         return (
-            <Drawer type='overlay'
-                content={<HamburgerMenu
-                    user={this.state.user}
-                    navigation={this.props.navigation}
-                    _drawer={this._drawer}
-                    />}
-                ref={(ref) => this._drawer = ref}
-                openDrawerOffset={0.6}
-                style={drawerStyles}
-                tapToClose={true}
-                acceptPan={true}
-                side={'right'}
-                panCloseMask={0.6}
-                panOpenMask={0}>
-                    <TabViewAnimated
-                        style={styles.container}
-                        navigationState={this.state}
-                        renderScene={this._renderScene}
-                        renderHeader={this._renderHeader}
-                        onIndexChange={this._handleIndexChange}
-                    />   
-            </Drawer>
+            <HamburgerMenu
+                setParentState={newState=>{this.setState(newState)}}
+                user={this.state.user}
+                navigation={this.props.navigation}
+                view={view}
+            />        
         );
     }
 }
