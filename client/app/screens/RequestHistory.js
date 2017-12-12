@@ -6,7 +6,6 @@ import Request from 'client/app/Common/Request';
 import RequestListComponent from 'client/app/components/RequestListComponent';
 import CustomButton from 'client/app/components/CustomButton';
 import Hamburger from 'client/app/Common/Hamburger';
-import Drawer from 'react-native-drawer';
 import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 

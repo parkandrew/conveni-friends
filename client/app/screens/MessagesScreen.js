@@ -4,7 +4,9 @@ import Drawer from 'react-native-drawer';
 import { View } from 'react-native';
 import styles from 'client/styles/style';
 import config from 'client/config';
+import Hamburger from 'client/app/Common/Hamburger';
 import MessageScreen from 'client/app/screens/MessageScreen';
+import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 
 export default class MessagesScreen extends Component {
     static navigationOptions = ({navigation, screenProps}) => {
@@ -26,15 +28,6 @@ export default class MessagesScreen extends Component {
         this._setNavigationParams = this._setNavigationParams.bind(this);        
     }
 
-    toggleDrawer = () => {
-        if (!this._drawer._open) {
-            this._drawer.open();
-        }
-        else {
-            this._drawer.close();
-        }
-    }
-
     _setNavigationParams() {
         let headerRight =
         <Hamburger
@@ -47,7 +40,7 @@ export default class MessagesScreen extends Component {
 
     componentWillMount() {
         const { userId } = this.props.navigation.state.params;
-        _this._setNavigationParams();
+        this._setNavigationParams();
         // Grab active messageSessions
         fetch(config.API_URL + `/v1/user/${userId}/messageSessions`)
             .then(response => {
