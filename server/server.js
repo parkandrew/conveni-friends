@@ -10,12 +10,21 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
+// TODO remove local workaround
 const db = mysql.createConnection({
-    host: 'us-cdbr-iron-east-05.cleardb.net',
-    user: 'beffa2b11a15f1',
-    password: '704f96be',
-    database: 'heroku_f4bd3eb0d7b7de1',
+    host: 'localhost',
+    user: 'root',
+    password: 'noodless',
+    database: 'cs130_project',
 });
+
+// TODO: revert to this later
+// const db = mysql.createConnection({
+//     host: 'us-cdbr-iron-east-05.cleardb.net',
+//     user: 'beffa2b11a15f1',
+//     password: '704f96be',
+//     database: 'heroku_f4bd3eb0d7b7de1',
+// });
 
 export const app = express();
 const server = http.Server(app);
@@ -165,36 +174,62 @@ app.post('/v1/user/:userId/update', upload.array(), (req, res) => {
 });
 
 // Returns messageSessions
+// Returns messageSessions
 app.get('/v1/user/:userId/messageSessions', (req, res) => {
     const { userId } = req.params;
 
+    // TODO: We need a POST route for creating a new messageSession between
+    // two users when a request is accepted.
+
     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
     // Need to think about the case when user1 accepts 2+ of user2's requests.
-    const query = `SELECT * FROM MessageSession `
-                + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
 
-    db.query(query, (error, results) => {
-        if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
-        else {
-            var messageSessions = []
+    const messageSessionsExample = [
+        {
+            messageSessionId: 1,
+            userId1: 'userId',
+            userId2: 'someOtherUserId',
+        },
+        {
+            messageSessionId: 2,
+            userId1: 'anotherOtherUserId',
+            userId2: 'userId',
+        },
+    ];
 
-            for (var i = 0; i < results.length; i++) {
-                var messageSession = {
-                    messageSessionId: results[i].messageSessionId,
-                    userId1: results[i].userId1,
-                    userId2: results[i].userId2
-                }
-                messageSessions.push(messageSession)
-            }
-            console.log("Success");
-            res.status(HttpStatus.OK).send(messageSessions);
-        }
-    });
+    res.send(messageSessionsExample);
 });
+
+// app.get('/v1/user/:userId/messageSessions', (req, res) => {
+//     const { userId } = req.params;
+//
+//     // TODO: return MessageSessions where userId == userId1 or userId == userId2.
+//     // Need to think about the case when user1 accepts 2+ of user2's requests.
+//     const query = `SELECT * FROM MessageSession `
+//                 + `WHERE BINARY userId1="${userId}" OR BINARY userId2="${userId}"`;
+//
+//     db.query(query, (error, results) => {
+//         if (error) {
+//             console.log(error);
+//             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                 .send({ message: "Internal server error." });
+//         }
+//         else {
+//             var messageSessions = []
+//
+//             for (var i = 0; i < results.length; i++) {
+//                 var messageSession = {
+//                     messageSessionId: results[i].messageSessionId,
+//                     userId1: results[i].userId1,
+//                     userId2: results[i].userId2
+//                 }
+//                 messageSessions.push(messageSession)
+//             }
+//             console.log("Success");
+//             res.status(HttpStatus.OK).send(messageSessions);
+//         }
+//     });
+// });
 
 /********************************** REQUESTS **********************************/
 
@@ -601,48 +636,110 @@ app.post('/v1/message/session/create', (req, res) => {
  *
  * @returns {res} An array of messages from requested message session, including an HTTP status indicating success or failure. In the case of error, the response contains error info.
  */
-app.get('/v1/message/session/:messageSessionId', (req, res) => {
-    const { messageSessionId } = req.params;
-    // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
-    // knows who sent what).
-    //
-    // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
-    // for the messaging interface, for a message object has the form:
-    //
-    // { _id, text, createdAt, user: { _id } }
 
-    const query = `SELECT * FROM Message ` +
-                  `WHERE messageSessionId=${messageSessionId}`;
+ app.get('/v1/message/session/:messageSessionId', (req, res) => {
+     const { messageSessionId } = req.params;
 
-    db.query(query, (error, results) => {
-        if (error) {
-            console.log(error);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .send({ message: "Internal server error." });
-        }
-        else {
-            console.log("Success");
+     // TODO: Remove messageStubs and instead grab messages from mysql.
+     // We have to reconstruct the messages to send to
+     // the frontend. Our Message schema is not the same as the message object
+     // required by GiftedChat.
+     //
+     // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
+     // knows who sent what).
+     //
+     // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
+     // for the messaging interface, for a message object has the form:
+     //
+     // { _id, text, createdAt, user: {_id, name}, optionalParams }
+     const messageExamples1 = [
+       {
+           _id: 1,
+           text: 'My message to someOtherUserId',
+           createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
+           user: {
+             _id: 'userId',
+             name: 'userId',
+           },
+       },
+       {
+         _id: 2,
+         text: `someOtherUserId's message to me`,
+         createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
+         user: {
+           _id: 'someOtherUserId',
+           name: 'someOtherUserId',
+         },
+       }
+     ];
 
-            let messageList = [];
+     const messageExamples2 = [
+       {
+           _id: 1,
+           text: 'My message to anotherOtherUserId',
+           createdAt: new Date(Date.UTC(2016, 5, 11, 17, 20, 0)),
+           user: {
+             _id: 'userId',
+             name: 'userId',
+           },
+       },
+       {
+         _id: 2,
+         text: `anotherOtherUserId's message to me`,
+         createdAt: new Date(Date.UTC(2016, 6, 11, 17, 20, 0)),
+         user: {
+           _id: 'anotherOtherUserId',
+           name: 'anotherOtherUserId',
+         },
+       }
+     ];
 
-            for (let i = results.length-1; i >= 0; i--) {
+     res.send(messageSessionId == 1 ? messageExamples1 : messageExamples2);
+ });
 
-                const message = {
-                    _id: results[i]['giftedChatId'],
-                    text: results[i]['text'],
-                    createdAt: results[i]['createdAt'],
-                    user: {
-                        _id: results[i]['senderId']
-                    }
 
-                }
-                messageList.push(message);
-            }
-
-            res.status(HttpStatus.OK).send(messageList);
-        }
-    });
-});
+// app.get('/v1/message/session/:messageSessionId', (req, res) => {
+//     const { messageSessionId } = req.params;
+//     // NOTE: user._id and user.name is always equal to senderId (this is how GiftedChat
+//     // knows who sent what).
+//     //
+//     // We are using GiftedChat (https://github.com/FaridSafi/react-native-gifted-chat)
+//     // for the messaging interface, for a message object has the form:
+//     //
+//     // { _id, text, createdAt, user: { _id } }
+//
+//     const query = `SELECT * FROM Message ` +
+//                   `WHERE messageSessionId=${messageSessionId}`;
+//
+//     db.query(query, (error, results) => {
+//         if (error) {
+//             console.log(error);
+//             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                 .send({ message: "Internal server error." });
+//         }
+//         else {
+//             console.log("Success");
+//
+//             let messageList = [];
+//
+//             for (let i = results.length-1; i >= 0; i--) {
+//
+//                 const message = {
+//                     _id: results[i]['giftedChatId'],
+//                     text: results[i]['text'],
+//                     createdAt: results[i]['createdAt'],
+//                     user: {
+//                         _id: results[i]['senderId']
+//                     }
+//
+//                 }
+//                 messageList.push(message);
+//             }
+//
+//             res.status(HttpStatus.OK).send(messageList);
+//         }
+//     });
+// });
 
 /**
  * Called when a user wants to send a message
