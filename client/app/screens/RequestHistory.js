@@ -70,12 +70,14 @@ export default class RequestHistory extends React.Component {
 	render() {
         if (this.state.data) {
             return (
-                <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
+              <View style={styles.simpleContainer}>
+                  <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
+              </View>
             );
         }
         else {
             return (
-            <View>
+            <View style={styles.genericContainer}>
                 <Text>No requests found.</Text>
             </View>
             );

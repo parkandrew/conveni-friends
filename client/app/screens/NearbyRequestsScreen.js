@@ -58,7 +58,9 @@ export default class NearbyRequestsScreen extends React.Component {
 	render() {
         if (this.state.data) {
             return (
+              <View style={styles.simpleContainer}>
                 <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>
+              </View>
             );
         }
         else {
