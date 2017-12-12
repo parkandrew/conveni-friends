@@ -130,6 +130,15 @@ const styles = StyleSheet.create({
       backgroundColor: $white,
     },
 
+// MessageScreen
+		messageContainer: {
+			flex: 1,
+			flexDirection: 'column',
+			backgroundColor: $midnight,
+		},
+		listItemContainer: {
+			backgroundColor: $midnight,
+		},
 
 // MakeRequestScreen/DateTimePicker
     dtpContainer: {

@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-
+import { View } from 'react-native';
+import styles from 'client/styles/style';
 import config from 'client/config';
-
 import MessageScreen from 'client/app/screens/MessageScreen';
 
 export default class MessagesScreen extends Component {
+
+    static navigationOptions = {
+  		title: 'Messages',
+  	}
+
     constructor(props) {
         super(props);
 
@@ -53,6 +58,7 @@ export default class MessagesScreen extends Component {
         // TODO: Sort by most recent messages
         // TODO: Display most recent message
         return (
+          <View style={styles.messageContainer}>
             <List>
                 { messageSessions.map( messageSession => {
                     const { messageSessionId, userId1, userId2 } = messageSession;
@@ -67,6 +73,7 @@ export default class MessagesScreen extends Component {
                     );
                 })}
             </List>
+          </View>
         );
     }
 }
