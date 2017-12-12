@@ -48,7 +48,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	accept() {
 		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.data;
+		const { requesterId, requestId } = this.props.navigation.state.params.request;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
 			userId,
@@ -58,7 +58,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	complete() {
 		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.data;
+		const { requesterId, requestId } = this.props.navigation.state.params.request;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
 			userId,
@@ -68,7 +68,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	messageRequester() {
 		const navigation = this.props.navigation;
-		const { requesterId } = navigation.state.params.data;;
+		const { requesterId } = navigation.state.params.request;
 		const { userId } = this.state;
 
 		axios.get(`${config.API_URL}/v1/message/session/create`, { userId, otherUserId: requesterId })
