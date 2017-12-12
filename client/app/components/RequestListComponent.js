@@ -17,6 +17,7 @@ export default class RequestListComponent extends React.Component {
 		<Card
 			data={item}
 			navigation={this.props.navigation}
+			user={this.props.user}
 			onClick={() => this.getRequestDetails(item)}
 		/>
 	);
@@ -27,12 +28,11 @@ export default class RequestListComponent extends React.Component {
 
 	getRequestDetails(data) {
 		const { navigation } = this.props;
-		navigation.navigate('RequestDetailsScreen', { request: data.request });
+		navigation.navigate('RequestDetailsScreen', { request: data.request, user: this.props.user });
 	}
 
 	render() {
 		const ITEM_HEIGHT = 400;
-		console.log
 		if (this.props.data) {
 			return (
 				<FlatList

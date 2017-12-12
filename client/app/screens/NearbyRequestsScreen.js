@@ -16,30 +16,6 @@ export default class NearbyRequestsScreen extends React.Component {
             user: null
         };
         this.fetchNearbyRequests = this.fetchNearbyRequests.bind(this);
-        this.createDataCell = this.createDataCell.bind(this);
-    }
-
-    parseSQLData(data) {
-        let request = new Request(
-            data.requesterId,
-            data.providerId,
-            data.title,
-            data.description,
-            data.latitude,
-            data.longitude,
-            data.address,
-            data.timeStart,
-            data.timeEnd
-        )
-        return data.request;
-    }
-
-    createDataCell(request, distance) {
-      let str = distance + ' mi';
-        timeStart = new Date(request.timeStart).toLocaleTimeString();
-        timeEnd = new Date(request.timeEnd).toLocaleTimeString();
-        return { title: request.title, distance: str, location: request.address, 
-            details: request.description, startTime: timeStart, endTime: timeEnd };
     }
 
     fetchNearbyRequests() {
@@ -57,7 +33,6 @@ export default class NearbyRequestsScreen extends React.Component {
         this.fetchNearbyRequests();
     }
 	render() {
-        console.log(this.props.navigation.state.params.user);        
         if (this.state.data) {
             return (
                 <RequestListComponent data={this.state.data} navigation={this.props.navigation}/>

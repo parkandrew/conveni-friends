@@ -11,6 +11,8 @@ import HamburgerMenu from 'client/app/Common/HamburgerMenu';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 
 export default class RequestHistory extends React.Component {
+    static CREATED = 1;
+    static ACCEPTED = 2;
     static navigationOptions = ({navigation, screenProps}) => {
         const params = navigation.state.params || {};
         return {
@@ -21,13 +23,11 @@ export default class RequestHistory extends React.Component {
     constructor(props) {
         super(props);
         state = {
-            created: [],
-            accepted: [],
             user: null,
             index: 0,
             routes: [
-              { key: '1', title: 'Created' },
-              { key: '2', title: 'Accepted' },
+              { key: 'created', title: 'Created' },
+              { key: 'accepted', title: 'Accepted' },
             ],
         };
         this.fetchMyRequests = this.fetchMyRequests.bind(this);
@@ -65,24 +65,21 @@ export default class RequestHistory extends React.Component {
             this.setState({user: this.props.navigation.state.params.user, 
                 index: 0,
                 routes: [
-                  { key: '1', title: 'Created' },
-                  { key: '2', title: 'Accepted' },
+                  { key: 'created', title: 'Created' },
+                  { key: 'accepted', title: 'Accepted' },
                 ]}, () => {
                 this.state.user.getMyRequests().then((response) => {
-                    //put data in array
-                    createdRequests = [];
-                    acceptedRequests = [];
+                    created = [];
+                    accepted = [];
                     response.forEach(element => {
-                        let request = this.parseSQLData(element);
-                        if(request.requesterId === this.state.user.userId) {
-                            createdRequests.push(this.createDataCell(request));
+                        if(element.request.requesterId === this.state.user.userId) {
+                            created.push(element);
                         }
                         else {
-                            acceptedRequests.push(this.createDataCell(request));
+                            accepted.push(element);
                         }
-                        
                     });
-                    this.setState({created: createdRequests, accepted: acceptedRequests});
+                    this.setState({created: created, accepted: accepted});
                 });
             });
         }
@@ -90,12 +87,16 @@ export default class RequestHistory extends React.Component {
     
     _renderScene = ({ route }) => {
         switch (route.key) {
-        case '1':
-            return <RequestListComponent data={this.state.created} user={this.state.user} navigation={this.props.navigation}/>;
-        case '2':
-            return <RequestListComponent data={this.state.accepted} user={this.state.user} navigation={this.props.navigation}/>;
+        case 'created':
+        if (this.state.created) {
+            return (<RequestListComponent data={this.state.created} user={this.state.user} navigation={this.props.navigation}/>);            
+        }
+        case 'accepted':
+        if (this.state.accepted) {
+            return (<RequestListComponent data={this.state.accepted} user={this.state.user} navigation={this.props.navigation}/>);            
+        }
         default:
-            return null;
+            return <View><Text>oops</Text></View>;
         }
       };
 
@@ -139,28 +140,29 @@ export default class RequestHistory extends React.Component {
                 shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3},
             main: {paddingLeft: 3},
         }
+        { }
         return (
             <Drawer type='overlay'
-            content={<HamburgerMenu
-                user={this.state.user}
-                navigation={this.props.navigation}
-                _drawer={this._drawer}
-                />}
-            ref={(ref) => this._drawer = ref}
-            openDrawerOffset={0.6}
-            style={drawerStyles}
-            tapToClose={true}
-            acceptPan={true}
-            side={'right'}
-            panCloseMask={0.6}
-            panOpenMask={0}>
-                <TabViewAnimated
-                    style={styles.container}
-                    navigationState={this.state}
-                    renderScene={this._renderScene}
-                    renderHeader={this._renderHeader}
-                    onIndexChange={this._handleIndexChange}
-                />   
+                content={<HamburgerMenu
+                    user={this.state.user}
+                    navigation={this.props.navigation}
+                    _drawer={this._drawer}
+                    />}
+                ref={(ref) => this._drawer = ref}
+                openDrawerOffset={0.6}
+                style={drawerStyles}
+                tapToClose={true}
+                acceptPan={true}
+                side={'right'}
+                panCloseMask={0.6}
+                panOpenMask={0}>
+                    <TabViewAnimated
+                        style={styles.container}
+                        navigationState={this.state}
+                        renderScene={this._renderScene}
+                        renderHeader={this._renderHeader}
+                        onIndexChange={this._handleIndexChange}
+                    />   
             </Drawer>
         );
     }
