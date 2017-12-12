@@ -5,7 +5,7 @@ import Card from 'client/app/components/Card';
 import RenderSeparator from 'client/app/components/ListSeparator';
 
 export default class RequestListComponent extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = {		
 	}
 	constructor(props) {
 		super(props);
@@ -17,6 +17,7 @@ export default class RequestListComponent extends React.Component {
 		<Card
 			data={item}
 			navigation={this.props.navigation}
+			user={this.props.user}
 			onClick={() => this.getRequestDetails(item)}
 		/>
 	);
@@ -27,21 +28,24 @@ export default class RequestListComponent extends React.Component {
 
 	getRequestDetails(data) {
 		const { navigation } = this.props;
-		navigation.navigate('RequestDetailsScreen', { request: data.request });
+		navigation.navigate('RequestDetailsScreen', { request: data.request, user: this.props.user });
 	}
 
 	render() {
 		const ITEM_HEIGHT = 400;
-		return (
-			<FlatList
-			// TODO: getItemLayout may have to be implemented to render large lists
-				// getItemLayout={(data, index) => ({
-				// 	length: 500, offset: 500 * index, index})
-				// }
-				ItemSeparatorComponent={this._renderSeparator}
-				data={this.props.data}
-				renderItem={this._renderItem}
-			/>
-		);
+		if (this.props.data) {
+			return (
+				<FlatList
+					ItemSeparatorComponent={this._renderSeparator}
+					data={this.props.data}
+					user={this.props.user}
+					renderItem={this._renderItem}
+				/>
+			);
+		}
+		else {
+			return (<View><Text>There are no requests to be shown.</Text></View>);
+		}
+
 	}
 }

@@ -18,7 +18,7 @@ export default class MessageScreen extends Component {
 
     componentWillMount() {
         const { messageSessionId } = this.props.navigation.state.params;
-
+        console.log(messageSessionId);
         this.initWs();
 
         // Get messages with otherUserId
