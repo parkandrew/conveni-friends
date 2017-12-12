@@ -14,22 +14,18 @@ export default class SignupScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userId: '',
+            userIdInput: '',
             password: '',
             password2: '',
         };
         this._makeAccount = this._makeAccount.bind(this)
     }
 
-    _signup() {
-        this.props.navigation.navigate('LoginScreen')
-    }
-
     _makeAccount() {
         //alphanumeric characters
         const alphanum = /[0-9a-zA-Z]+/g;
         //TODO: check w/backend that the user id does not already exist
-        if (this.state.userId && alphanum.test(this.state.userId)) {
+        if (this.state.userIdInput && alphanum.test(this.state.userIdInput)) {
             if (this.state.password && this.state.password) {
                 if (this.state.password === this.state.password2) {
                     //TODO: make account w/backend
@@ -37,7 +33,7 @@ export default class SignupScreen extends React.Component {
                     //or get the session key right here and navigate them to the
                     //"home" screen
                     let user = new User();
-                    user.signup(this.state.userId, this.state.password).then(
+                    user.signup(this.state.userIdInput, this.state.password).then(
                         (responseData) => {
                             if (responseData.status == HttpStatus.OK) {
                                 this.props.navigation.goBack(null);
@@ -78,7 +74,6 @@ export default class SignupScreen extends React.Component {
                     setParentState={newState=>{this.setState(newState)}}
                     field={"userIdInput"}
                     style={styles.makeLoginLine}
-                    onChangeText={(text) => this.setState({userId: text})}
                     onSubmitEditing={() => {this._makeAccount();}}
                     placeholder={'User ID'}/>
 
@@ -87,21 +82,19 @@ export default class SignupScreen extends React.Component {
                     field={"password"}
                     secureTextEntry={true}
                     style={styles.makeLoginLine}
-                    onChangeText={(text) => this.setState({password: text})}
                     onSubmitEditing={() => {this._makeAccount();}}
                     placeholder={'Password'} />
 
                 <LoginFormInput
                     setParentState={newState=>{this.setState(newState)}}
-                    field={"password"}
+                    field={"password2"}
                     secureTextEntry={true}
                     style={styles.makeLoginLine}
-                    onChangeText={(text) => this.setState({password2: text})}
                     onSubmitEditing={() => {this._makeAccount();}}
                     placeholder={'Confirm password'} />
 
                 <CustomButton
-                    onPressHandle={() => {this._signup();}}
+                    onPressHandle={() => {this._makeAccount();}}
                     text="Sign up"/>
             </View>
 

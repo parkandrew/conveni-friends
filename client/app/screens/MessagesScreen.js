@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
+import Drawer from 'react-native-drawer';
 import { View } from 'react-native';
 import styles from 'client/styles/style';
 import config from 'client/config';
 import MessageScreen from 'client/app/screens/MessageScreen';
 
 export default class MessagesScreen extends Component {
-
-    static navigationOptions = {
-  		title: 'Messages',
-  	}
-
+    static navigationOptions = ({navigation, screenProps}) => {
+        const params = navigation.state.params || {};
+        return {
+            headerRight: params.headerRight,
+            title: 'Messages',
+        }
+    };
     constructor(props) {
         super(props);
 
@@ -20,11 +23,31 @@ export default class MessagesScreen extends Component {
         };
 
         this.getMessageSession = this.getMessageSession.bind(this);
+        this._setNavigationParams = this._setNavigationParams.bind(this);        
+    }
+
+    toggleDrawer = () => {
+        if (!this._drawer._open) {
+            this._drawer.open();
+        }
+        else {
+            this._drawer.close();
+        }
+    }
+
+    _setNavigationParams() {
+        let headerRight =
+        <Hamburger
+            onPress={()=>{this.state.hamburgerMenu.toggleDrawer()}}
+        />;
+        this.props.navigation.setParams({
+          headerRight,
+        });
     }
 
     componentWillMount() {
         const { userId } = this.props.navigation.state.params;
-
+        _this._setNavigationParams();
         // Grab active messageSessions
         fetch(config.API_URL + `/v1/user/${userId}/messageSessions`)
             .then(response => {
@@ -55,10 +78,7 @@ export default class MessagesScreen extends Component {
         const { userId } = this.props.navigation.state.params;
         const { messageSessions } = this.state;
 
-        // TODO: Sort by most recent messages
-        // TODO: Display most recent message
-        return (
-          <View style={styles.messageContainer}>
+        const view = (<View style={styles.messageContainer}>
             <List>
                 { messageSessions.map( messageSession => {
                     const { messageSessionId, userId1, userId2 } = messageSession;
@@ -73,7 +93,17 @@ export default class MessagesScreen extends Component {
                     );
                 })}
             </List>
-          </View>
+          </View>);
+
+        // TODO: Sort by most recent messages
+        // TODO: Display most recent message
+        return (
+            <HamburgerMenu
+                setParentState={newState=>{this.setState(newState)}}
+                user={this.state.user}
+                navigation={this.props.navigation}
+                view={view}
+            />        
         );
     }
 }

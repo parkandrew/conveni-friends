@@ -55,15 +55,21 @@ export default class MakeRequestScreen extends React.Component {
 	_onPressHandle() {
 		if (this.state.title && this.state.location && this.state.description) {
 			//get latitude and longitude from address?
-			timeStart = this.state.startTime.toISOString().slice(0, 19).replace('T', ' ');
-			timeEnd = this.state.endTime.toISOString().slice(0, 19).replace('T', ' ');
-			let request = new Request(this.state.user.userId, null, this.state.title,
-				this.state.description, 0.0, 0.0, this.state.location, timeStart, timeEnd);
-			this.props.navigation.navigate("RequesterLocation", {
-				user: this.state.user,
-				request: request
-			})
-
+			console.log(this.state.endTime - this.state.startTime);
+			if ((this.state.endTime - this.state.startTime < 3600000) || this.state.startTime < new Date()) {
+				Alert.alert("Invalid time, please reenter a valid start time and valid end time." +
+				 "Start time can't be from the past. Start and end times must be an hour apart");
+			}
+			else {
+				timeStart = this.state.startTime.toISOString().slice(0, 19).replace('T', ' ');
+				timeEnd = this.state.endTime.toISOString().slice(0, 19).replace('T', ' ');
+				let request = new Request(this.state.user.userId, null, this.state.title,
+					this.state.description, 0.0, 0.0, this.state.location, timeStart, timeEnd);
+				this.props.navigation.navigate("RequesterLocation", {
+					user: this.state.user,
+					request: request
+				});
+			}
 		}
 		else {
 			Alert.alert("Please fill in all the fields.");

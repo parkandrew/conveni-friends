@@ -5,6 +5,7 @@ import moment from 'moment';
 import { AsyncStorage, Button, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import RequestInfoLine from 'client/app/components/RequestInfoDetails';
 import CustomButton from 'client/app/components/CustomButton';
+import User from 'client/app/Common/User';
 
 import { getUser } from 'client/app/utils';
 import styles from 'client/styles/style';
@@ -30,20 +31,20 @@ export default class RequestDetailsScreen extends React.Component {
 
 	componentWillMount() {
 		AsyncStorage.getItem('userId')
-			.then(userId => this.setState({ userId }));
+			.then(userId => this.setState({ userId }, console.log(this)));
 	}
 
 	getButtons() {
 		const { userId } = this.state;
-		const { accepted, requesterId } = this.props.navigation.state.params.request;
+		const { accepted, requesterId, completed } = this.props.navigation.state.params.request;
 
-		if (!userId || userId == requesterId) {
+		if (!userId || userId === requesterId) {
 			return;
 		}
-
-		return accepted
-			? <Button title="Accept" onPress={() => this.accept()} />
-			: <Button title="Complete" onPress={() => this.complete()} />;
+		return !accepted
+			? <CustomButton text="Accept" onPressHandle={() => this.accept()} />
+			: (!completed ? <CustomButton text="Complete" onPressHandle={() => this.complete()} /> 
+			: <Text>completed!</Text>);
 	}
 
 	accept() {
@@ -54,6 +55,9 @@ export default class RequestDetailsScreen extends React.Component {
 			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		});
+		user = new User();
+		user.userId = userId;
+		this.props.navigation.navigate('ProviderScreen', {user: user});
 	}
 
 	complete() {
@@ -64,6 +68,9 @@ export default class RequestDetailsScreen extends React.Component {
 			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		});
+		user = new User();
+		user.userId = userId;
+		this.props.navigation.navigate('ProviderScreen', {user: user});
 	}
 
 	messageRequester() {
@@ -87,7 +94,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	render() {
 		const request = this.props.navigation.state.params.request;
-		const { requesterId, title, location, details } = request;
+		const { requesterId, title, address, description } = request;
 		const { timeStart, timeEnd, accepted, confirmed, completed } = request;
 		const { userId } = this.state;
 
@@ -96,12 +103,13 @@ export default class RequestDetailsScreen extends React.Component {
 				<ScrollView style={styles.detailsMakeContainer}>
 					<View style={styles.makeInputView}>
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
-						<RequestInfoLine primary={'Location'} secondary={' ' + location} />
+						<RequestInfoLine primary={'Location'} secondary={' ' + address} />
 						<RequestInfoLine primary={'Start Time'} secondary={' ' + timeStart} />
 						<RequestInfoLine primary={'End Time'} secondary={' ' + timeEnd} />
-						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + details}</Text></Text>
+						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + description}</Text></Text>
 					</View>
-					<Button title="Message Requester" onPress={() => this.messageRequester()} />
+					{ this.getButtons() }
+					{userId !== request.requesterId ? <CustomButton text="Message Requester" onPressHandle={() => this.messageRequester()} /> : null}
 				</ScrollView>
 			</View>
 		);

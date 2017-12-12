@@ -10,15 +10,6 @@ import mysql from "mysql";
 import url from "url"
 import WebSocket from "ws";
 
-const pool = mysql.createPool({
-  connectionLimit : 20,
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'cs130_project',
-});
-
-//
 // const pool = mysql.createPool({
 //   connectionLimit : 20,
 //   host: 'us-cdbr-iron-east-05.cleardb.net',
@@ -26,6 +17,14 @@ const pool = mysql.createPool({
 //   password: '704f96be',
 //   database: 'heroku_f4bd3eb0d7b7de1',
 // });
+
+const pool = mysql.createPool({
+    connectionLimit : 20,
+    host: 'localhost',
+    user: 'root',
+    password: '123',
+    database: 'cs130_project',
+  });
 
 const dbQuery = (query, callback) => {
     pool.getConnection((err, connection) => {
@@ -42,9 +41,9 @@ const PORT = process.env.PORT || 3000;
 const HttpStatus = require('http-status-codes');
 
 // HTTP body parser
-var bodyParser = require('body-parser');
-var multer = require('multer'); // v1.0.5
-var upload = multer(); // for parsing multipart/form-data
+let bodyParser = require('body-parser');
+let multer = require('multer'); // v1.0.5
+let upload = multer(); // for parsing multipart/form-data
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
@@ -206,10 +205,10 @@ app.get('/v1/user/:userId/messageSessions', (req, res) => {
                 .send({ message: "Internal server error." });
         }
         else {
-            var messageSessions = []
+            let messageSessions = []
 
-            for (var i = 0; i < results.length; i++) {
-                var messageSession = {
+            for (let i = 0; i < results.length; i++) {
+                let messageSession = {
                     messageSessionId: results[i].messageSessionId,
                     userId1: results[i].userId1,
                     userId2: results[i].userId2
@@ -325,11 +324,11 @@ app.post('/v1/request/:requestId/delete', (req, res) => {
  */
 app.post('/v1/request/:request_id/accept', (req, res) => {
     const requestId = req.params.request_id;
-    const { userId, time } = req.query;
+    const { userId, time } = req.body;
 
     const query = `UPDATE Request ` +
-                  `SET accepted=${time}, providerId=${userId} ` +
-                  `WHERE BINARY requestId=${requestId} AND ${time} < timeEnd;`
+                  `SET accepted='${time}', providerId='${userId}' ` +
+                  `WHERE BINARY requestId=${requestId} AND '${time}' < timeEnd;`
 
     dbQuery(query, (error, results) => {
         if (error) {
@@ -451,6 +450,7 @@ app.get('/v1/user/:userId/requests', (req, res) => {
                 + `WHERE BINARY requesterId="${userId}" OR BINARY providerId="${userId}"`;
 
     dbQuery(query, (error, results) => {
+        let retValue = [];
         if (error) {
             console.log(error);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -458,8 +458,13 @@ app.get('/v1/user/:userId/requests', (req, res) => {
         }
         else {
             console.log("Success");
-            res.status(HttpStatus.OK).send(results);
+            for (let i = 0; i < results.length; i++) {
+                retValue.push({
+                    request : results[i],
+                });
+            }
         }
+        res.status(HttpStatus.OK).send(retValue);
     });
 });
 
@@ -485,18 +490,18 @@ app.get('/v1/user/:userId/requests', (req, res) => {
  * @returns {float} The distance in miles between the two points given.
  */
 function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lon2-lon1);
-  var a =
+  let R = 6371; // Radius of the earth in km
+  let dLat = deg2rad(lat2-lat1);  // deg2rad below
+  let dLon = deg2rad(lon2-lon1);
+  let a =
     Math.sin(dLat/2) * Math.sin(dLat/2) +
     Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
     Math.sin(dLon/2) * Math.sin(dLon/2)
     ;
 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  var d = R * c; // Distance in km
-  var miles = d * 0.621371
+  let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  let d = R * c; // Distance in km
+  let miles = d * 0.621371
 
   return miles;
 }
@@ -522,12 +527,13 @@ function deg2rad(deg) {
  */
 app.get('/v1/requests/all', (req, res) => {
     const { userId, latitude, longitude } = req.query;
-
+    const time = new Date().toISOString().slice(0, 19).replace('T', ' ');
     // Check within a set box with a magic number (long/lat of 0.1 in this case) for now
     const query = `SELECT * FROM Request ` +
                   `WHERE accepted is NULL ` +
                   `AND latitude <= (${latitude} + 0.1) AND latitude >= (${latitude} - 0.1) ` +
-                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)`;
+                  `AND longitude <= (${longitude} + 0.1) AND longitude >= (${longitude} - 0.1)` + 
+                  `AND '${time}' < timeEnd`;
 
     dbQuery(query, (error, results) => {
         if (error) {
@@ -539,15 +545,16 @@ app.get('/v1/requests/all', (req, res) => {
             console.log("Success");
 
             // List of request, along with the distance from user in miles
-            var retValue = [];
+            let retValue = [];
 
-            for (var i = 0; i < results.length; i++) {
-                console.log(results[i]);
-                var dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
-                retValue.push({
-                    request : results[i],
-                    distance: dist
-                });
+            for (let i = 0; i < results.length; i++) {
+                if (results[i].requesterId !== userId) {
+                    let dist = getDistanceFromLatLonInMiles(latitude, longitude, results[i].latitude, results[i].longitude);
+                    retValue.push({
+                        request : results[i],
+                        distance: dist
+                    });
+                }
             }
 
             // Sort ascending, based on distance from user

@@ -18,9 +18,11 @@ export default class Card extends React.Component {
 	}
 
 	render() {
-		const { data, onClick } = this.props;
-		const { distance, request } = data;
-
+		let { data, onClick } = this.props;
+		let { distance, request } = data;
+		request.timeStart = request.timeStart.slice(0, 19).replace('T', ' ');
+		request.timeEnd = request.timeEnd.slice(0, 19).replace('T', ' ');
+		if (distance) { distance = distance.toString().substr(0, 4) + ' mi'; }
 		return (
 			<View >
 				<TouchableOpacity onPress={() => onClick()} style={styles.cardContainer}>
