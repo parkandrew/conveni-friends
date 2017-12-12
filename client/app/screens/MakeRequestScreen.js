@@ -55,7 +55,6 @@ export default class MakeRequestScreen extends React.Component {
 	_onPressHandle() {
 		if (this.state.title && this.state.location && this.state.description) {
 			//get latitude and longitude from address?
-			console.log(this.state.endTime - this.state.startTime);
 			if ((this.state.endTime - this.state.startTime < 3600000) || this.state.startTime < new Date()) {
 				Alert.alert("Invalid time, please reenter a valid start time and valid end time." +
 				 "Start time can't be from the past. Start and end times must be an hour apart");

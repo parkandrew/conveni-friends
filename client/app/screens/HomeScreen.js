@@ -34,7 +34,6 @@ export default class HomeScreen extends React.Component {
             }
     }
     provider() {
-        console.log(this)
         this.props.navigation.navigate('ProviderLocation', {user:this.state.user});
     }
     requester() {

@@ -16,7 +16,6 @@ export default class HamburgerMenu extends Component {
         }
     }
     history() {
-        console.log(this);
         this._drawer.close();
         this.props.navigation.navigate('RequestHistory', {user:this.props.user});
     }
