@@ -24,7 +24,6 @@ export default class RequestDetailsScreen extends React.Component {
 			userId: '',
 			request: {},
 		};
-
 		this.getButtons = this.getButtons.bind(this);
 		this.accept = this.accept.bind(this);
 		this.complete = this.complete.bind(this);
@@ -36,6 +35,14 @@ export default class RequestDetailsScreen extends React.Component {
 
 		AsyncStorage.getItem('userId')
 			.then(userId => this.setState({ userId, request }));
+	}
+
+	componentWillUnmount () {
+		if(this.state.accepted) {
+			this.props.navigation.state.params.onNavigateBack(this.state.request.requestId);
+		} else {
+			this.props.navigation.state.params.onNavigateBack(null);
+		}
 	}
 
 	getButtons() {
@@ -77,17 +84,21 @@ export default class RequestDetailsScreen extends React.Component {
 	complete() {
 		const { userId, request } = this.state;
 		const { requesterId, requestId } = request;
-
+		let time = moment().format('YYYY-MM-DD HH:MM:SS');
+		time = time.slice(0,17) + '00';
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
 			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:SS')
+			time: time
 		})
 			.then(response => {
+				console.log('complete');
 				if (response.status === 200) {
 					const { request } = this.state;
 					this.setState({ request: { ...request, accepted: true }});
 				}
-
+			})
+			.catch(err => {
+				console.log(err);
 			})
 	}
 
