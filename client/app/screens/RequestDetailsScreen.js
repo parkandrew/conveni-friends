@@ -10,6 +10,8 @@ import User from 'client/app/Common/User';
 import { getUser } from 'client/app/utils';
 import styles from 'client/styles/style';
 import config from 'client/config';
+import moment from 'moment'; // 2.19.2
+import Moment from 'react-moment'; // 0.6.8
 
 export default class RequestDetailsScreen extends React.Component {
 	static navigationOptions = {
@@ -44,32 +46,35 @@ export default class RequestDetailsScreen extends React.Component {
 		console.log(requesterId)
 		console.log(providerId)
         // Can't accept/complete your own requests or a request that's already taken
-		if (userId === requesterId)
+		if (userId === requesterId) {
 			return;
-
-		if (!accepted)
+		}
+		if (!accepted) {
 			return <CustomButton text="Accept" onPressHandle={() => this.accept()} />;
-
-		else if (userId == providerId && !completed)
+		} else if (userId == providerId && !completed) {
 			return <CustomButton text="Complete" onPressHandle={() => this.complete()} />;
-
+		}
 		return;
 	}
 
 	accept() {
 		const { userId, request } = this.state;
 		const { requesterId, requestId } = request;
-
+		let time = moment().format('YYYY-MM-DD HH:MM:SS');
+		time = time.slice(0,17) + '00';
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
 			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		})
-			.then(response => response.ok)
-			.then(success => {
-				if (success) {
+			.then(response => {
+				if(response.status === 200) {
 					const { request } = this.state;
-					this.setState({ request: { ...request, accept: true }});
+					this.setState({ request: { ...request, accepted: true }});
 				}
+			})
+			.catch(err => {
+				console.log('error in post request');
+				console.log(err);
 			});
 	}
 
@@ -82,11 +87,9 @@ export default class RequestDetailsScreen extends React.Component {
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		})
 			.then(response => {
-				console.log(response)
 				return response.ok
 			})
 			.then(success => {
-				console.log(success)
 				if (success) {
 					const { request } = this.state;
 					this.setState({ request: { ...request, accept: true }});
