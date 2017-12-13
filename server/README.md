@@ -16,16 +16,19 @@ npm install
 
 To run locally:
 
+Create new MySQL database within MySQL shell:
 ```
-TODO: Add commands for running locally
+create database cs130_project;
 ```
+
+
 
 ## Running the tests
 
 To run the test suite for the server:
 
 ```
-TODO: Add commands to run test suite
+mocha
 ```
 
 ## Built With
