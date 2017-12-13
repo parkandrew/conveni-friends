@@ -31,7 +31,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 	componentWillMount() {
 		AsyncStorage.getItem('userId')
-			.then(userId => this.setState({ userId }, console.log(this)));
+			.then(userId => this.setState({ userId }));
 	}
 
 	getButtons() {
