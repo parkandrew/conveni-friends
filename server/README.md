@@ -14,10 +14,42 @@ npm install
 
 ### Running locally
 
-To run locally:
+Create new MySQL database within MySQL shell:
+```
+create database cs130_project;
+```
+
+(On a Windows machine): Also within the MySQL shell, we need to set up our tables. To run the setup.sql file, we need the location it lives in on disk. I put my conveni-friends folder in my Desktop directory, so my command would look like:
 
 ```
-TODO: Add commands for running locally
+source C:\Users\Andrew\Desktop\conveni-friends\setup.sql
+```
+
+Next, we will be using a local MySQL pool instead of a prod MySQL pool. To do so, edit server/server.js file. Comment lines 13-19 out:
+```
+// const pool = mysql.createPool({
+//   connectionLimit : 50,
+//   host: 'us-cdbr-iron-east-05.cleardb.net',
+//   user: 'beffa2b11a15f1',
+//   password: '704f96be',
+//   database: 'heroku_f4bd3eb0d7b7de1',
+// });
+```
+Uncomment the following lines, 20-27:
+```
+const pool = mysql.createPool({
+    connectionLimit : 20,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'cs130_project',
+  });
+```
+
+To run locally (Make sure you are within the server directory):
+
+```
+node index.js
 ```
 
 ## Running the tests
@@ -25,7 +57,7 @@ TODO: Add commands for running locally
 To run the test suite for the server:
 
 ```
-TODO: Add commands to run test suite
+mocha
 ```
 
 ## Built With
