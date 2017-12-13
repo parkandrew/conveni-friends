@@ -14,14 +14,38 @@ npm install
 
 ### Running locally
 
-To run locally:
-
 Create new MySQL database within MySQL shell:
 ```
 create database cs130_project;
 ```
 
+Edit server/server.js file. Comment lines 13-19 out:
+```
+// const pool = mysql.createPool({
+//   connectionLimit : 50,
+//   host: 'us-cdbr-iron-east-05.cleardb.net',
+//   user: 'beffa2b11a15f1',
+//   password: '704f96be',
+//   database: 'heroku_f4bd3eb0d7b7de1',
+// });
+```
+Uncomment the following lines, 20-27:
+```
+const pool = mysql.createPool({
+    connectionLimit : 20,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'cs130_project',
+  });
+```
+This will create a local MySQL pool, to use your local version instead.
 
+To run locally (Make sure you are within the server directory):
+
+```
+node index.js
+```
 
 ## Running the tests
 
