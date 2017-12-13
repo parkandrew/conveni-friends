@@ -32,6 +32,7 @@ export default class RequestDetailsScreen extends React.Component {
 	componentWillMount() {
 		AsyncStorage.getItem('userId')
 			.then(userId => this.setState({ userId }, console.log(this)));
+		this.setState({user: this.props.user})
 	}
 
 	getButtons() {
@@ -48,29 +49,21 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	accept() {
-		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.request;
+		const { user } = this.state;
+		const { requestId } = this.props.navigation.state.params.request;
 
-		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
-			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:ss')
-		});
-		user = new User();
-		user.userId = userId;
-		this.props.navigation.navigate('ProviderScreen', {user: user});
+		user.accept(requestId).then((response) => {
+			this.props.navigation.navigate('ProviderScreen', {user: user});
+		}).catch((error) => (Alert.alert("There was an error accepting the request, try again later")));
 	}
 
 	complete() {
-		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.request;
+		const { user } = this.state;
+		const { requestId } = this.props.navigation.state.params.request;
 
-		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
-			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:ss')
-		});
-		user = new User();
-		user.userId = userId;
-		this.props.navigation.navigate('ProviderScreen', {user: user});
+		user.completeRequest(requestId).then((response) => {
+			this.props.navigation.navigate('ProviderScreen', {user: user});
+		}).catch((error) => (Alert.alert("There was an error completing the request, try again later")));
 	}
 
 	messageRequester() {
