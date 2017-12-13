@@ -21,6 +21,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 		this.state = {
 			userId: '',
+			request: {},
 		};
 
 		this.getButtons = this.getButtons.bind(this);
@@ -30,53 +31,73 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	componentWillMount() {
+		const { request } = this.props.navigation.state.params;
+
 		AsyncStorage.getItem('userId')
-			.then(userId => this.setState({ userId }));
+			.then(userId => this.setState({ userId, request }));
 	}
 
 	getButtons() {
-		const { userId } = this.state;
-		const { accepted, requesterId, completed } = this.props.navigation.state.params.request;
-
-		if (!userId || userId === requesterId) {
+		const { userId, request } = this.state;
+		const { requesterId, providerId, accepted, confirmed, completed } = request;
+		console.log(userId)
+		console.log(requesterId)
+		console.log(providerId)
+        // Can't accept/complete your own requests or a request that's already taken
+		if (userId === requesterId)
 			return;
-		}
-		return !accepted
-			? <CustomButton text="Accept" onPressHandle={() => this.accept()} />
-			: (!completed ? <CustomButton text="Complete" onPressHandle={() => this.complete()} /> 
-			: <Text>completed!</Text>);
+
+		if (!accepted)
+			return <CustomButton text="Accept" onPressHandle={() => this.accept()} />;
+
+		else if (userId == providerId && !completed)
+			return <CustomButton text="Complete" onPressHandle={() => this.complete()} />;
+
+		return;
 	}
 
 	accept() {
-		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.request;
+		const { userId, request } = this.state;
+		const { requesterId, requestId } = request;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
 			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
-		});
-		user = new User();
-		user.userId = userId;
-		this.props.navigation.navigate('ProviderScreen', {user: user});
+		})
+			.then(response => response.ok)
+			.then(success => {
+				if (success) {
+					const { request } = this.state;
+					this.setState({ request: { ...request, accept: true }});
+				}
+			});
 	}
 
 	complete() {
-		const { userId } = this.state;
-		const { requesterId, requestId } = this.props.navigation.state.params.request;
+		const { userId, request } = this.state;
+		const { requesterId, requestId } = request;
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
 			userId,
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
-		});
-		user = new User();
-		user.userId = userId;
-		this.props.navigation.navigate('ProviderScreen', {user: user});
+		})
+			.then(response => {
+				console.log(response)
+				return response.ok
+			})
+			.then(success => {
+				console.log(success)
+				if (success) {
+					const { request } = this.state;
+					this.setState({ request: { ...request, accept: true }});
+				}
+			});
 	}
 
 	messageRequester() {
 		const navigation = this.props.navigation;
-		const { requesterId } = navigation.state.params.request;
-		const { userId } = this.state;
+		const { userId, request } = this.state;
+		const { requesterId } = request;
 
 		axios.post(`${config.API_URL}/v1/message/session/create`, {
 			userId1: userId,
@@ -93,10 +114,9 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	render() {
-		const request = this.props.navigation.state.params.request;
+		const { userId, request } = this.state;
 		const { requesterId, title, address, description } = request;
 		const { timeStart, timeEnd, accepted, confirmed, completed } = request;
-		const { userId } = this.state;
 
 		return (
 			<View style={styles.simpleContainer}>
@@ -108,8 +128,15 @@ export default class RequestDetailsScreen extends React.Component {
 						<RequestInfoLine primary={'End Time'} secondary={' ' + timeEnd} />
 						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + description}</Text></Text>
 					</View>
+
 					{ this.getButtons() }
-					{userId !== request.requesterId ? <CustomButton text="Message Requester" onPressHandle={() => this.messageRequester()} /> : null}
+
+					{ userId === request.requesterId ||
+						<CustomButton
+							text="Message Requester"
+							onPressHandle={() => this.messageRequester()}
+						/>
+					}
 				</ScrollView>
 			</View>
 		);
