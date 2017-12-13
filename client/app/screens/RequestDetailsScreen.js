@@ -10,7 +10,6 @@ import User from 'client/app/Common/User';
 import { getUser } from 'client/app/utils';
 import styles from 'client/styles/style';
 import config from 'client/config';
-import moment from 'moment'; // 2.19.2
 import Moment from 'react-moment'; // 0.6.8
 
 export default class RequestDetailsScreen extends React.Component {
@@ -42,9 +41,6 @@ export default class RequestDetailsScreen extends React.Component {
 	getButtons() {
 		const { userId, request } = this.state;
 		const { requesterId, providerId, accepted, confirmed, completed } = request;
-		console.log(userId)
-		console.log(requesterId)
-		console.log(providerId)
         // Can't accept/complete your own requests or a request that's already taken
 		if (userId === requesterId) {
 			return;
