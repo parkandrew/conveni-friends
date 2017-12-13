@@ -6,7 +6,6 @@ import {
 	View
 } from 'react-native';
 import moment from 'moment';
-import Moment from 'react-moment';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'; // 4.13.0
 
 import "prop-types";
