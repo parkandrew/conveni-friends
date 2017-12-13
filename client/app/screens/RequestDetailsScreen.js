@@ -87,14 +87,12 @@ export default class RequestDetailsScreen extends React.Component {
 			time: moment().format('YYYY-MM-DD HH:MM:SS')
 		})
 			.then(response => {
-				return response.ok
-			})
-			.then(success => {
-				if (success) {
+				if (response.status === 200) {
 					const { request } = this.state;
-					this.setState({ request: { ...request, accept: true }});
+					this.setState({ request: { ...request, accepted: true }});
 				}
-			});
+
+			})
 	}
 
 	messageRequester() {
