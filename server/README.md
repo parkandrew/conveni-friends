@@ -19,7 +19,7 @@ Create new MySQL database within MySQL shell:
 create database cs130_project;
 ```
 
-Also within the MySQL shell, we need to set up our tables. To run the setup.sql file, we need the location it lives in on disk. I put my conveni-friends folder in my Desktop directory, so my command would look like:
+(On a Windows machine): Also within the MySQL shell, we need to set up our tables. To run the setup.sql file, we need the location it lives in on disk. I put my conveni-friends folder in my Desktop directory, so my command would look like:
 
 ```
 source C:\Users\Andrew\Desktop\conveni-friends\setup.sql
