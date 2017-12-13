@@ -53,7 +53,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
 			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:SS')
+			time: moment().format('YYYY-MM-DD HH:MM:ss')
 		});
 		user = new User();
 		user.userId = userId;
@@ -66,7 +66,7 @@ export default class RequestDetailsScreen extends React.Component {
 
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
 			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:SS')
+			time: moment().format('YYYY-MM-DD HH:MM:ss')
 		});
 		user = new User();
 		user.userId = userId;
