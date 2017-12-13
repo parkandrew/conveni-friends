@@ -19,7 +19,13 @@ Create new MySQL database within MySQL shell:
 create database cs130_project;
 ```
 
-Edit server/server.js file. Comment lines 13-19 out:
+Also within the MySQL shell, we need to set up our tables. To run the setup.sql file, we need the location it lives in on disk. I put my conveni-friends folder in my Desktop directory, so my command would look like:
+
+```
+source C:\Users\Andrew\Desktop\conveni-friends\setup.sql
+```
+
+Next, we will be using a local MySQL pool instead of a prod MySQL pool. To do so, edit server/server.js file. Comment lines 13-19 out:
 ```
 // const pool = mysql.createPool({
 //   connectionLimit : 50,
@@ -39,7 +45,6 @@ const pool = mysql.createPool({
     database: 'cs130_project',
   });
 ```
-This will create a local MySQL pool, to use your local version instead.
 
 To run locally (Make sure you are within the server directory):
 
