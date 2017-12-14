@@ -32,7 +32,6 @@ export default class RequestDetailsScreen extends React.Component {
 
 	componentWillMount() {
 		const { request } = this.props.navigation.state.params;
-
 		AsyncStorage.getItem('userId')
 			.then(userId => this.setState({ userId }));
 		  this.setState({user: this.props.navigation.state.params.user, request})
@@ -103,11 +102,11 @@ export default class RequestDetailsScreen extends React.Component {
 		const { userId, request } = this.state;
 		const { requesterId, title, address, description } = request;
 		const { timeStart, timeEnd, accepted, confirmed, completed } = request;
-
 		return (
 			<View style={styles.simpleContainer}>
 				<ScrollView style={styles.detailsMakeContainer}>
 					<View style={styles.makeInputView}>
+						<RequestInfoLine primary={'Requester'} secondary={' ' + requesterId} />
 						<RequestInfoLine primary={'Request'} secondary={' ' + title} />
 						<RequestInfoLine primary={'Location'} secondary={' ' + address} />
 						<RequestInfoLine primary={'Start Time'} secondary={' ' + timeStart} />
