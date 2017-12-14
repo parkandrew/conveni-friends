@@ -1,7 +1,7 @@
 //user class metadata
 import Request from 'client/app/Common/Request';
 import axios from 'axios';
-
+import moment from 'moment';
 import config from 'client/config';
 
 export default class User {
@@ -144,7 +144,7 @@ export default class User {
      * @return response     Was the acceptance successful?
      */
     acceptRequest(requestId) {
-        axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
+        return axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
             userId: this.userId,
             time: moment().format('YYYY-MM-DD HH:MM:ss')
         }).then((response) => {
@@ -160,7 +160,7 @@ export default class User {
      * @return response     Was the completion successful?
      */
     completeRequest(requestId) {
-        axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
+        return axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
             userId: this.userId,
             time: moment().format('YYYY-MM-DD HH:MM:ss')
         }).then((response) => {

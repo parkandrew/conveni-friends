@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
-import { AsyncStorage, Button, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { AsyncStorage, Button, View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import RequestInfoLine from 'client/app/components/RequestInfoDetails';
 import CustomButton from 'client/app/components/CustomButton';
 import User from 'client/app/Common/User';
@@ -52,6 +52,7 @@ export default class RequestDetailsScreen extends React.Component {
 		const { user } = this.state;
 		const { requestId } = this.props.navigation.state.params.request;
 
+		console.log('FUCK $C' + requestId);
 		user.acceptRequest(requestId).then((response) => {
 			this.props.navigation.navigate('ProviderScreen', {user: user});
 		}).catch((error) => (Alert.alert("There was an error accepting the request, try again later")));
@@ -60,7 +61,6 @@ export default class RequestDetailsScreen extends React.Component {
 	complete() {
 		const { user } = this.state;
 		const { requestId } = this.props.navigation.state.params.request;
-
 		user.completeRequest(requestId).then((response) => {
 			this.props.navigation.navigate('ProviderScreen', {user: user});
 		}).catch((error) => (Alert.alert("There was an error completing the request, try again later")));
