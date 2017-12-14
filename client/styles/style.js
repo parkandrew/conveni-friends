@@ -133,7 +133,8 @@ const styles = StyleSheet.create({
 		messageContainer: {
 			flex: 1,
 			flexDirection: 'column',
-			backgroundColor: $midnight,
+			alignItems: 'flex-start',
+			backgroundColor: $midnight
 		},
 		listItemContainer: {
 			backgroundColor: $midnight,

@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, Text, View, TextInput, Button } from 'react-native';
 import styles from 'client/styles/style';
 import CustomButton from 'client/app/components/CustomButton';
+import LoginFormInput from 'client/app/components/LoginFormInput';
 
 export default class ChangePassword extends React.Component {
     static navigationOptions = {
@@ -48,28 +49,37 @@ export default class ChangePassword extends React.Component {
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.signupContainer}>
-            <Text style={styles.signupTitle}>Change Password</Text>
-            <TextInput
+          <View style={styles.loginContainer}>
+
+            <LoginFormInput
+                setParentState={newState=>{this.setState(newState)}}
+                field={"password"}
                 secureTextEntry={true}
-                placeholder="Old Password"
-                onChangeText={(text) => this.setState({oldPassword: text})}
-            />
-            <TextInput
+                style={styles.makeLoginLine}
+                onSubmitEditing={(text) => {this.setState({oldPassword: text});}}
+                placeholder={'Old Password'}/>
+
+            <LoginFormInput
+                setParentState={newState=>{this.setState(newState)}}
+                field={"password"}
                 secureTextEntry={true}
-                placeholder="New Password"
-                onChangeText={(text) => this.setState({password: text})}
-            />
-            <TextInput
+                style={styles.makeLoginLine}
+                onSubmitEditing={(text) => {this.setState({password: text});}}
+                placeholder={'New Password'}/>
+
+            <LoginFormInput
+                setParentState={newState=>{this.setState(newState)}}
+                field={"password2"}
                 secureTextEntry={true}
-                placeholder="Confirm Password"
-                onChangeText={(text) => this.setState({password2: text})}
-            />
+                style={styles.makeLoginLine}
+                onSubmitEditing={(text) => {this.setState({password2: text});}}
+                placeholder={'Confirm Password'}/>
+
             <CustomButton
-                onPressHandle={this._changePass}
-                text="Confirm"
-            />
-        </View>
+                onPressHandle={() => {this._changePass();}}
+                text="Confirm"/>
+
+          </View>
         );
     }
 }
