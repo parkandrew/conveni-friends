@@ -43,7 +43,7 @@ export default class RequestDetailsScreen extends React.Component {
 		}
 		return !accepted
 			? <CustomButton text="Accept" onPressHandle={() => this.accept()} />
-			: (!completed ? <CustomButton text="Complete" onPressHandle={() => this.complete()} /> 
+			: (!completed ? <CustomButton text="Complete" onPressHandle={() => this.complete()} />
 			: <Text>completed!</Text>);
 	}
 
@@ -108,8 +108,11 @@ export default class RequestDetailsScreen extends React.Component {
 						<RequestInfoLine primary={'End Time'} secondary={' ' + timeEnd} />
 						<Text style={styles.key}>Details: <Text style={styles.value}>{' ' + description}</Text></Text>
 					</View>
+
 					{ this.getButtons() }
-					{userId !== request.requesterId ? <CustomButton text="Message Requester" onPressHandle={() => this.messageRequester()} /> : null}
+						<View style={styles.genericContainer}>
+							{userId !== request.requesterId ? <CustomButton text="Message Requester" onPressHandle={() => this.messageRequester()} /> : null}
+						</View>
 				</ScrollView>
 			</View>
 		);
