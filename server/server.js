@@ -412,7 +412,7 @@ app.post('/v1/request/:request_id/confirm', (req, res) => {
  * @returns {res} The response, including an HTTP status indicating success or failure, and error info, if any.
  */
 app.post('/v1/request/:requestId/complete', (req, res) => {
-    const { userId, time } = req.query;
+    const { userId, time } = req.body;
     const { requestId } = req.params;
 
     const query = `UPDATE Request SET completed=${time} `
