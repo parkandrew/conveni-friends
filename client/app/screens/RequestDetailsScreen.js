@@ -38,7 +38,9 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	componentWillUnmount () {
-		if(this.state.accepted) {
+		console.log('accept?');
+		if(this.state.request.accepted) {
+			console.log(this.state);
 			this.props.navigation.state.params.onNavigateBack(this.state.request.requestId);
 		} else {
 			this.props.navigation.state.params.onNavigateBack(null);
@@ -63,11 +65,9 @@ export default class RequestDetailsScreen extends React.Component {
 	accept() {
 		const { userId, request } = this.state;
 		const { requesterId, requestId } = request;
-		let time = moment().format('YYYY-MM-DD HH:MM:SS');
-		time = time.slice(0,17) + '00';
 		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
 			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:SS')
+			time: moment().format('YYYY-MM-DD HH:MM:ss')
 		})
 			.then(response => {
 				if(response.status === 200) {
@@ -84,11 +84,9 @@ export default class RequestDetailsScreen extends React.Component {
 	complete() {
 		const { userId, request } = this.state;
 		const { requesterId, requestId } = request;
-		let time = moment().format('YYYY-MM-DD HH:MM:SS');
-		time = time.slice(0,17) + '00';
 		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
 			userId,
-			time: time
+			time: moment().format('YYYY-MM-DD HH:MM:ss')
 		})
 			.then(response => {
 				console.log('complete');
