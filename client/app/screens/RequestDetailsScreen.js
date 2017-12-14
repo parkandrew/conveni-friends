@@ -35,11 +35,11 @@ export default class RequestDetailsScreen extends React.Component {
 
 		AsyncStorage.getItem('userId')
 			.then(userId => this.setState({ userId }));
-		  this.setState({user: this.props.navigation.state.params.user})
+		  this.setState({user: this.props.navigation.state.params.user, request})
 	}
 
 	componentWillUnmount () {
-		if(this.state.accepted) {
+		if(this.state.request.accepted) {
 			this.props.navigation.state.params.onNavigateBack(this.state.request.requestId);
 		} else {
 			this.props.navigation.state.params.onNavigateBack(null);
@@ -64,10 +64,11 @@ export default class RequestDetailsScreen extends React.Component {
 	accept() {
 		const { user } = this.state;
 		const { requestId } = this.props.navigation.state.params.request;
-
-		console.log('FUCK $C' + requestId);
 		user.acceptRequest(requestId).then((response) => {
-			this.props.navigation.navigate('ProviderScreen', {user: user});
+			if (response.status === 200) {
+				const { request } = this.state;
+				this.setState({ request: { ...request, accepted: true }});
+			}
 		}).catch((error) => (Alert.alert("There was an error accepting the request, try again later")));
 	}
 
