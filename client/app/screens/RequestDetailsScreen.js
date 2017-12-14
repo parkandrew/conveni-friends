@@ -75,7 +75,7 @@ export default class RequestDetailsScreen extends React.Component {
 		const { user } = this.state;
 		const { requestId } = this.props.navigation.state.params.request;
 		user.completeRequest(requestId).then((response) => {
-			this.props.navigation.navigate('ProviderScreen', {user: user});
+			this.props.navigation.navigate('RequestHistory', {user: user});
 		}).catch((error) => (Alert.alert("There was an error completing the request, try again later")));
 	}
 
