@@ -116,7 +116,6 @@ export default class RequestDetailsScreen extends React.Component {
 					</View>
 
 					{ this.getButtons() }
-
 					{ userId === request.requesterId ||
 						<CustomButton
 							text="Message Requester"
