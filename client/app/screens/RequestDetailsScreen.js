@@ -31,8 +31,8 @@ export default class RequestDetailsScreen extends React.Component {
 
 	componentWillMount() {
 		AsyncStorage.getItem('userId')
-			.then(userId => this.setState({ userId }, console.log(this)));
-		this.setState({user: this.props.user})
+			.then(userId => this.setState({ userId }));
+		this.setState({user: this.props.navigation.state.params.user})
 	}
 
 	getButtons() {
@@ -52,7 +52,7 @@ export default class RequestDetailsScreen extends React.Component {
 		const { user } = this.state;
 		const { requestId } = this.props.navigation.state.params.request;
 
-		user.accept(requestId).then((response) => {
+		user.acceptRequest(requestId).then((response) => {
 			this.props.navigation.navigate('ProviderScreen', {user: user});
 		}).catch((error) => (Alert.alert("There was an error accepting the request, try again later")));
 	}

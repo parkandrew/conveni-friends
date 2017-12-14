@@ -17,7 +17,6 @@ export default class RequestListComponent extends React.Component {
 		<Card
 			data={item}
 			navigation={this.props.navigation}
-			user={this.props.user}
 			onClick={() => this.getRequestDetails(item)}
 		/>
 	);
@@ -27,8 +26,8 @@ export default class RequestListComponent extends React.Component {
 	);
 
 	getRequestDetails(data) {
-		const { navigation } = this.props;
-		navigation.navigate('RequestDetailsScreen', { request: data.request, user: this.props.user });
+		const { navigation, user } = this.props;
+		navigation.navigate('RequestDetailsScreen', { request: data.request, user });
 	}
 
 	render() {
