@@ -13,9 +13,10 @@ The "client" directory contains the front-end code, written primarily in JavaScr
 #### server
 The "server" directory is where the back-end code lives, also written in JavaScript and using Express.js.
 
-Test files (needs updating)
+Test files
 -------------
 Tests will be contained in their respective directories. For example, server-side tests will be within the server directory.
+Instructions on how to run them can be found within the server/ README.
 
 Contributors
 -------------
