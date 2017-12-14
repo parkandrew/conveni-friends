@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 
-import { AsyncStorage, Button, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { AsyncStorage, Button, View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import RequestInfoLine from 'client/app/components/RequestInfoDetails';
 import CustomButton from 'client/app/components/CustomButton';
 import User from 'client/app/Common/User';
@@ -34,7 +34,8 @@ export default class RequestDetailsScreen extends React.Component {
 		const { request } = this.props.navigation.state.params;
 
 		AsyncStorage.getItem('userId')
-			.then(userId => this.setState({ userId, request }));
+			.then(userId => this.setState({ userId }));
+		  this.setState({user: this.props.navigation.state.params.user})
 	}
 
 	componentWillUnmount () {
@@ -61,45 +62,21 @@ export default class RequestDetailsScreen extends React.Component {
 	}
 
 	accept() {
-		const { userId, request } = this.state;
-		const { requesterId, requestId } = request;
-		let time = moment().format('YYYY-MM-DD HH:MM:SS');
-		time = time.slice(0,17) + '00';
-		axios.post(`${config.API_URL}/v1/request/${requestId}/accept`, {
-			userId,
-			time: moment().format('YYYY-MM-DD HH:MM:SS')
-		})
-			.then(response => {
-				if(response.status === 200) {
-					const { request } = this.state;
-					this.setState({ request: { ...request, accepted: true }});
-				}
-			})
-			.catch(err => {
-				console.log('error in post request');
-				console.log(err);
-			});
+		const { user } = this.state;
+		const { requestId } = this.props.navigation.state.params.request;
+
+		console.log('FUCK $C' + requestId);
+		user.acceptRequest(requestId).then((response) => {
+			this.props.navigation.navigate('ProviderScreen', {user: user});
+		}).catch((error) => (Alert.alert("There was an error accepting the request, try again later")));
 	}
 
 	complete() {
-		const { userId, request } = this.state;
-		const { requesterId, requestId } = request;
-		let time = moment().format('YYYY-MM-DD HH:MM:SS');
-		time = time.slice(0,17) + '00';
-		axios.post(`${config.API_URL}/v1/request/${requestId}/complete`, {
-			userId,
-			time: time
-		})
-			.then(response => {
-				console.log('complete');
-				if (response.status === 200) {
-					const { request } = this.state;
-					this.setState({ request: { ...request, accepted: true }});
-				}
-			})
-			.catch(err => {
-				console.log(err);
-			})
+		const { user } = this.state;
+		const { requestId } = this.props.navigation.state.params.request;
+		user.completeRequest(requestId).then((response) => {
+			this.props.navigation.navigate('ProviderScreen', {user: user});
+		}).catch((error) => (Alert.alert("There was an error completing the request, try again later")));
 	}
 
 	messageRequester() {

@@ -17,7 +17,6 @@ export default class RequestListComponent extends React.Component {
 		<Card
 			data={item}
 			navigation={this.props.navigation}
-			user={this.props.user}
 			onClick={() => this.getRequestDetails(item)}
 		/>
 	);
