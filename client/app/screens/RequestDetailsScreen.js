@@ -54,7 +54,7 @@ export default class RequestDetailsScreen extends React.Component {
 		}
 		if (!accepted) {
 			return <CustomButton text="Accept" onPressHandle={() => this.accept()} />;
-		} else if (userId == providerId && !completed) {
+		} else if (userId === providerId && !completed) {
 			return <CustomButton text="Complete" onPressHandle={() => this.complete()} />;
 		}
 		return;
