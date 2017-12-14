@@ -26,12 +26,11 @@ export default class RequestListComponent extends React.Component {
 	);
 
 	getRequestDetails(data) {
-		const { navigation, user } = this.props;
-		navigation.navigate('RequestDetailsScreen', { request: data.request, user });
+		const { navigation } = this.props;
+		navigation.navigate('RequestDetailsScreen', { request: data.request, user: this.props.user, onNavigateBack: this.props.handleOnNavigateBack });
 	}
 
 	render() {
-		const ITEM_HEIGHT = 400;
 		if (this.props.data) {
 			return (
 				<FlatList
@@ -39,6 +38,7 @@ export default class RequestListComponent extends React.Component {
 					data={this.props.data}
 					user={this.props.user}
 					renderItem={this._renderItem}
+					extraData={this.props}
 				/>
 			);
 		}
